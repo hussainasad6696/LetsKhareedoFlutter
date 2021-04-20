@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/foundation.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/custom_widgets/OptionMenuMobileAndWeb.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -14,8 +15,10 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     heightOfImageSlider = kIsWeb ? 500.0 : 200.0;
+    webCheck = kIsWeb ? WEB : MOBILE;
   }
 
+  String webCheck;
   double heightOfImageSlider;
 
   static List<String> links = [
@@ -25,14 +28,9 @@ class _HomeState extends State<Home> {
   ];
 
   List<String> mainHeaders = ['Account', 'About Us', 'Contact Us', 'Blog'];
-  List<String> categories = [
-    'Home',
-    'Store',
-    'Kids',
-    'Men',
-    'Women',
-    'Accessories'
-  ];
+
+
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +39,40 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.grey[50],
         title: TextButton(
+          onPressed: () {
+            print('letsKhareedo logo clicked'); //TODO logo click
+          },
           child: CircleAvatar(
             backgroundImage: AssetImage('assets/letskhareedoLogo.jpeg'),
           ),
         ),
         actions: <Widget>[
-          Padding(padding: EdgeInsets.only(right: 20.0),
-          child: GestureDetector(
-            onTap: (){
-              print('u tapped cart in home');
-            },
-            child: Icon(
-              Icons.shopping_cart,
-              size: 26.0,
-              color: Colors.grey[800],
+          Visibility(
+            visible: webCheck == WEB,
+            child: SizedBox(
+              width: 700.0,
+              child: Categories(),
+              // ListView.builder(
+              //   itemBuilder: (context, index) =>
+              //
+              //   itemCount: categories.length,
+              //   scrollDirection: Axis.horizontal,
+              // ),
             ),
-          ),)
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                print('u tapped cart in home'); //TODO cart icon clicked
+              },
+              child: Icon(
+                Icons.shopping_cart,
+                size: 26.0,
+                color: Colors.grey[800],
+              ),
+            ),
+          ),
         ],
       ),
       body: SafeArea(
@@ -88,23 +104,45 @@ class _HomeState extends State<Home> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20.0)),
                                 ),
-                                child: Image(
-                                  image: AssetImage(
-                                      'assets/letskhareedoLogo.jpeg'),
-                                  fit: BoxFit.fill,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print(
+                                        'image slider click detected'); //TODO imageSlider clicked
+                                  },
+                                  child: Image(
+                                    image: AssetImage(
+                                        'assets/letskhareedoLogo.jpeg'),
+                                    fit: BoxFit.fill,
+                                  ),
                                 ));
                           },
                         );
                       }).toList(),
                     ),
                   )),
-              SizedBox(
-                height: 25.0,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) =>
-                      buildCategory(index, categories),
+              Visibility(
+                  visible: webCheck == MOBILE,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                    child: Divider(
+                      height: 20,
+                      color: Colors.black,
+                    ),
+                  )),
+              Visibility(
+                visible: webCheck == MOBILE,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: SizedBox(
+                    height: 25.0,
+                      child: Categories(),
+                      // child: ListView.builder(
+                      //   scrollDirection: Axis.horizontal,
+                      //   itemCount: categories.length,
+                      //   itemBuilder: (context, index) =>
+                      //       buildCategory(index, categories, webCheck),
+                      // ),
+                  ),
                 ),
               ),
             ],
@@ -114,15 +152,51 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget buildCategory(int index, List<String> categories) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Text(categories[index],
-      style: TextStyle(
-       fontWeight: FontWeight.bold,
-       color: Colors.grey[1000]
-      ),
-      ),
-    );
-  }
+  // Widget buildCategory(int index, List<String> categories) {
+  //   print('${webCheck == WEB}');
+  //   if (webCheck == WEB) {
+  //     return TextButton(
+  //         onPressed: () {
+  //           print('${categories[index]}'); //TODO
+  //         },
+  //         child: Text(
+  //           '${categories[index]}',
+  //           style: TextStyle(
+  //               color: Colors.black,
+  //               letterSpacing: 1,
+  //               wordSpacing: 5,
+  //               fontWeight: FontWeight.bold),
+  //         ));
+  //   } else {
+  //     return GestureDetector(
+  //         onTap: () {
+  //           setState(() {
+  //             selectedIndex = index;
+  //           });
+  //         },
+  //         child: Padding(
+  //             padding: const EdgeInsets.symmetric(horizontal: 15.0),
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: <Widget>[
+  //                 Text(
+  //                   categories[index],
+  //                   style: TextStyle(
+  //                       fontWeight: FontWeight.bold,
+  //                       color: selectedIndex == index
+  //                           ? Colors.grey[1000]
+  //                           : Colors.grey[500]),
+  //                 ),
+  //                 Container(
+  //                   margin: EdgeInsets.only(top: 15.0 / 4),
+  //                   height: 2,
+  //                   width: 20,
+  //                   color: selectedIndex == index
+  //                       ? Colors.black
+  //                       : Colors.transparent,
+  //                 )
+  //               ],
+  //             )));
+  //   }
+  // }
 }
