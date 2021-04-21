@@ -129,20 +129,22 @@ class _HomeState extends State<HomePage> {
                 margin: EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
                   color: Colors.amber,
-                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: GestureDetector(
-                  onTap: () {
-                    print(
-                        'image slider click detected ${i - 1}'); //TODO imageSlider clicked
-                  },
-                  child: Image(
-                    // image: AssetImage(
-                    //     'assets/letskhareedoLogo.jpeg'),
-                    image: NetworkImage(links[i - 1]),
-                    fit: BoxFit.fill,
-                  ),
-                ));
+                    onTap: () {
+                      print(
+                          'image slider click detected ${i - 1}'); //TODO imageSlider clicked
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: Image(
+                        // image: AssetImage(
+                        //     'assets/letskhareedoLogo.jpeg'),
+                        image: NetworkImage(links[i - 1]),
+                        fit: BoxFit.fill,
+                      ),
+                    )));
           },
         );
       }).toList(),
@@ -164,7 +166,8 @@ class _HomeState extends State<HomePage> {
           WomenPage()
         ],
       );
-    }else return CarouselSliderWeb();
+    } else
+      return CarouselSliderWeb();
   }
 
   Widget optionMenuListView() {
