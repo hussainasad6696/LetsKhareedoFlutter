@@ -31,6 +31,10 @@ dependencies:
   flutter_native_splash: ^1.1.7+1
   carousel_slider: ^3.0.0
   badges: ^1.2.0
+  flutter_svg: ^0.22.0
+  google_fonts: ^2.0.0
+  http: ^0.13.1
+
 
 dev_dependencies:
   flutter_test:

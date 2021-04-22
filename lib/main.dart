@@ -1,5 +1,8 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/Store.dart';
 import 'package:letskhareedo/pages/fisrtHomePage.dart';
@@ -11,6 +14,18 @@ import 'package:letskhareedo/pages/women.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'LetsKhareedo',
+    theme: ThemeData(
+      scaffoldBackgroundColor: Colors.white,
+      textTheme: GoogleFonts.dmSansTextTheme().apply(displayColor: kTextColor),
+      appBarTheme: AppBarTheme(
+        color: Colors.transparent,
+        elevation: 0,
+        brightness: Brightness.light
+      ),
+      visualDensity: VisualDensity.adaptivePlatformDensity
+    ),
     initialRoute: '/',
     routes: {
       '/' : (context) => SplashScreen(),

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/foundation.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/constants/size_config.dart';
 import 'package:letskhareedo/custom_widgets/CarouselSliderForWeb.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
+import 'package:letskhareedo/custom_widgets/CustomCardWidget.dart';
 import 'package:letskhareedo/custom_widgets/OptionMenuMobileAndWeb.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/Store.dart';
@@ -23,9 +25,10 @@ class _HomeState extends State<HomePage> {
   void initState() {
     super.initState();
     heightOfImageSlider = kIsWeb ? 500.0 : 200.0;
-    webCheck = kIsWeb ? WEB : MOBILE;
+    // webCheck = kIsWeb ? WEB : MOBILE;
+    defaultSize = SizeConfig.defaultSize;
   }
-
+  double defaultSize ;
   @override
   void dispose() {
     _pageController.dispose();
@@ -33,7 +36,7 @@ class _HomeState extends State<HomePage> {
   }
 
   PageController _pageController = PageController(initialPage: 0);
-  String webCheck;
+  // String webCheck;
   double heightOfImageSlider;
 
   static List<String> links = [
@@ -57,43 +60,63 @@ class _HomeState extends State<HomePage> {
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(PREFERRED_SIZE),
           child: CustomAppBar()),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Visibility(
-            visible: webCheck == WEB ? true : false,
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-                child: Container(
-                    height: heightOfImageSlider,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                    ),
-                    child: carouselSliderForWeb())),
-          ),
-          Visibility(
-              visible: webCheck == MOBILE,
-              child: Padding(
-                padding: EdgeInsets.only(left: 15.0, top: 5.0),
-                child: Text(
-                  '$_pageName',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                ),
-              )),
-          Visibility(
-            visible: webCheck == MOBILE,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15.0),
-              child: SizedBox(
-                height: 25.0,
-                child: optionMenuListView(),
-              ),
-            ),
-          ),
-          Expanded(child: pageView())
-        ],
-      ),
+      body: webOrMobile()
+      // ),
     );
+  }
+
+  List<Widget> uiColumn(){
+    return [
+      Visibility(
+        visible: WEB_CHECK == WEB ? true : false,
+        child: Padding(
+            padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+            child: Container(
+                height: heightOfImageSlider,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ),
+                child: carouselSliderForWeb())),
+      ),
+      Visibility(
+          visible: WEB_CHECK == MOBILE,
+          child: Padding(
+            padding: EdgeInsets.only(left: 15.0, top: 5.0),
+            child: Text(
+              '$_pageName',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            ),
+          )),
+      Visibility(
+        visible: WEB_CHECK == MOBILE,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
+          child: SizedBox(
+            height: 25.0,
+            child: optionMenuListView(),
+          ),
+        ),
+      ),
+      Expanded(child: pageView()),
+    ];
+  }
+
+
+
+  Widget webOrMobile(){
+    if (WEB_CHECK == WEB)
+      {
+        return ListView(
+          children: uiColumn(),
+        );
+      }
+    else {
+      return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: uiColumn(),
+      );
+    }
   }
 
   _onPageViewChange(int index) {
@@ -152,13 +175,15 @@ class _HomeState extends State<HomePage> {
   }
 
   Widget pageView() {
-    if (webCheck == MOBILE) {
+    if (WEB_CHECK == MOBILE) {
       return PageView(
         controller: _pageController,
         scrollDirection: Axis.horizontal,
         onPageChanged: _onPageViewChange,
         children: [
-          FirstHome(),
+          FirstHome(
+              pageController: _pageController,
+          ),
           Store(),
           Accessories(),
           KidsPage(),
@@ -166,8 +191,25 @@ class _HomeState extends State<HomePage> {
           WomenPage()
         ],
       );
-    } else
-      return CarouselSliderWeb();
+    } else {
+      return Column(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(bottom: 20.0),
+            child: CardWidget(
+              300.0,
+              onCountChanged: (index){
+              //TODO
+              print('$index');
+            },
+            onCardClicked: (){
+              print('Call back selected');
+            },),
+          )
+        ],
+      );
+    }
+      // return CarouselSliderWeb();
   }
 
   Widget optionMenuListView() {
@@ -179,8 +221,8 @@ class _HomeState extends State<HomePage> {
   }
 
   Widget buildCategory(int index, List<String> categories) {
-    print('${webCheck == WEB}');
-    if (webCheck == WEB) {
+    print('${WEB_CHECK == WEB}');
+    if (WEB_CHECK == WEB) {
       return TextButton(
           onPressed: () {
             print('${categories[index]}'); //TODO
@@ -198,7 +240,7 @@ class _HomeState extends State<HomePage> {
           onTap: () {
             setState(() {
               print('$selectedIndex - ${categories[index]}');
-              _pageController.jumpToPage(index);
+              _pageController.animateToPage(index, curve: Curves.easeInOut, duration: Duration(microseconds: 800));
               _pageName = categories[index];
             });
           },
@@ -228,3 +270,5 @@ class _HomeState extends State<HomePage> {
     }
   }
 }
+
+

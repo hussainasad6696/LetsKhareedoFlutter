@@ -41,7 +41,6 @@ class _CategoriesState extends State<Categories> {
 
 
   Widget buildCategory(int index, List<String> categories) {
-    print('${webCheck == WEB}');
     if (webCheck == WEB) {
       return TextButton(
           onPressed: () {
