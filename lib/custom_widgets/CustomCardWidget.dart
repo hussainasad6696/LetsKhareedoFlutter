@@ -42,17 +42,38 @@ class CardWidget extends StatelessWidget {
                     padding: EdgeInsets.all(ADD_CARD_PADDING),
                     child: cardViewWidget(images[1]),
                   )),
+              Visibility(
+                  visible: WEB_CHECK == WEB,
+                  child: Padding(
+                    padding: EdgeInsets.all(ADD_CARD_PADDING),
+                    child: cardViewWidget(images[1]),
+                  )),
+
             ],
           ),
-          Visibility(
-              visible: WEB_CHECK == MOBILE,
-              child: Container(
-                margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
-                child: Padding(
-                  padding: EdgeInsets.all(ADD_CARD_PADDING),
-                  child: cardViewWidget(images[0]),
-          ),
-              ))
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Visibility(
+                  visible: WEB_CHECK == MOBILE,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
+                    child: Padding(
+                      padding: EdgeInsets.all(ADD_CARD_PADDING),
+                      child: cardViewWidget(images[0]),
+              ),
+                  )),
+              Visibility(
+                  visible: WEB_CHECK == MOBILE,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
+                    child: Padding(
+                      padding: EdgeInsets.all(ADD_CARD_PADDING),
+                      child: cardViewWidget(images[1]),
+                    ),
+                  )),
+            ],
+          )
         ],
       ),
     );

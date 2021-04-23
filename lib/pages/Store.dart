@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:letskhareedo/constants/constant.dart';
-import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
-import 'package:letskhareedo/custom_widgets/OptionMenuMobileAndWeb.dart';
+import 'package:letskhareedo/custom_widgets/AppProductGridView.dart';
 
 
-class Store extends StatelessWidget {
+class Store extends StatefulWidget {
+  @override
+  _StoreState createState() => _StoreState();
+}
+
+class _StoreState extends State<Store> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
-      body: Text('Store Page'),
+      body: AppProductGrid(url: "/store", activity: "Store",)
     );
   }
 }
+
+
+
+

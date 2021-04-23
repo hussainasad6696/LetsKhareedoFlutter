@@ -9,10 +9,10 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     String webCheck = kIsWeb ? WEB : MOBILE;
     return AppBar(
-      bottomOpacity: webCheck == WEB ? 1.0 : 0.0,
-      elevation: webCheck == WEB ? 1.0 : 0.0,
-      centerTitle: true,
-      backgroundColor: webCheck == WEB ? APP_BAR_BACKGROUND : APPLICATION_BACKGROUND_COLOR,
+      // bottomOpacity: webCheck == WEB ? 1.0 : 0.0,
+      // elevation: webCheck == WEB ? 1.0 : 0.0,
+      // centerTitle: true,
+      // backgroundColor: webCheck == WEB ? APP_BAR_BACKGROUND : APPLICATION_BACKGROUND_COLOR,
         title: TextButton(
           onPressed: () {
             print('letsKhareedo logo clicked'); //TODO logo click

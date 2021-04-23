@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/custom_widgets/AppProductGridView.dart';
 
 class WomenPage extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class _WomenPageState extends State<WomenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
-      body: Text('women'),
+      body: AppProductGrid(url: "/women", activity: "WomenPage",),
     );
   }
 }

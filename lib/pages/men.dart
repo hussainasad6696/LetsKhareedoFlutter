@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/custom_widgets/AppProductGridView.dart';
 
 
 class MenPage extends StatefulWidget {
@@ -12,9 +13,7 @@ class _MenPageState extends State<MenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
-      body: Text(
-        'Men'
-      ),
+      body: AppProductGrid(url: "/men", activity: "MenPage",),
     );
   }
 }

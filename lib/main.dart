@@ -1,9 +1,11 @@
 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
+import 'package:letskhareedo/pages/SalesPage.dart';
 import 'package:letskhareedo/pages/Store.dart';
 import 'package:letskhareedo/pages/fisrtHomePage.dart';
 import 'package:letskhareedo/pages/homePage.dart';
@@ -35,7 +37,8 @@ void main() {
       '/AccessoriesPage' : (context) => Accessories(),
       '/kids' : (context) => KidsPage(),
       '/men' : (context) => MenPage(),
-      '/women' : (context) => WomenPage()
+      '/women' : (context) => WomenPage(),
+      '/salesPage' : (context) => Sales(),
     },
   ));
 }

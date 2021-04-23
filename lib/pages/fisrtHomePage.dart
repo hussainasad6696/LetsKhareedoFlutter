@@ -1,8 +1,11 @@
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/constants/size_config.dart';
 import 'package:letskhareedo/custom_widgets/CarouselSliderForWeb.dart';
 import 'package:letskhareedo/custom_widgets/CustomCardWidget.dart';
+import 'package:letskhareedo/custom_widgets/ProductCardView.dart';
 
 class FirstHome extends StatefulWidget {
 
@@ -44,63 +47,32 @@ class _FirstHomeState extends State<FirstHome> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.all(5.0),
-                child: SizedBox(
-                  width: 205,
-                  child: AspectRatio(
-                    aspectRatio: 0.83,
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: <Widget>[
-                        Container(
-                          color: Colors.amber,
-                        ),
-                        ClipPath(
-                          clipper: CategoryCustomShape(),
-                          child: AspectRatio(aspectRatio: 1.025,
-                            child: Container(
-                              color: kSecondaryColor,
-                            ),),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              )
+              Categories()
             ],
           )
         ));
   }
 
 }
-class CategoryCustomShape extends CustomClipper<Path>{
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
 
-    double height = size.height;
-    double width = size.width;
-    double cornerSize = 30;
-
-    path.lineTo(0, height - cornerSize);
-    path.quadraticBezierTo(0, height, cornerSize, height);
-    path.lineTo(width - cornerSize, height);
-    path.quadraticBezierTo(width, height, width, height-cornerSize);
-    path.lineTo(width, cornerSize);
-    path.quadraticBezierTo(width, 0, width - cornerSize, 0);
-    path.lineTo(cornerSize, cornerSize * 0.75);
-    path.quadraticBezierTo(0, cornerSize, 0, cornerSize * 2);
-
-
-
-    path.close();
-    return path;
-  }
+class Categories extends StatelessWidget {
+  const Categories({
+    Key key,
+  }) : super(key: key);
 
   @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return true;
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: <Widget>[
+          ProductCard(), //TODO
+          ProductCard(),
+          ProductCard(),
+          ProductCard(),
+        ],
+      ),
+    );
   }
-
 }
+
