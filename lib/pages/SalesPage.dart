@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:letskhareedo/constants/constant.dart';
 
-class Sales extends StatefulWidget {
-  @override
-  _SalesState createState() => _SalesState();
-}
-
-class _SalesState extends State<Sales> {
+class Sales extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Text(
-          'SalesPage'
+      backgroundColor: APPLICATION_BACKGROUND_COLOR,
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: IconButton(
+            icon: SvgPicture.asset("assets/icons/back.svg"),
+            onPressed: (){
+              Navigator.pop(context);
+            },
+          ),
         ),
       ),
     );
   }
 }
+

@@ -9,8 +9,8 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     String webCheck = kIsWeb ? WEB : MOBILE;
     return AppBar(
-      // bottomOpacity: webCheck == WEB ? 1.0 : 0.0,
-      // elevation: webCheck == WEB ? 1.0 : 0.0,
+      bottomOpacity: webCheck == WEB ? 1.0 : 0.0,
+
       // centerTitle: true,
       // backgroundColor: webCheck == WEB ? APP_BAR_BACKGROUND : APPLICATION_BACKGROUND_COLOR,
         title: TextButton(
@@ -25,7 +25,6 @@ class CustomAppBar extends StatelessWidget {
           Visibility(
             visible: webCheck == WEB,
             child: SizedBox(
-              width: 700.0,
               child: Categories(),
             ),
           ),
@@ -35,7 +34,7 @@ class CustomAppBar extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(5.0,0.0,20.0,0.0),
               child: GestureDetector(
                 onTap: () {
-                  print('u tapped cart in home'); //TODO cart icon clicked
+                  Navigator.pushNamed(context, "/AddToCart");
                 },
                 child: Icon(
                   Icons.shopping_cart,
