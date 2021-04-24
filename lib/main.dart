@@ -2,7 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
@@ -17,7 +16,6 @@ import 'package:letskhareedo/pages/splashScreen.dart';
 import 'package:letskhareedo/pages/women.dart';
 
 void main() {
-  var webCheck  = kIsWeb ? WEB : MOBILE;
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     title: 'LetsKhareedo',
@@ -25,7 +23,6 @@ void main() {
       scaffoldBackgroundColor: Colors.white,
       textTheme: GoogleFonts.dmSansTextTheme().apply(displayColor: kTextColor),
       appBarTheme: AppBarTheme(
-          elevation: webCheck  = kIsWeb ? WEB : MOBILE == WEB ? 1.0 : 0.0,
         color: Colors.transparent,
         brightness: Brightness.light
       ),

@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  circulardropdownmenu:
+    dependency: "direct main"
+    description:
+      name: circulardropdownmenu
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   clock:
     dependency: transitive
     description:

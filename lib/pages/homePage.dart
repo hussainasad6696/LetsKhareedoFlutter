@@ -59,7 +59,7 @@ class _HomeState extends State<HomePage> {
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(PREFERRED_SIZE),
-          child: CustomAppBar()),
+          child: CustomAppBar(s : "homePage")),
       body: webOrMobile()
       // ),
     );
