@@ -8,6 +8,7 @@ const double PREFERRED_SIZE = 50;
 const double ADD_CARD_PADDING = 5.0;
 const double RADIUS = 20.0;
 const String WEB_CHECK = kIsWeb ? WEB : MOBILE;
+const String BASE_URL = "http://192.168.100.10:8000/";
 
 const Color APP_BAR_BACKGROUND = Color(0xFFFAFAFA);
 const Color APPLICATION_BACKGROUND_COLOR = Color(0xFFFFFFFF);

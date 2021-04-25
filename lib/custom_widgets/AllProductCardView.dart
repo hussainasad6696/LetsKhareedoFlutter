@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:letskhareedo/constants/constant.dart';
 
 class AllProductsCard extends StatelessWidget {
 
@@ -27,7 +28,8 @@ class AllProductsCard extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1,
               child: FadeInImage.assetNetwork(placeholder: "assets/icons/spinner.gif",
-                image: "https://raw.githubusercontent.com/abuanwar072/furniture_app_flutter/master/assets/images/Item_1.png",
+                image: BASE_URL + "test.png",
+                // image: "https://raw.githubusercontent.com/abuanwar072/furniture_app_flutter/master/assets/images/Item_1.png",
                 fit: BoxFit.cover,),
             ),
             Padding(

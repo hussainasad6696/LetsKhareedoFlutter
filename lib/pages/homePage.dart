@@ -40,12 +40,9 @@ class _HomeState extends State<HomePage> {
   double heightOfImageSlider;
 
   static List<String> links = [
-    'https://picsum.photos/250?image=9',
-    'https://picsum.photos/250?image=9',
-    'https://picsum.photos/250?image=9',
-    'https://picsum.photos/250?image=9',
-    'https://picsum.photos/250?image=9',
-    'https://picsum.photos/250?image=9'
+    'azizi.jpg',
+    'demo1.jpeg',
+    'demo2.jpeg'
   ];
 
   List<String> mainHeaders = ['Account', 'About Us', 'Contact Us', 'Blog'];
@@ -164,7 +161,7 @@ class _HomeState extends State<HomePage> {
                       child: Image(
                         // image: AssetImage(
                         //     'assets/letskhareedoLogo.jpeg'),
-                        image: NetworkImage(links[i - 1]),
+                        image: NetworkImage("$BASE_URL"+links[i - 1]),
                         fit: BoxFit.fill,
                       ),
                     )));

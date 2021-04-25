@@ -9,6 +9,13 @@ class CarouselSliderWeb extends StatefulWidget {
 }
 
 class _CarouselSliderWebState extends State<CarouselSliderWeb> {
+
+  static List<String> links = [
+    'azizi.jpg',
+    'demo1.jpeg',
+    'demo2.jpeg'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
@@ -16,7 +23,7 @@ class _CarouselSliderWebState extends State<CarouselSliderWeb> {
           autoPlayAnimationDuration: Duration(milliseconds: 800),
           autoPlay: true,
           height: webCheck == WEB ? 150.0 : 100.0),
-      items: [0, 1, 2, 3, 4, 5].map((i) {
+      items: [0,1,2].map((i) {
         return Builder(builder: (BuildContext context) {
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 5.0),
@@ -30,7 +37,7 @@ class _CarouselSliderWebState extends State<CarouselSliderWeb> {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image.network(
-                    'https://picsum.photos/250?image=9',
+                    BASE_URL+"${links[i]}",
                     fit: BoxFit.fill,
                   )),
             ),

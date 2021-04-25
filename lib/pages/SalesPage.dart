@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
+import 'dart:developer';
 
 class Sales extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _SalesState extends State<Sales> {
   @override
   Widget build(BuildContext context) {
     TextStyle lightTextStyle = TextStyle(color: kTextColor.withOpacity(0.6));
+    log("base url is $BASE_URL"+"test.png");
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
       appBar: PreferredSize(
@@ -179,7 +181,8 @@ class _SalesState extends State<Sales> {
                   child: Hero(
                     tag: "123",
                     child: Image.network(
-                      "https://raw.githubusercontent.com/abuanwar072/furniture_app_flutter/master/assets/images/Item_1.png",
+                      BASE_URL + "test.png",
+                      // "https://raw.githubusercontent.com/abuanwar072/furniture_app_flutter/master/assets/images/Item_1.png",
                       height: 378,
                       width: 364,
                       fit: BoxFit.cover,

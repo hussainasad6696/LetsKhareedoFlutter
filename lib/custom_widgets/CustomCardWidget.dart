@@ -4,7 +4,7 @@ import 'package:letskhareedo/constants/constant.dart';
 import 'CarouselSliderForWeb.dart';
 
 class CardWidget extends StatelessWidget {
-  static List<String> images = ['assets/male.jpeg', 'assets/female.jpeg'];
+  static List<String> images = ['male.jpeg', 'female.jpeg'];
 
   final VoidCallback onCardClicked;
   final Function(int) onCountChanged;
@@ -140,7 +140,7 @@ class CardWidget extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(RADIUS),
                       child: Image(
-                        image: AssetImage(image),
+                        image: NetworkImage("$BASE_URL"+image),
                         fit: BoxFit.fill,
                       ),
                     ),

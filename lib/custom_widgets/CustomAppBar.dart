@@ -22,14 +22,14 @@ class CustomAppBar extends StatelessWidget {
           print('letsKhareedo logo clicked'); //TODO logo click
         },
         child: Visibility(
-          visible: s != "Sales",
+          visible: s != "Sales" && s != "Cart",
           child: CircleAvatar(
             backgroundImage: AssetImage('assets/letskhareedoLogo.jpeg'),
           ),
         ),
       ),
       leading: Visibility(
-        visible: webCheck == MOBILE && s == "Sales" ? true : false,
+        visible: webCheck == MOBILE && s == "Sales" || s == "Cart" ? true : false,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(
@@ -49,19 +49,22 @@ class CustomAppBar extends StatelessWidget {
         ),
         Flexible(
           flex: 1,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
-            child: IconButton(
-              icon: SvgPicture.asset("assets/icons/bag.svg"),
-              onPressed: () {
-                //TODO
-              },
-              color: Colors.grey[800],
+          child: Visibility(
+            visible: s == "Sales" || s == "homePage",
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
+              child: IconButton(
+                icon: SvgPicture.asset("assets/icons/bag.svg"),
+                onPressed: () {
+                  Navigator.pushNamed(context, "/AddToCartOrderView");
+                },
+                color: Colors.grey[800],
+              ),
             ),
           ),
         ),
         Visibility(
-            visible: s == "Sales" ? true : false,
+            visible: s == "Sales" || s == "Cart" ? true : false,
             child: SizedBox(width: 10.0,))
       ],
     );

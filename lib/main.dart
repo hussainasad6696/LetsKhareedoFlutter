@@ -1,11 +1,10 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/AddToCart.dart';
+import 'package:letskhareedo/pages/AddToCartOrderView.dart';
 import 'package:letskhareedo/pages/SalesPage.dart';
 import 'package:letskhareedo/pages/Store.dart';
 import 'package:letskhareedo/pages/fisrtHomePage.dart';
@@ -18,7 +17,6 @@ import 'package:letskhareedo/pages/women.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    title: 'LetsKhareedo',
     theme: ThemeData(
       scaffoldBackgroundColor: Colors.white,
       textTheme: GoogleFonts.dmSansTextTheme().apply(displayColor: kTextColor),
@@ -39,7 +37,8 @@ void main() {
       '/men' : (context) => MenPage(),
       '/women' : (context) => WomenPage(),
       '/salesPage' : (context) => Sales(),
-      '/AddToCart' : (context) => Cart()
+      '/AddToCart' : (context) => Cart(),
+      '/AddToCartOrderView' : (context) => OrderView()
     },
   ));
 }
