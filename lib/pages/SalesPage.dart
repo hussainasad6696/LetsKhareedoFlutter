@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:circulardropdownmenu/circulardropdownmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
+import 'package:http/http.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'dart:developer';
+
+import 'package:letskhareedo/device_db/CartDB.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Sales extends StatefulWidget {
   @override
@@ -12,9 +19,16 @@ class Sales extends StatefulWidget {
 
 class _SalesState extends State<Sales> {
   String _dropDownMenuData = "32";
+  String type = "Pant";
+  String name = "Denim Cotton Pant";
+  String price = "1000";
+  String description = "Description";
+  String imageUrl = BASE_URL+"test.png";
+  int _numberOfItems = 0;
 
   @override
   Widget build(BuildContext context) {
+
     TextStyle lightTextStyle = TextStyle(color: kTextColor.withOpacity(0.6));
     log("base url is $BASE_URL"+"test.png");
     return Scaffold(
@@ -28,6 +42,16 @@ class _SalesState extends State<Sales> {
         child: saleProductDetail(lightTextStyle),
       ),
     );
+  }
+
+  Box<CartDataBase> dataBox;
+  CartDataBase cartDataBase;
+
+  @override
+  void initState(){
+    // initilizeHiveDb();
+    dataBox = Hive.box(DB_NAME);
+  super.initState();
   }
 
   OrientationBuilder saleProductDetail(TextStyle lightTextStyle) {
@@ -108,7 +132,8 @@ class _SalesState extends State<Sales> {
                           });
                         },
                         hintText: _dropDownMenuData,
-                      )
+                      ),
+
                     ],
                   ),
                 ),
@@ -151,7 +176,15 @@ class _SalesState extends State<Sales> {
                           child: SizedBox(
                             width: double.infinity,
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                 cartDataBase = CartDataBase(imageUrl: imageUrl,
+                                    name: name,
+                                    description: description,
+                                price: price, numberOfItems: _numberOfItems);
+                                await dataBox.add(cartDataBase);
+                                Navigator.pushNamed(context, '/AddToCartOrderView'
+                                );
+                              },
                               child: Text(
                                 "Add to Cart",
                                 style: TextStyle(
@@ -175,6 +208,42 @@ class _SalesState extends State<Sales> {
                   ),
                 ),
               ),
+              Positioned(
+                top: 55,
+                right: 80,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: kPrimaryColor,
+                    borderRadius: BorderRadius.circular(20.0)
+                  ),
+                  child: Row(
+                  children: [
+                    IconButton(icon: Icon(
+                        Icons.add
+                    ), onPressed: (){
+                      setState(() {
+                        _numberOfItems++;
+                      });
+                    },
+                      iconSize: 20,
+                    color: Colors.white,),
+                    Text("$_numberOfItems",
+                      style: TextStyle(
+                          fontSize: 20,
+                        color: Colors.white
+                      ),),
+                    IconButton(icon: Icon(
+                        Icons.remove
+                    ), onPressed: (){
+                      setState(() {
+                        if(_numberOfItems > 0)
+                        _numberOfItems--;
+                      });
+                    }, iconSize: 20,
+                    color: Colors.white,)
+                  ],
+              ),
+                ),),
               Positioned(
                   top: 95,
                   right: -50,

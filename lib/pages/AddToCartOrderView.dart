@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
-
+import 'package:letskhareedo/device_db/CartDB.dart';
 
 class OrderView extends StatefulWidget {
   @override
   _OrderViewState createState() => _OrderViewState();
 }
-
 
 int _numberOfItems = 1;
 
@@ -17,131 +17,159 @@ class _OrderViewState extends State<OrderView> {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(PREFERRED_SIZE),
-          child: CustomAppBar(s : "Cart")),
+          child: CustomAppBar(s: "Cart")),
       body: Center(
-            child: Column(
-              children: [
-                Text("Your Cart",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16
-                ),),
-                Text("4 items",
-                style: TextStyle(
-                  fontSize: 12,
-                  color: kTextColor.withOpacity(0.6)
-                ),),
-                SizedBox(height: 30.0,),
-                productSalesCard(),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Book Order",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor:
-                            MaterialStateProperty.all(kPrimaryColor),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(RADIUS))),
-                          ),
+        child: Column(
+
+          children: [
+            Text(
+              "Your Cart",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            Text(
+              "4 items",
+              style:
+                  TextStyle(fontSize: 12, color: kTextColor.withOpacity(0.6)),
+            ),
+            SizedBox(
+              height: 30.0,
+            ),
+            listOfProducts(),
+            Expanded(
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Book Order",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(kPrimaryColor),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(RADIUS))),
                         ),
                       ),
-                    )
-                  ),
-                )
-              ],
-            ),
-
+                    ),
+                  )),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget productSalesCard() {
-    double width = MediaQuery.of(context).size.width;
+  Widget listOfProducts() {
+    final list = box.values.toList();
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        print(list[index].price);
+        return productSalesCard(list[index]);
+      },
+    );
+  }
 
+  Widget productSalesCard(CartDataBase cartDataBase) {
+    double width = MediaQuery.of(context).size.width;
+    _numberOfItems = cartDataBase.numberOfItems;
     return Visibility(
       visible: _numberOfItems != 0,
       child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 80,
-                          child: AspectRatio(
-                            aspectRatio: 0.88,
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: kSecondaryColor,
-                                borderRadius: BorderRadius.circular(15)
-                              ),
-                              child: Image.network(BASE_URL+"test.png", fit: BoxFit.cover,),
-                            ),
-                          ),
-                        ),
-                           Padding(
-                            padding: const EdgeInsets.only(left:20.0, right: 5.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                   Text("Denim", style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),),
-                                Text("Description", style: TextStyle(
-                                  color: kTextColor.withOpacity(0.8)
-                                ),),
-                                Text("Rs 1000",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),)
-                              ],
-                            ),
-                          ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        margin: EdgeInsets.only(left: width -330),
-                        child: Row(
-                          children: [
-                            IconButton(icon: Icon(
-                                Icons.add
-                            ), onPressed: (){
-                              setState(() {
-                                _numberOfItems++;
-                              });
-                            },
-                            iconSize: 20,),
-                            Text("$_numberOfItems",
-                            style: TextStyle(
-                              fontSize: 20
-                            ),),
-                            IconButton(icon: Icon(
-                              Icons.remove
-                            ), onPressed: (){
-                             setState(() {
-                               _numberOfItems--;
-                             });
-                            })
-                          ],
-                        ),
-                      )
-                    ],
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 80,
+              child: AspectRatio(
+                aspectRatio: 0.88,
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: kSecondaryColor,
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Image.network(
+                    cartDataBase.imageUrl,
+                    fit: BoxFit.cover,
                   ),
                 ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 5.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    cartDataBase.name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    cartDataBase.description,
+                    style: TextStyle(color: kTextColor.withOpacity(0.8)),
+                  ),
+                  Text(
+                    "Rs ${cartDataBase.price}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      setState(() {
+                        _numberOfItems++;
+                      });
+                    },
+                    iconSize: 20,
+                  ),
+                  Text(
+                    "$_numberOfItems",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.remove),
+                      onPressed: () {
+                        setState(() {
+                          if (_numberOfItems > 0) _numberOfItems--;
+                        });
+                      })
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
+  }
+
+  Box<CartDataBase> box;
+
+  @override
+  void initState() {
+    box = Hive.box(DB_NAME);
+    super.initState();
   }
 }
