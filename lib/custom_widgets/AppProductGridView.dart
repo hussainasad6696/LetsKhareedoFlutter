@@ -25,7 +25,7 @@ class AppProductGrid extends StatelessWidget {
                 crossAxisSpacing: 20,
                 childAspectRatio: 0.693,
               ),
-              itemBuilder: (context, index) => AllProductsCard(url: url, activity: activity,)
+              itemBuilder: (context, index) => AllProductsCard(url: url, activity: activity, name: "Denim",)
           );
         },
       ),

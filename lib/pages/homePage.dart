@@ -2,18 +2,21 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/constants/size_config.dart';
 import 'package:letskhareedo/custom_widgets/CarouselSliderForWeb.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'package:letskhareedo/custom_widgets/CustomCardWidget.dart';
 import 'package:letskhareedo/custom_widgets/OptionMenuMobileAndWeb.dart';
+import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/Store.dart';
 import 'package:letskhareedo/pages/fisrtHomePage.dart';
 import 'package:letskhareedo/pages/kids.dart';
 import 'package:letskhareedo/pages/men.dart';
 import 'package:letskhareedo/pages/women.dart';
+import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,12 +24,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomeState extends State<HomePage> {
+  HiveMethods hiveMethods = HiveMethods();
+  checkForUuid() async {
+    bool check = await hiveMethods.userPreferenceUuidCheck();
+    if(check)
+      hiveMethods.userPreferencesUuid(Uuid().v4());
+  }
+
   @override
   void initState() {
     super.initState();
     heightOfImageSlider = kIsWeb ? 500.0 : 200.0;
     // webCheck = kIsWeb ? WEB : MOBILE;
     defaultSize = SizeConfig.defaultSize;
+    checkForUuid();
   }
   double defaultSize ;
   @override

@@ -10,6 +10,7 @@ import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'dart:developer';
 
 import 'package:letskhareedo/device_db/CartDB.dart';
+import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Sales extends StatefulWidget {
@@ -20,7 +21,7 @@ class Sales extends StatefulWidget {
 class _SalesState extends State<Sales> {
   String _dropDownMenuData = "32";
   String type = "Pant";
-  String name = "Denim Cotton Pant";
+  String name = "Denim  Pant";
   String price = "1000";
   String description = "Description";
   String imageUrl = BASE_URL+"test.png";
@@ -44,13 +45,10 @@ class _SalesState extends State<Sales> {
     );
   }
 
-  Box<CartDataBase> dataBox;
   CartDataBase cartDataBase;
 
   @override
   void initState(){
-    // initilizeHiveDb();
-    dataBox = Hive.box(DB_NAME);
   super.initState();
   }
 
@@ -177,11 +175,10 @@ class _SalesState extends State<Sales> {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () async {
-                                 cartDataBase = CartDataBase(imageUrl: imageUrl,
-                                    name: name,
-                                    description: description,
-                                price: price, numberOfItems: _numberOfItems);
-                                await dataBox.add(cartDataBase);
+                                 HiveMethods().addData(imageUrl,
+                                    name,
+                                    description,
+                                price, _numberOfItems);
                                 Navigator.pushNamed(context, '/AddToCartOrderView'
                                 );
                               },

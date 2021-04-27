@@ -18,7 +18,7 @@ class CartDataBase {
   @HiveField(3)
   final String price;
   @HiveField(4)
-  final int numberOfItems;
+   int numberOfItems;
 
   CartDataBase(
       {this.imageUrl,
@@ -26,5 +26,6 @@ class CartDataBase {
       this.description,
       this.price,
       this.numberOfItems});
+
 
 }

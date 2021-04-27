@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 import 'OptionMenuMobileAndWeb.dart';
 import 'package:letskhareedo/constants/constant.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatefulWidget {
   String s;
   CustomAppBar({this.s});
+
+  @override
+  _CustomAppBarState createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  int numberOfItems = 0;
+
+  listOfCartItems() async {
+    numberOfItems = await HiveMethods().numberOfProductsInCart();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +34,22 @@ class CustomAppBar extends StatelessWidget {
           print('letsKhareedo logo clicked'); //TODO logo click
         },
         child: Visibility(
-          visible: s != "Sales" && s != "Cart",
+          visible: widget.s != "Sales" && widget.s != "Cart",
           child: CircleAvatar(
             backgroundImage: AssetImage('assets/letskhareedoLogo.jpeg'),
           ),
         ),
       ),
       leading: Visibility(
-        visible: webCheck == MOBILE && s == "Sales" || s == "Cart" ? true : false,
+        visible: webCheck == MOBILE && widget.s == "Sales" || widget.s == "Cart" ? true : false,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(
             icon: SvgPicture.asset("assets/icons/back.svg"),
             onPressed: () {
-              Navigator.pop(context);
+              setState(() {
+                Navigator.pop(context);
+              });
             },
           ),
         ),
@@ -50,21 +64,45 @@ class CustomAppBar extends StatelessWidget {
         Flexible(
           flex: 1,
           child: Visibility(
-            visible: s == "Sales" || s == "homePage",
+            visible: widget.s == "Sales" || widget.s == "homePage",
             child: Padding(
               padding: EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
-              child: IconButton(
-                icon: SvgPicture.asset("assets/icons/bag.svg"),
-                onPressed: () {
-                  Navigator.pushNamed(context, "/AddToCartOrderView");
-                },
-                color: Colors.grey[800],
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: SvgPicture.asset("assets/icons/bag.svg"),
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/AddToCartOrderView");
+                    },
+                    color: Colors.grey[800],
+                  ),
+                  // Positioned(
+                  //     right: 10,
+                  //     top: 25,
+                  //     child: Container(
+                  //       padding: EdgeInsets.all(2),
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.red,
+                  //         borderRadius: BorderRadius.circular(6)
+                  //       ),
+                  //       constraints: BoxConstraints(
+                  //         minHeight: 12,
+                  //         minWidth: 12
+                  //       ),
+                  //       child: Text(
+                  //         "$numberOfItems",
+                  //         style: TextStyle(
+                  //           fontSize: 12
+                  //         ),
+                  //       ),
+                  // ))
+                ],
               ),
             ),
           ),
         ),
         Visibility(
-            visible: s == "Sales" || s == "Cart" ? true : false,
+            visible: widget.s == "Sales" || widget.s == "Cart" ? true : false,
             child: SizedBox(width: 10.0,))
       ],
     );

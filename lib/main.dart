@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/AddToCartOrderView.dart';
 import 'package:letskhareedo/pages/SalesPage.dart';
@@ -22,10 +23,7 @@ import 'device_db/CartDB.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Directory document = await getApplicationDocumentsDirectory();
-  Hive.init(document.path);
-  Hive.registerAdapter(CartDataBaseAdapter());
-  await Hive.openBox<CartDataBase>(DB_NAME);
+  HiveMethods().init();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(

@@ -5,9 +5,10 @@ class AllProductsCard extends StatelessWidget {
 
   final String url;
   final String activity;
+  final String name;
   const AllProductsCard({
     Key key, this.url,
-    this.activity
+    this.activity, this.name
   }) : super(key: key);
 
   @override
@@ -34,7 +35,7 @@ class AllProductsCard extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text("Demo",style: TextStyle(
+              child: Text(name, style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),),
             ),

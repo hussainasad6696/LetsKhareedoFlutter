@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'package:letskhareedo/device_db/CartDB.dart';
+import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 
 class OrderView extends StatefulWidget {
   @override
@@ -12,6 +13,8 @@ class OrderView extends StatefulWidget {
 int _numberOfItems = 1;
 
 class _OrderViewState extends State<OrderView> {
+  HiveMethods hiveMethods = HiveMethods();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +37,9 @@ class _OrderViewState extends State<OrderView> {
             SizedBox(
               height: 30.0,
             ),
-            listOfProducts(),
+            Flexible(
+              flex: 7,
+                child: listOfProducts()),
             Expanded(
               child: Align(
                   alignment: Alignment.bottomCenter,
@@ -43,7 +48,11 @@ class _OrderViewState extends State<OrderView> {
                     child: SizedBox(
                       width: double.infinity,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            hiveMethods.deleteAll(DB_NAME);
+                          });
+                        },
                         child: Text(
                           "Book Order",
                           style: TextStyle(
@@ -69,20 +78,29 @@ class _OrderViewState extends State<OrderView> {
   }
 
   Widget listOfProducts() {
-    final list = box.values.toList();
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      itemCount: list.length,
-      itemBuilder: (context, index) {
-        print(list[index].price);
-        return productSalesCard(list[index]);
-      },
-    );
+      // Future<List<CartDataBase>> list = HiveMethods().getMeAllTheData();
+      return FutureBuilder(
+        future: hiveMethods.getMeAllTheData(),
+        builder: (context, snapShot){
+          if(snapShot.hasData) {
+            return ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: snapShot.data.length,
+              itemBuilder: (context, index) {
+                return productSalesCard(snapShot.data[index], index);
+              },
+
+            );
+          }else {
+            return CircularProgressIndicator();
+          }
+        },
+      );
   }
 
-  Widget productSalesCard(CartDataBase cartDataBase) {
-    double width = MediaQuery.of(context).size.width;
+
+  Widget productSalesCard(CartDataBase cartDataBase, int index) {
     _numberOfItems = cartDataBase.numberOfItems;
     return Visibility(
       visible: _numberOfItems != 0,
@@ -119,6 +137,10 @@ class _OrderViewState extends State<OrderView> {
                     ),
                   ),
                   Text(
+                    "${cartDataBase.numberOfItems}",
+                    style: TextStyle(color: kTextColor.withOpacity(0.8)),
+                  ),
+                  Text(
                     cartDataBase.description,
                     style: TextStyle(color: kTextColor.withOpacity(0.8)),
                   ),
@@ -133,43 +155,63 @@ class _OrderViewState extends State<OrderView> {
               ),
             ),
             Container(
-              alignment: Alignment.centerRight,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: () {
-                      setState(() {
-                        _numberOfItems++;
-                      });
-                    },
-                    iconSize: 20,
-                  ),
-                  Text(
-                    "$_numberOfItems",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.remove),
-                      onPressed: () {
-                        setState(() {
-                          if (_numberOfItems > 0) _numberOfItems--;
-                        });
-                      })
-                ],
+              margin: EdgeInsets.only(left: 20.0),
+              child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(kPrimaryColor),
+                    shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(RADIUS))),
+                   ),
+                  onPressed: (){
+                    setState(() {
+                      hiveMethods.deleteFromList(index);
+                    });
+                  }, child: Icon(
+                Icons.delete
+              )
               ),
-            )
+            ),
+            // Container(
+            //   alignment: Alignment.centerRight,
+            //   child: Row(
+            //     children: [
+            //       IconButton(
+            //         icon: Icon(Icons.add),
+            //         onPressed: () {
+            //           setState(() {
+            //             _numberOfItems += 1;
+            //             hiveMethods.updateData(index, _numberOfItems);
+            //           });
+            //         },
+            //         iconSize: 20,
+            //       ),
+            //       Text(
+            //         "$_numberOfItems",
+            //         style: TextStyle(fontSize: 20),
+            //       ),
+            //       IconButton(
+            //           icon: Icon(Icons.remove),
+            //           onPressed: () {
+            //             setState(() {
+            //               if (_numberOfItems > 0) {
+            //                 _numberOfItems -= 1;
+            //                 hiveMethods.updateData(index, _numberOfItems);
+            //               }
+            //             });
+            //           })
+            //     ],
+            //   ),
+            // )
           ],
         ),
       ),
     );
   }
 
-  Box<CartDataBase> box;
-
   @override
   void initState() {
-    box = Hive.box(DB_NAME);
     super.initState();
+
   }
 }
