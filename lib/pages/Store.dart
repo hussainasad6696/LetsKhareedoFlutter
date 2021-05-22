@@ -13,7 +13,7 @@ class _StoreState extends State<Store> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
-      body: AppProductGrid(url: "/store", activity: "Store",)
+      body: AppProductGrid(url: PRODUCTS_ADDRESS_STORE, activity: "Store", )
     );
   }
 }

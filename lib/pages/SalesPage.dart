@@ -1,17 +1,12 @@
-import 'dart:io';
 
 import 'package:circulardropdownmenu/circulardropdownmenu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
-import 'package:http/http.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'dart:developer';
 
 import 'package:letskhareedo/device_db/CartDB.dart';
 import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
-import 'package:path_provider/path_provider.dart';
 
 class Sales extends StatefulWidget {
   @override
@@ -19,19 +14,26 @@ class Sales extends StatefulWidget {
 }
 
 class _SalesState extends State<Sales> {
-  String _dropDownMenuData = "32";
+
   String type = "Pant";
   String name = "Denim  Pant";
   String price = "1000";
   String description = "Description";
-  String imageUrl = BASE_URL+"test.png";
+  String imageUrl = BASE_URL_HTTP+"test.png";
   int _numberOfItems = 0;
+  String _dropDownMenuData = "32";
+
+  Map selectedProductToBuy = {};
 
   @override
   Widget build(BuildContext context) {
 
+    selectedProductToBuy = selectedProductToBuy.isNotEmpty ? selectedProductToBuy : ModalRoute.of(context).settings.arguments;
+    Map product = selectedProductToBuy['product'];
+    print("SalesPage Product data: $product");
+
     TextStyle lightTextStyle = TextStyle(color: kTextColor.withOpacity(0.6));
-    log("base url is $BASE_URL"+"test.png");
+    log("base url is $BASE_URL_HTTP"+"test.png");
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
       appBar: PreferredSize(
@@ -247,7 +249,7 @@ class _SalesState extends State<Sales> {
                   child: Hero(
                     tag: "123",
                     child: Image.network(
-                      BASE_URL + "test.png",
+                      BASE_URL_HTTP + "test.png",
                       // "https://raw.githubusercontent.com/abuanwar072/furniture_app_flutter/master/assets/images/Item_1.png",
                       height: 378,
                       width: 364,

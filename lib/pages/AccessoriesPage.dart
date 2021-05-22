@@ -13,7 +13,7 @@ class _AccessoriesState extends State<Accessories> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
-      body: AppProductGrid(url: "/accessories", activity: "Accessories",),
+      body: AppProductGrid(url: PRODUCTS_ADDRESS_ACCESSORIES, activity: "Accessories",),
     );
   }
 }

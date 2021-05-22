@@ -37,7 +37,7 @@ class _CarouselSliderWebState extends State<CarouselSliderWeb> {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image.network(
-                    BASE_URL+"${links[i]}",
+                    BASE_URL_HTTP+"${links[i]}",
                     fit: BoxFit.fill,
                   )),
             ),

@@ -12,7 +12,7 @@ class _WomenPageState extends State<WomenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
-      body: AppProductGrid(url: "/women", activity: "WomenPage",),
+      body: AppProductGrid(url: PRODUCTS_ADDRESS_FEMALE_KIDS, activity: "WomenPage",),
     );
   }
 }

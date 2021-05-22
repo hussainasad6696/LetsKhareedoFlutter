@@ -140,7 +140,7 @@ class CardWidget extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(RADIUS),
                       child: Image(
-                        image: NetworkImage("$BASE_URL"+image),
+                        image: NetworkImage("$BASE_URL_HTTP"+image),
                         fit: BoxFit.fill,
                       ),
                     ),

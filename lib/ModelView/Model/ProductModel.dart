@@ -1,4 +1,3 @@
-
 class Products {
   final String uuid;
   final String imagePath;
@@ -7,58 +6,61 @@ class Products {
   final String description;
   final String material;
   final String brand;
-  final Type type;
-
-  Products({this.type,this.uuid,this.price,this.description,this.imagePath,this.brand,this.material,
-  this.quantity});
-
-  factory Products.fromJson(Map<String,dynamic> json){
-    return Products(
-      price: json["price"],
-      description: json["description"],
-      imagePath: json["image_path"],
-      brand: json["brand"],
-      material: json["material"],
-      quantity: json["quantity"],
-      type: Type.fromJson(json['type']),
-      uuid: json["uuid"]
-    );
-  }
-}
-
-class Type {
-  final Pant pant;
-  final Shirt shirt;
-  Type({this.pant,this.shirt});
-
-  factory Type.fromJson(Map<String,dynamic> json){
-    return Type(
-      shirt: Shirt.fromJson(json['shirt']),
-      pant: Pant.fromJson(json['pant'])
-    );
-  }
-
-}
-
-class Pant{
-  final String waist;
-  Pant({this.waist});
-
-  factory Pant.fromJson(Map<String, dynamic> json){
-    return Pant(
-      waist: json["waist"]
-    );
-  }
-}
-
-class Shirt{
+  final String type;
   final String size;
-  Shirt({this.size});
+  final String gender;
+  final bool kids;
+  final bool hotOrNot;
+  final String name;
 
-  factory Shirt.fromJson(Map<String, dynamic> json){
-    return Shirt(
-      size: json["size"]
+  Products(
+      {this.type,
+      this.uuid,
+      this.price,
+      this.description,
+      this.imagePath,
+      this.brand,
+      this.material,
+      this.quantity,
+      this.size,
+      this.gender,
+      this.kids,
+      this.hotOrNot,
+      this.name});
+
+  factory Products.fromJson(Map<String, dynamic> json) {
+    return Products(
+        price: json["price"],
+        description: json["description"],
+        imagePath: json["image_path"],
+        brand: json["brand"],
+        material: json["material"],
+        quantity: json["quantity"],
+        type: json["type"],
+        uuid: json["_id"],
+        size: json["size"],
+        gender: json["gender"],
+        kids: json["kids"],
+        hotOrNot: json["hotOrNot"],
+        name: json["name"]
     );
   }
 
+  Map<String,dynamic> toJson(){
+    return {
+      "price" : price,
+      "description" : description,
+      "image_path" : imagePath,
+      "brand" : brand,
+      "material" : material,
+      "quantity" : quantity,
+      "type" : type,
+      "uuid" : uuid,
+      "size" : size,
+      "gender" : gender,
+      "ageGroup" : kids,
+      "hotOrNot" : hotOrNot,
+      "name" : name
+    };
+  }
 }

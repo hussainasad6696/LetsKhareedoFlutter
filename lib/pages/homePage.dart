@@ -2,13 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/constants/size_config.dart';
-import 'package:letskhareedo/custom_widgets/CarouselSliderForWeb.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'package:letskhareedo/custom_widgets/CustomCardWidget.dart';
-import 'package:letskhareedo/custom_widgets/OptionMenuMobileAndWeb.dart';
 import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/Store.dart';
@@ -172,7 +169,7 @@ class _HomeState extends State<HomePage> {
                       child: Image(
                         // image: AssetImage(
                         //     'assets/letskhareedoLogo.jpeg'),
-                        image: NetworkImage("$BASE_URL"+links[i - 1]),
+                        image: NetworkImage("$BASE_URL_HTTP"+links[i - 1]),
                         fit: BoxFit.fill,
                       ),
                     )));
