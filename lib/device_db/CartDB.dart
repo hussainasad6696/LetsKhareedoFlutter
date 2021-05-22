@@ -1,9 +1,5 @@
-import 'dart:io';
 
 import 'package:hive/hive.dart';
-import 'package:http/http.dart';
-import 'package:letskhareedo/constants/constant.dart';
-import 'package:path_provider/path_provider.dart';
 
 part 'CartDB.g.dart';
 

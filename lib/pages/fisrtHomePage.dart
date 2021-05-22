@@ -1,9 +1,6 @@
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:letskhareedo/constants/constant.dart';
-import 'package:letskhareedo/constants/size_config.dart';
-import 'package:letskhareedo/custom_widgets/CarouselSliderForWeb.dart';
 import 'package:letskhareedo/custom_widgets/CustomCardWidget.dart';
 import 'package:letskhareedo/custom_widgets/ProductCardView.dart';
 
