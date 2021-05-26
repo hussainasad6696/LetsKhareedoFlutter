@@ -89,10 +89,9 @@ class _OrderViewState extends State<OrderView> {
               itemBuilder: (context, index) {
                 return productSalesCard(snapShot.data[index], index);
               },
-
             );
           }else {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
         },
       );
@@ -117,7 +116,7 @@ class _OrderViewState extends State<OrderView> {
                       color: kSecondaryColor,
                       borderRadius: BorderRadius.circular(15)),
                   child: Image.network(
-                    cartDataBase.imageUrl,
+                    BASE_URL_HTTP_WITH_ADDRESS+PRODUCT_IMAGE_ADDRESS+cartDataBase.imageUrl,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -171,37 +170,6 @@ class _OrderViewState extends State<OrderView> {
               )
               ),
             ),
-            // Container(
-            //   alignment: Alignment.centerRight,
-            //   child: Row(
-            //     children: [
-            //       IconButton(
-            //         icon: Icon(Icons.add),
-            //         onPressed: () {
-            //           setState(() {
-            //             _numberOfItems += 1;
-            //             hiveMethods.updateData(index, _numberOfItems);
-            //           });
-            //         },
-            //         iconSize: 20,
-            //       ),
-            //       Text(
-            //         "$_numberOfItems",
-            //         style: TextStyle(fontSize: 20),
-            //       ),
-            //       IconButton(
-            //           icon: Icon(Icons.remove),
-            //           onPressed: () {
-            //             setState(() {
-            //               if (_numberOfItems > 0) {
-            //                 _numberOfItems -= 1;
-            //                 hiveMethods.updateData(index, _numberOfItems);
-            //               }
-            //             });
-            //           })
-            //     ],
-            //   ),
-            // )
           ],
         ),
       ),

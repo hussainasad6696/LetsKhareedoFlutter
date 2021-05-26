@@ -11,16 +11,18 @@ const String WEB_CHECK = kIsWeb ? WEB : MOBILE;
 
 
 
-const String BASE_IP = "192.168.0.106";
-const String BASE_URL_HTTPS = "https://"+BASE_IP+":8080";
-const String BASE_URL_HTTP = "http://"+BASE_IP+":8000";
+const String BASE_IP = "10.0.2.2";
+const String BASE_URL_HTTPS = BASE_IP+":8080";
+const String BASE_URL_HTTP = BASE_IP+":8000";
+const String BASE_URL_HTTP_WITH_ADDRESS = "http://"+BASE_IP+":8000";
+const String BASE_URL_HTTP_WITH_ADDRESS_IMAGE = "http://127.0.0.1:8000";
 const String PRODUCTS_ADDRESS_MALE = "/products/male";
 const String PRODUCTS_ADDRESS_FEMALE = "/products/female";
 const String PRODUCTS_ADDRESS_MALE_KIDS = "/products/male/kids";
 const String PRODUCTS_ADDRESS_FEMALE_KIDS = "/products/female/kids";
 const String PRODUCTS_ADDRESS_ACCESSORIES = "/products/accessories";
 const String PRODUCTS_ADDRESS_STORE = "/products/store";
-const String PRODUCT_IMAGE_ADDRESS = "/product/images/?id=";
+const String PRODUCT_IMAGE_ADDRESS = "/products/images/?id=";
 
 
 

@@ -1,6 +1,7 @@
 
 import 'package:circulardropdownmenu/circulardropdownmenu.dart';
 import 'package:flutter/material.dart';
+import 'package:letskhareedo/ModelView/Model/ProductModel.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'dart:developer';
@@ -15,11 +16,6 @@ class Sales extends StatefulWidget {
 
 class _SalesState extends State<Sales> {
 
-  String type = "Pant";
-  String name = "Denim  Pant";
-  String price = "1000";
-  String description = "Description";
-  String imageUrl = BASE_URL_HTTP+"test.png";
   int _numberOfItems = 0;
   String _dropDownMenuData = "32";
 
@@ -29,11 +25,8 @@ class _SalesState extends State<Sales> {
   Widget build(BuildContext context) {
 
     selectedProductToBuy = selectedProductToBuy.isNotEmpty ? selectedProductToBuy : ModalRoute.of(context).settings.arguments;
-    Map product = selectedProductToBuy['product'];
-    print("SalesPage Product data: $product");
-
+    Products products = Products.fromJson(selectedProductToBuy);
     TextStyle lightTextStyle = TextStyle(color: kTextColor.withOpacity(0.6));
-    log("base url is $BASE_URL_HTTP"+"test.png");
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
       appBar: PreferredSize(
@@ -42,7 +35,7 @@ class _SalesState extends State<Sales> {
             s: "Sales",
           )),
       body: SingleChildScrollView(
-        child: saleProductDetail(lightTextStyle),
+        child: saleProductDetail(lightTextStyle, products),
       ),
     );
   }
@@ -54,7 +47,7 @@ class _SalesState extends State<Sales> {
   super.initState();
   }
 
-  OrientationBuilder saleProductDetail(TextStyle lightTextStyle) {
+  OrientationBuilder saleProductDetail(TextStyle lightTextStyle, Products products) {
     return OrientationBuilder(builder: (context, orientation) {
         return SizedBox(
           width: double.infinity,
@@ -74,14 +67,14 @@ class _SalesState extends State<Sales> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Pant".toUpperCase(),
+                        products.type.toUpperCase(),
                         style: lightTextStyle,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
-                        "Denim Cotton Pant",
+                        products.name,
                         style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -96,7 +89,7 @@ class _SalesState extends State<Sales> {
                         style: lightTextStyle,
                       ),
                       Text(
-                        "Rs 1000",
+                        "Rs ${products.price}",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -156,7 +149,7 @@ class _SalesState extends State<Sales> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Denim Cotton Pant",
+                          products.name,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -164,7 +157,7 @@ class _SalesState extends State<Sales> {
                           height: 30,
                         ),
                         Text(
-                          "Description Description Description Description Description",
+                          products.description,
                           style: TextStyle(
                               color: kTextColor.withOpacity(0.7), height: 1.5),
                         ),
@@ -177,10 +170,10 @@ class _SalesState extends State<Sales> {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () async {
-                                 HiveMethods().addData(imageUrl,
-                                    name,
-                                    description,
-                                price, _numberOfItems);
+                                 HiveMethods().addData(products.imagePath,
+                                    products.name,
+                                    products.description,
+                                products.price, _numberOfItems);
                                 Navigator.pushNamed(context, '/AddToCartOrderView'
                                 );
                               },
@@ -249,8 +242,7 @@ class _SalesState extends State<Sales> {
                   child: Hero(
                     tag: "123",
                     child: Image.network(
-                      BASE_URL_HTTP + "test.png",
-                      // "https://raw.githubusercontent.com/abuanwar072/furniture_app_flutter/master/assets/images/Item_1.png",
+                      BASE_URL_HTTP_WITH_ADDRESS+PRODUCT_IMAGE_ADDRESS + products.imagePath,
                       height: 378,
                       width: 364,
                       fit: BoxFit.cover,

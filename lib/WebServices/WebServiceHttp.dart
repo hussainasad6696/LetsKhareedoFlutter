@@ -14,11 +14,14 @@ class WebService{
       Future<dynamic> getJson(String url) async {
         dynamic responseJson;
         try{
-          print("$BASE_URL_HTTPS$url webService");
-          final response = await get(Uri.http(BASE_URL_HTTPS, url));
+          print("$BASE_URL_HTTP$url webService");
+          final response = await get(Uri.http(BASE_URL_HTTP, url));
+          print("got json $response");
           responseJson = returnResponse(response);
         }on SocketException{
-          throw FetchDataException("No Internet connection");
+          throw FetchDataException(" No Internet connection");
+        }catch(e){
+          print("WebService error: $e");
         }
         return responseJson;
       }

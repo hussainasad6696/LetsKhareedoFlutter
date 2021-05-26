@@ -9,7 +9,7 @@ class Products {
   final String type;
   final String size;
   final String gender;
-  final bool kids;
+  final String kids;
   final bool hotOrNot;
   final String name;
 
@@ -32,7 +32,7 @@ class Products {
     return Products(
         price: json["price"],
         description: json["description"],
-        imagePath: json["image_path"],
+        imagePath: json["imagePath"],
         brand: json["brand"],
         material: json["material"],
         quantity: json["quantity"],
@@ -50,7 +50,7 @@ class Products {
     return {
       "price" : price,
       "description" : description,
-      "image_path" : imagePath,
+      "imagePath" : imagePath,
       "brand" : brand,
       "material" : material,
       "quantity" : quantity,

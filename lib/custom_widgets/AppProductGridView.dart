@@ -10,17 +10,17 @@ class AppProductGrid extends StatelessWidget {
   final String url;
   final String activity;
 
-  const AppProductGrid({
-    Key key, this.url , this.activity
-  }) : super(key: key);
+  const AppProductGrid({Key key, this.url, this.activity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ApiResponse apiResponse = Provider.of<ProductListViewModel>(context).response;
+    ApiResponse apiResponse =
+        Provider.of<ProductListViewModel>(context).response;
 
-    if(url.isNotEmpty){
-      Provider.of<ProductListViewModel>(context, listen: false).setSelectedProducts(null);
-      Provider.of<ProductListViewModel>(context, listen: false).fetchProducts(url);
+    if (url.isNotEmpty) {
+      // Provider.of<ProductListViewModel>(context, listen: false).setSelectedProducts(null);
+      Provider.of<ProductListViewModel>(context, listen: false)
+          .fetchProducts(url);
     }
 
     return Padding(
@@ -28,12 +28,15 @@ class AppProductGrid extends StatelessWidget {
       child: getProductWidget(context, apiResponse),
     );
   }
-  Widget getProductWidget(BuildContext context, ApiResponse apiResponse){
+
+  Widget getProductWidget(BuildContext context, ApiResponse apiResponse) {
     List<Products> productList = apiResponse.data as List<Products>;
-    switch(apiResponse.status){
+    print("$productList==========productlist");
+    switch (apiResponse.status) {
+      // case Status.LOADED:
       case Status.COMPLETED:
         return OrientationBuilder(
-          builder: (context, orientation){
+          builder: (context, orientation) {
             return GridView.builder(
                 itemCount: productList.length,
                 shrinkWrap: true,
@@ -43,11 +46,13 @@ class AppProductGrid extends StatelessWidget {
                   crossAxisSpacing: 20,
                   childAspectRatio: 0.693,
                 ),
-                itemBuilder: (context, index) => AllProductsCard(activity: activity, products: productList[index],)
-            );
+                itemBuilder: (context, index) => AllProductsCard(
+                      activity: activity,
+                      products: productList[index],
+                    ));
           },
         );
-
+        break;
       case Status.LOADING:
         return Center(child: CircularProgressIndicator());
         break;
@@ -57,8 +62,8 @@ class AppProductGrid extends StatelessWidget {
         );
         break;
       case Status.INITIAL:
-      default:
-        return Center(child: Text("Loading"));
+        return Center(child: Text("Loading..."));
+        break;
     }
   }
 }
