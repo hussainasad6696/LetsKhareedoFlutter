@@ -6,7 +6,7 @@ import 'Model/ProductModel.dart';
 
 class ProductListViewModel with ChangeNotifier {
   ApiResponse _apiResponse = ApiResponse.initial('Empty data');
-
+  WebRepo _webRepo = WebRepo();
   Products _products;
 
   ApiResponse get response {
@@ -19,11 +19,11 @@ class ProductListViewModel with ChangeNotifier {
 
   Future<void> fetchProducts(String val) async {
     // markAsLoading();
+    _apiResponse = ApiResponse.loading('Fetching product data');
     try {
-      List<Products> products = await WebRepo().fetchProductList(val);
+      List<Products> products = await _webRepo.fetchProductList(val);
       print("${products.length} =============viewModel");
       _apiResponse = ApiResponse.completed(products);
-      // _apiResponse = ApiResponse.loaded("Data Loaded");
     } catch (e) {
       _apiResponse = ApiResponse.error(e.toString());
       print("productViewModel: " + e.toString());
@@ -31,13 +31,24 @@ class ProductListViewModel with ChangeNotifier {
       notifyListeners();
   }
 
+  Future<void> fetchSliderImage(String url) async {
+    _apiResponse = ApiResponse.loading("Fetching product data");
+    try{
+      List<String> images = await _webRepo.fetchPresentationImageList(url);
+      _apiResponse = ApiResponse.completed(images);
+    }catch (e){
+      _apiResponse = ApiResponse.error(e.toString());
+    }
+    notifyListeners();
+  }
+
   void setSelectedProducts(Products products) {
     _products = products;
     notifyListeners();
   }
 
-  void markAsLoading() {
-    _apiResponse = ApiResponse.loading('Fetching product data');
-    notifyListeners();
-  }
+  // void markAsLoading() {
+  //   _apiResponse = ApiResponse.loading('Fetching product data');
+  //   notifyListeners();
+  // }
 }

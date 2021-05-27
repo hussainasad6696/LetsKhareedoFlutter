@@ -23,7 +23,8 @@ const String PRODUCTS_ADDRESS_FEMALE_KIDS = "/products/female/kids";
 const String PRODUCTS_ADDRESS_ACCESSORIES = "/products/accessories";
 const String PRODUCTS_ADDRESS_STORE = "/products/store";
 const String PRODUCT_IMAGE_ADDRESS = "/products/images/?id=";
-
+const String SLIDER_IMAGE_ADDRESS = "/databaseEntryForm/slider-images";
+const String SLIDER_IMAGE_SETTER_ADDRESS = "/products/sliderImages/?id=";
 
 
 const String DB_NAME = "CartDB";

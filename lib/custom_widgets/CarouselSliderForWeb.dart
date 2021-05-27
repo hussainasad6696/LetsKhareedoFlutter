@@ -1,7 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:letskhareedo/ModelView/ProductListViewModel.dart';
+import 'package:letskhareedo/WebServices/apis/api_response.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:provider/provider.dart';
 
 class CarouselSliderWeb extends StatefulWidget {
   @override
@@ -10,14 +13,13 @@ class CarouselSliderWeb extends StatefulWidget {
 
 class _CarouselSliderWebState extends State<CarouselSliderWeb> {
 
-  static List<String> links = [
-    'azizi.jpg',
-    'demo1.jpeg',
-    'demo2.jpeg'
-  ];
+
 
   @override
   Widget build(BuildContext context) {
+    ApiResponse apiResponse = Provider.of<ProductListViewModel>(context).response;
+    Provider.of<ProductListViewModel>(context, listen: false).fetchSliderImage(SLIDER_IMAGE_ADDRESS);
+    List<String> imagesName = apiResponse.data as List<String>;
     return CarouselSlider(
       options: CarouselOptions(
           autoPlayAnimationDuration: Duration(milliseconds: 800),
@@ -37,7 +39,7 @@ class _CarouselSliderWebState extends State<CarouselSliderWeb> {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image.network(
-                    BASE_URL_HTTP+"${links[i]}",
+                    BASE_URL_HTTP+SLIDER_IMAGE_SETTER_ADDRESS+imagesName[i],
                     fit: BoxFit.fill,
                   )),
             ),
