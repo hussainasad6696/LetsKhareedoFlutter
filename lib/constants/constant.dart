@@ -25,6 +25,9 @@ const String PRODUCTS_ADDRESS_STORE = "/products/store";
 const String PRODUCT_IMAGE_ADDRESS = "/products/images/?id=";
 const String SLIDER_IMAGE_ADDRESS = "/databaseEntryForm/slider-images";
 const String SLIDER_IMAGE_SETTER_ADDRESS = "/products/sliderImages/?id=";
+const String ADVERTISEMENT_IMAGES_ADDRESS = "/databaseEntryForm/advertisement";
+const String ADVERTISEMENT_IMAGES_SETTER_ADDRESS = "/products/advertImages/?id=";
+const String PRODUCT_HOT_OR_NOT = "/products/hotOrNot";
 
 
 const String DB_NAME = "CartDB";

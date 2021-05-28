@@ -36,11 +36,13 @@ class ProductListViewModel with ChangeNotifier {
     try{
       List<String> images = await _webRepo.fetchPresentationImageList(url);
       _apiResponse = ApiResponse.completed(images);
+      print("$images fetchSliderImages are here++++++++++===========");
     }catch (e){
       _apiResponse = ApiResponse.error(e.toString());
     }
     notifyListeners();
   }
+
 
   void setSelectedProducts(Products products) {
     _products = products;

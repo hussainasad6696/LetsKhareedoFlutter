@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:letskhareedo/ModelView/Model/ProductModel.dart';
 import 'package:letskhareedo/constants/constant.dart';
 
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({
+  final Products hotProducts;
+  const ProductCard(this.hotProducts, {
     Key key,
   }) : super(key: key);
 
@@ -14,7 +16,7 @@ class ProductCard extends StatelessWidget {
       child: SizedBox(
         width: 205,
         child: AspectRatio(
-          aspectRatio: 0.83,
+          aspectRatio: 1.83,
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: <Widget>[
@@ -27,12 +29,12 @@ class ProductCard extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Text('Demo',
+                        Text(hotProducts.name,
                           style: TextStyle(
                               color: Colors.black
                           ),),
                         SizedBox(height: 5,),
-                        Text('100+ Products',
+                        Text('${hotProducts.quantity}+ Products',
                           style: TextStyle(
                               color: kTextColor.withOpacity(0.6)
                           ),)
@@ -42,15 +44,15 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
               Positioned(
-                  top: 0,
                   left: 0,
                   right: 0,
+                  bottom: 50,
                   child: AspectRatio(
                     aspectRatio: 1.15,
                     child: FadeInImage.assetNetwork(placeholder: "assets/icons/spinner.gif",
-                        image: BASE_URL_HTTP+"test.png"),
+                        image: BASE_URL_HTTP_WITH_ADDRESS+PRODUCT_IMAGE_ADDRESS +hotProducts.imagePath),
                         // image: "https://raw.githubusercontent.com/abuanwar072/furniture_app_flutter/master/assets/images/Item_2.png"),
-                  )
+                    )
               ),
             ],
           ),

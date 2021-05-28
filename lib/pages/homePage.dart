@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/foundation.dart';
+import 'package:letskhareedo/ModelView/ProductListViewModel.dart';
+import 'package:letskhareedo/WebServices/apis/api_response.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/constants/size_config.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
@@ -13,6 +15,7 @@ import 'package:letskhareedo/pages/fisrtHomePage.dart';
 import 'package:letskhareedo/pages/kids.dart';
 import 'package:letskhareedo/pages/men.dart';
 import 'package:letskhareedo/pages/women.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,7 +30,6 @@ class _HomeState extends State<HomePage> {
     if(check)
       hiveMethods.userPreferencesUuid(Uuid().v4());
   }
-
   @override
   void initState() {
     super.initState();
@@ -35,6 +37,7 @@ class _HomeState extends State<HomePage> {
     // webCheck = kIsWeb ? WEB : MOBILE;
     defaultSize = SizeConfig.defaultSize;
     checkForUuid();
+
   }
   double defaultSize ;
   @override
@@ -61,6 +64,14 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(child: Text("Hussain")),
+            ListTile(title: Text("Add Account"),)
+          ],
+        ),
+      ),
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(PREFERRED_SIZE),
@@ -197,21 +208,23 @@ class _HomeState extends State<HomePage> {
         ],
       );
     } else {
-      return Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(bottom: 20.0),
-            child: CardWidget(
-              300.0,
-              onCountChanged: (index){
-              //TODO
-              print('$index');
-            },
-            onCardClicked: (){
-              print('Call back selected');
-            },),
-          )
-        ],
+      return SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(bottom: 20.0),
+              child: CardWidget(
+                300.0,
+                onCountChanged: (index){
+                //TODO
+                print('$index');
+              },
+              onCardClicked: (){
+                print('Call back selected');
+              },),
+            )
+          ],
+        ),
       );
     }
       // return CarouselSliderWeb();

@@ -29,7 +29,6 @@ class WebRepo {
 
   Future<List<Products>> fetchProductList(String value) async{
     internetConnectionCheck();
-    fetchPresentationImageList("");
     dynamic response = await _webService.getJson(value);
     print("response: $response");
     final jsonData = response as List;
