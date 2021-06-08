@@ -47,11 +47,11 @@ class ProductCard extends StatelessWidget {
                   left: 0,
                   right: 0,
                   bottom: 50,
+                  top: -15,
                   child: AspectRatio(
                     aspectRatio: 1.15,
                     child: FadeInImage.assetNetwork(placeholder: "assets/icons/spinner.gif",
                         image: BASE_URL_HTTP_WITH_ADDRESS+PRODUCT_IMAGE_ADDRESS +hotProducts.imagePath),
-                        // image: "https://raw.githubusercontent.com/abuanwar072/furniture_app_flutter/master/assets/images/Item_2.png"),
                     )
               ),
             ],

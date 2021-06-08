@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 const kDefaultPadding = 15.0;
 const String WEB = 'web';
 const String MOBILE = 'mobile';
-const double PREFERRED_SIZE = 50;
+const double PREFERRED_SIZE = 40;
 const double ADD_CARD_PADDING = 5.0;
 const double RADIUS = 20.0;
 const String WEB_CHECK = kIsWeb ? WEB : MOBILE;
 
 
 
-const String BASE_IP = "10.0.2.2";
+const String BASE_IP = "192.168.0.111";
+// const String BASE_IP = "10.0.2.2";
 const String BASE_URL_HTTPS = BASE_IP+":8080";
 const String BASE_URL_HTTP = BASE_IP+":8000";
 const String BASE_URL_HTTP_WITH_ADDRESS = "http://"+BASE_IP+":8000";
@@ -28,6 +29,11 @@ const String SLIDER_IMAGE_SETTER_ADDRESS = "/products/sliderImages/?id=";
 const String ADVERTISEMENT_IMAGES_ADDRESS = "/databaseEntryForm/advertisement";
 const String ADVERTISEMENT_IMAGES_SETTER_ADDRESS = "/products/advertImages/?id=";
 const String PRODUCT_HOT_OR_NOT = "/products/hotOrNot";
+const String SHAREDPREFERENCE_USERNAME_KEY = "device_userName";
+const String SHAREDPREFERENCE_MAIL_KEY = "device_mail";
+const String SHAREDPREFERENCE_LOGINSTATUS_KEY = "loginStatus";
+const String LETSKHAREEDO = "LetsKhareedo";
+const String LETSKHAREEDO_MAIL = "letskareedo23@gmail.com";
 
 
 const String DB_NAME = "CartDB";
@@ -37,6 +43,7 @@ const String USER_PREFERENCE_UUID_KEY = "user_uuid";
 
 const Color APP_BAR_BACKGROUND = Color(0xFFFAFAFA);
 const Color APPLICATION_BACKGROUND_COLOR = Color(0xFFFFFFFF);
+const Color APPLICATION_DRAWER_COLOR = Color.fromRGBO(65, 109, 108,1.0);
 // const Color APPLICATION_BACKGROUND_COLOR = Color(0xFFEEEEEE);
 const kPrimaryColor = Color(0xFFA95EFA);
 const kSecondaryColor = Color(0xFFF3F6F8);

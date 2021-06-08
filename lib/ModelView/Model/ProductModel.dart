@@ -42,25 +42,24 @@ class Products {
         gender: json["gender"],
         kids: json["kids"],
         hotOrNot: json["hotOrNot"],
-        name: json["name"]
-    );
+        name: json["name"]);
   }
 
-  Map<String,dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      "price" : price,
-      "description" : description,
-      "imagePath" : imagePath,
-      "brand" : brand,
-      "material" : material,
-      "quantity" : quantity,
-      "type" : type,
-      "uuid" : uuid,
-      "size" : size,
-      "gender" : gender,
-      "ageGroup" : kids,
-      "hotOrNot" : hotOrNot,
-      "name" : name
+      "price": price,
+      "description": description,
+      "imagePath": imagePath,
+      "brand": brand,
+      "material": material,
+      "quantity": quantity,
+      "type": type,
+      "uuid": uuid,
+      "size": size,
+      "gender": gender,
+      "ageGroup": kids,
+      "hotOrNot": hotOrNot,
+      "name": name
     };
   }
 }

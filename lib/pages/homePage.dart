@@ -9,6 +9,7 @@ import 'package:letskhareedo/constants/size_config.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'package:letskhareedo/custom_widgets/CustomCardWidget.dart';
 import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
+import 'package:letskhareedo/device_db/sharedpref.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/Store.dart';
 import 'package:letskhareedo/pages/fisrtHomePage.dart';
@@ -25,11 +26,14 @@ class HomePage extends StatefulWidget {
 
 class _HomeState extends State<HomePage> {
   HiveMethods hiveMethods = HiveMethods();
+  SharedPrefs sharedPrefs = SharedPrefs();
   checkForUuid() async {
     bool check = await hiveMethods.userPreferenceUuidCheck();
-    if(check)
-      hiveMethods.userPreferencesUuid(Uuid().v4());
+    if (check) hiveMethods.userPreferencesUuid(Uuid().v4());
   }
+  String userName;
+  String userMail;
+  bool loginStatus;
   @override
   void initState() {
     super.initState();
@@ -37,9 +41,13 @@ class _HomeState extends State<HomePage> {
     // webCheck = kIsWeb ? WEB : MOBILE;
     defaultSize = SizeConfig.defaultSize;
     checkForUuid();
-
+    userName = sharedPrefs.getUserId();
+    userMail = sharedPrefs.getUserMail();
+    loginStatus = sharedPrefs.getLoginStatus();
   }
-  double defaultSize ;
+
+  double defaultSize;
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -47,14 +55,11 @@ class _HomeState extends State<HomePage> {
   }
 
   PageController _pageController = PageController(initialPage: 0);
+
   // String webCheck;
   double heightOfImageSlider;
 
-  static List<String> links = [
-    'azizi.jpg',
-    'demo1.jpeg',
-    'demo2.jpeg'
-  ];
+  static List<String> links = ['azizi.jpg', 'demo1.jpeg', 'demo2.jpeg'];
 
   List<String> mainHeaders = ['Account', 'About Us', 'Contact Us', 'Blog'];
 
@@ -63,25 +68,113 @@ class _HomeState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle textStyleHeading = TextStyle(color: Colors.white);
+    TextStyle textStyleTiles = TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
+
+    print("::::::::::::::::::::::::$userName ::::::::::$userMail:::::::::::::$loginStatus");
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(child: Text("Hussain")),
-            ListTile(title: Text("Add Account"),)
-          ],
+        drawer: Container(
+          width: 210,
+          child: Drawer(
+            child: Container(
+              color: APPLICATION_DRAWER_COLOR,
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                children: [
+                  DrawerHeader(
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundColor: Colors.white,
+                          child: Text(
+                            loginStatus == true && userName != "" ? userName[0].toUpperCase() : LETSKHAREEDO[0].toUpperCase(),
+                            style: TextStyle(fontSize: 40.0),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          loginStatus == true && userName != "" ? userName : LETSKHAREEDO,
+                          style: textStyleHeading,
+                        ),
+                        Text(
+                          loginStatus == true && userMail != "" ? userMail : LETSKHAREEDO_MAIL,
+                          style: textStyleHeading,
+                        )
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.person, color: Colors.white),
+                        title: Text("Profile", style: textStyleTiles),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.pushNamed(context, '/profile', arguments: {
+                            "loginStatus" : loginStatus,
+                            "userName" : userName,
+                            "userMail" : userMail
+                          });
+                          print("=----------------------------------------------------------------profile");
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                        title: Text("Orders", style: textStyleTiles),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.favorite_border,
+                          color: Colors.white,
+                        ),
+                        title: Text("Fav", style: textStyleTiles),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.map,
+                          color: Colors.white,
+                        ),
+                        title: Text("Address", style: textStyleTiles),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.logout,
+                          color: Colors.red,
+                        ),
+                        title: Text("Logout", style: textStyleHeading),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
-      backgroundColor: APPLICATION_BACKGROUND_COLOR,
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(PREFERRED_SIZE),
-          child: CustomAppBar(s : "homePage")),
-      body: webOrMobile()
-      // ),
-    );
+        backgroundColor: APPLICATION_BACKGROUND_COLOR,
+        appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(PREFERRED_SIZE),
+            child: CustomAppBar(s: "homePage")),
+        body: webOrMobile()
+        // ),
+        );
   }
 
-  List<Widget> uiColumn(){
+  List<Widget> uiColumn() {
     return [
       Visibility(
         visible: WEB_CHECK == WEB ? true : false,
@@ -117,20 +210,16 @@ class _HomeState extends State<HomePage> {
     ];
   }
 
-
-
-  Widget webOrMobile(){
-    if (WEB_CHECK == WEB)
-      {
-        return ListView(
-          children: uiColumn(),
-        );
-      }
-    else {
+  Widget webOrMobile() {
+    if (WEB_CHECK == WEB) {
+      return ListView(
+        children: uiColumn(),
+      );
+    } else {
       return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: uiColumn(),
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: uiColumn(),
       );
     }
   }
@@ -180,7 +269,7 @@ class _HomeState extends State<HomePage> {
                       child: Image(
                         // image: AssetImage(
                         //     'assets/letskhareedoLogo.jpeg'),
-                        image: NetworkImage("$BASE_URL_HTTP"+links[i - 1]),
+                        image: NetworkImage("$BASE_URL_HTTP" + links[i - 1]),
                         fit: BoxFit.fill,
                       ),
                     )));
@@ -198,7 +287,7 @@ class _HomeState extends State<HomePage> {
         onPageChanged: _onPageViewChange,
         children: [
           FirstHome(
-              pageController: _pageController,
+            pageController: _pageController,
           ),
           Store(),
           Accessories(),
@@ -215,19 +304,20 @@ class _HomeState extends State<HomePage> {
               margin: EdgeInsets.only(bottom: 20.0),
               child: CardWidget(
                 300.0,
-                onCountChanged: (index){
-                //TODO
-                print('$index');
-              },
-              onCardClicked: (){
-                print('Call back selected');
-              },),
+                onCountChanged: (index) {
+                  //TODO
+                  print('$index');
+                },
+                onCardClicked: () {
+                  print('Call back selected');
+                },
+              ),
             )
           ],
         ),
       );
     }
-      // return CarouselSliderWeb();
+    // return CarouselSliderWeb();
   }
 
   Widget optionMenuListView() {
@@ -258,7 +348,9 @@ class _HomeState extends State<HomePage> {
           onTap: () {
             setState(() {
               print('$selectedIndex - ${categories[index]}');
-              _pageController.animateToPage(index, curve: Curves.easeInOut, duration: Duration(microseconds: 800));
+              _pageController.animateToPage(index,
+                  curve: Curves.easeInOut,
+                  duration: Duration(microseconds: 800));
               _pageName = categories[index];
             });
           },
@@ -288,5 +380,3 @@ class _HomeState extends State<HomePage> {
     }
   }
 }
-
-

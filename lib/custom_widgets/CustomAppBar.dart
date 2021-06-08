@@ -29,17 +29,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
       // centerTitle: true,
       // backgroundColor: webCheck == WEB ? APP_BAR_BACKGROUND : APPLICATION_BACKGROUND_COLOR,
-      title: TextButton(
-        onPressed: () {
-          print('letsKhareedo logo clicked'); //TODO logo click
-        },
-        child: Visibility(
-          visible: widget.s != "Sales" && widget.s != "Cart",
-          child: CircleAvatar(
-            backgroundImage: AssetImage('assets/letskhareedoLogo.jpeg'),
-          ),
-        ),
-      ),
+
       leading: Visibility(
         visible: webCheck == MOBILE && widget.s == "Sales" || widget.s == "Cart" ? true : false,
         child: Padding(
@@ -76,26 +66,26 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     },
                     color: Colors.grey[800],
                   ),
-                  // Positioned(
-                  //     right: 10,
-                  //     top: 25,
-                  //     child: Container(
-                  //       padding: EdgeInsets.all(2),
-                  //       decoration: BoxDecoration(
-                  //         color: Colors.red,
-                  //         borderRadius: BorderRadius.circular(6)
-                  //       ),
-                  //       constraints: BoxConstraints(
-                  //         minHeight: 12,
-                  //         minWidth: 12
-                  //       ),
-                  //       child: Text(
-                  //         "$numberOfItems",
-                  //         style: TextStyle(
-                  //           fontSize: 12
-                  //         ),
-                  //       ),
-                  // ))
+                  Positioned(
+                      right: 10,
+                      top: 25,
+                      child: Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(6)
+                        ),
+                        constraints: BoxConstraints(
+                          minHeight: 12,
+                          minWidth: 12
+                        ),
+                        child: Text(
+                          "$numberOfItems",
+                          style: TextStyle(
+                            fontSize: 12
+                          ),
+                        ),
+                  ))
                 ],
               ),
             ),
