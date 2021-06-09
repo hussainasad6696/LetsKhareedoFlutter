@@ -29,6 +29,8 @@ const String SLIDER_IMAGE_SETTER_ADDRESS = "/products/sliderImages/?id=";
 const String ADVERTISEMENT_IMAGES_ADDRESS = "/databaseEntryForm/advertisement";
 const String ADVERTISEMENT_IMAGES_SETTER_ADDRESS = "/products/advertImages/?id=";
 const String PRODUCT_HOT_OR_NOT = "/products/hotOrNot";
+const String LOGIN_USER_ACCOUNT = "/userLogin";
+const String ADD_NEW_USER = "/addCustomer";
 const String SHAREDPREFERENCE_USERNAME_KEY = "device_userName";
 const String SHAREDPREFERENCE_MAIL_KEY = "device_mail";
 const String SHAREDPREFERENCE_LOGINSTATUS_KEY = "loginStatus";

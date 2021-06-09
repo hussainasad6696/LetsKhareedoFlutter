@@ -1,54 +1,76 @@
-import 'package:hive/hive.dart';
+import 'package:letskhareedo/ModelView/Model/ProductModel.dart';
 
-// part 'UserProfileDb.g.dart';
+class OrderList {
+  final String date;
+  final Products products;
+  final String bill;
+  final String status;
 
-@HiveType(typeId: 1)
-class UserProfileModel {
-  @HiveField(0)
-  final String userName;
-  @HiveField(1)
-  final String email;
-  @HiveField(2)
-  final String password;
-  @HiveField(3)
-  final String phoneNumber;
-  @HiveField(4)
-  final String address;
-  @HiveField(5)
-  final String securityToken;
-  @HiveField(6)
-  final String profileImagePath;
+  OrderList({this.date, this.products, this.bill, this.status});
 
-  UserProfileModel(
-      {this.userName,
-      this.email,
-      this.password,
-      this.phoneNumber,
-      this.address,
-      this.securityToken,
-      this.profileImagePath});
-
-  factory UserProfileModel.fromJson(Map<String, dynamic> json){
-    return UserProfileModel(
-        userName: json['userName'],
-        email: json['email'],
-        password: json['password'],
-        phoneNumber: json['phoneNumber'],
-        address: json['address'],
-        securityToken: json['sercurityToken'],
-        profileImagePath: json['profileImagePath']
-    );
+  factory OrderList.fromJson(Map<String, dynamic> json) {
+    return OrderList(
+        date: json["date"],
+        products: json["products"],
+        bill: json["bill"],
+        status: json["status"]);
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
+    return {"date": date, "products": products, "bill": bill, "status": status};
+  }
+}
+
+class UserProfileModel {
+  final String name;
+  final String email;
+  final String password;
+  final OrderList orderList;
+  final String phoneNumber;
+  final String address;
+  final String profileImageByteStream;
+  final String profileImageName;
+  final String verificationStatus;
+  final String verificationCode;
+
+  UserProfileModel(
+      {this.name,
+      this.email,
+      this.password,
+      this.orderList,
+      this.phoneNumber,
+      this.address,
+        this.profileImageName,
+      this.profileImageByteStream,
+      this.verificationStatus,
+      this.verificationCode});
+
+  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+    return UserProfileModel(
+        name: json['name'],
+        email: json['email'],
+        password: json['password'],
+        orderList: json['orderList'],
+        phoneNumber: json['phoneNumber'],
+        address: json['address'],
+        profileImageName: json['profileImageName'],
+        profileImageByteStream: json['profileImagePath'],
+        verificationStatus: json['verificationStatus'],
+        verificationCode: json['verificationCode']);
+  }
+
+  Map<String, dynamic> toJson() {
     return {
-      'userName' : userName,
-      'email' : email,
-      'password' : password,
-      'phoneNumber' : phoneNumber,
-      'address' : address,
-      'sercurityToken' : securityToken,
-      'profileImagePath' : profileImagePath
+      'name': name,
+      'email': email,
+      'password': password,
+      'orderList': orderList,
+      'phoneNumber': phoneNumber,
+      'profileImageName' : profileImageName,
+      'address': address,
+      'profileImagePath': profileImageByteStream,
+      'verificationStatus': verificationStatus,
+      'verificationCode': verificationCode
     };
   }
 }

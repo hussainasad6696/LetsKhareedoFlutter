@@ -2,12 +2,44 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:letskhareedo/ModelView/Model/ProductModel.dart';
+import 'package:letskhareedo/ModelView/Model/userprofile/userprofileModel.dart';
 import 'package:letskhareedo/WebServices/WebServiceHttp.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:letskhareedo/constants/constant.dart';
 
 class WebRepo {
   WebService _webService = WebService();
+
+  Future<String> login(String number, String password) async {
+    Map data = {"phoneNumber": number, "password": password};
+    Future<Response> response = _webService.postData(data, LOGIN_USER_ACCOUNT).then((value) {
+      return value;
+    });
+    Response statusCode = await response.then((value) {
+      return value;
+    });
+    return statusCheck(statusCode);
+  }
+
+  Future<String> addNewUser(UserProfileModel userProfileModel) async {
+    Future<Response> response = _webService.postData(userProfileModel.toJson(),ADD_NEW_USER).then((value) {
+      return value;
+    });
+    Response statusCode = await response.then((value) {
+      return value;
+    });
+    return statusCheck(statusCode);
+  }
+
+  String statusCheck(Response status){
+    final code = status.statusCode;
+    if(code == 200) return "Successful";
+    else if(code == 400) return "Bad Request";
+    else if(code == 401 || code == 403) return "Unauthorized";
+    else if(code == 404) return "Not found";
+    else if(code == 413) return "Heavy payload";
+    else return "Server Communication failure";
+  }
 
   Future<List<String>> fetchPresentationImageList(String value) async {
     List<String> imageName = [];
