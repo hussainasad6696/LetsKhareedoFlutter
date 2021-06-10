@@ -28,6 +28,7 @@ class WebRepo {
     Response statusCode = await response.then((value) {
       return value;
     });
+    print("Status check +++++++++++++++++++++++++++${statusCode.statusCode}");
     return statusCheck(statusCode);
   }
 
@@ -38,6 +39,7 @@ class WebRepo {
     else if(code == 401 || code == 403) return "Unauthorized";
     else if(code == 404) return "Not found";
     else if(code == 413) return "Heavy payload";
+    else if(code == 500) return "User already exits";
     else return "Server Communication failure";
   }
 

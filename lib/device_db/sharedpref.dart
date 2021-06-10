@@ -33,14 +33,15 @@ class SharedPrefs extends BaseSharedPreference {
   void setLoginStatus(bool value) {
     _setBoolean(SHAREDPREFERENCE_LOGINSTATUS_KEY, value);
   }
-
-  bool getLoginStatus() {
-    bool id;
-    _getBoolean(SHAREDPREFERENCE_LOGINSTATUS_KEY).then((value) {
-      id = value;
-    }).catchError((err) {
-      print("SharedPreference error while getting loginStatus : $err");
+  bool id = false;
+  bool loginStatus(){
+    return id;
+  }
+  Future<bool> getLoginStatus() async{
+    bool id = await _getBoolean(SHAREDPREFERENCE_LOGINSTATUS_KEY).then((value) {
+      return value;
     });
+    print("::::::::::-------------::::the id is::::::::::: $id");
     return id;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -43,7 +45,10 @@ class _HomeState extends State<HomePage> {
     checkForUuid();
     userName = sharedPrefs.getUserId();
     userMail = sharedPrefs.getUserMail();
-    loginStatus = sharedPrefs.getLoginStatus();
+    sharedPrefs.getLoginStatus();
+    loginStatus = sharedPrefs.loginStatus();
+
+    print("$userName :::::::::::::::: $userMail :::::::::::::::: $loginStatus");
   }
 
   double defaultSize;

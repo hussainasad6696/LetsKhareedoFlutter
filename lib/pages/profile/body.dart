@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:letskhareedo/ModelView/Model/userprofile/userprofileModel.dart';
 import 'package:letskhareedo/WebServices/WebRepository.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/device_db/sharedpref.dart';
 
 class Body extends StatefulWidget {
   const Body({Key key}) : super(key: key);
@@ -74,6 +75,7 @@ class _BodyState extends State<Body> {
   }
 
   Widget profileView(String name, String email, bool loginStatus) {
+    SharedPrefs sharedPrefs = SharedPrefs();
     WebRepo webRepo = WebRepo();
     Uint8List toImage;
     TextEditingController userName = TextEditingController();
@@ -111,25 +113,20 @@ class _BodyState extends State<Body> {
           child: Stack(
             children: <Widget>[
               CircleAvatar(
-                  radius: 50,
-                  child: iHaveTheImage
-                      ? Container(
+                  radius: 70,
+                  child: Container(
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      borderRadius: BorderRadius.all(Radius.circular(40)),
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: MemoryImage(toImage)
+                        image: toImage != null ?
+                        MemoryImage(toImage) : AssetImage('assets/letskhareedoLogo.jpeg')
                       ),
                     ),
                   )
-                      : Text(
-                          name != null && name != ""
-                              ? name[0].toUpperCase()
-                              : LETSKHAREEDO[0].toUpperCase(),
-                          style: TextStyle(fontSize: 64),
-                        )),
+                        ),
               Positioned(
                   bottom: 1,
                   right: 1,
@@ -138,8 +135,8 @@ class _BodyState extends State<Body> {
                       showDialogBox();
                     },
                     child: Container(
-                      height: 30,
-                      width: 30,
+                      height: 40,
+                      width: 40,
                       child: Icon(
                         Icons.add_a_photo,
                         color: Colors.white,
@@ -181,7 +178,7 @@ class _BodyState extends State<Body> {
                               )
                             : TextField(
                                 controller: userName,
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.name,
                                 decoration: InputDecoration(
                                     hintText: "Name",
                                     border: InputBorder.none,
@@ -246,7 +243,7 @@ class _BodyState extends State<Body> {
                               )
                             : TextField(
                                 controller: address,
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.streetAddress,
                                 decoration: InputDecoration(
                                     hintText: "Address",
                                     border: InputBorder.none,
@@ -273,7 +270,7 @@ class _BodyState extends State<Body> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
                           controller: phoneNumber,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                               hintText: "PhoneNumber",
                               border: InputBorder.none,
@@ -305,7 +302,7 @@ class _BodyState extends State<Body> {
                               )
                             : TextField(
                                 controller: password,
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.visiblePassword,
                                 decoration: InputDecoration(
                                     hintText: "Password",
                                     border: InputBorder.none,
@@ -332,7 +329,7 @@ class _BodyState extends State<Body> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
                           controller: confirmPassword,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                               hintText: "Confirm Password",
                               border: InputBorder.none,
@@ -387,6 +384,7 @@ class _BodyState extends State<Body> {
                         child: TextField(
                           controller: loginPassword,
                           obscureText: true,
+                          keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                               hintText: "Password",
                               border: InputBorder.none,
@@ -455,17 +453,23 @@ class _BodyState extends State<Body> {
                               toastLength: Toast.LENGTH_SHORT);
                         }
                       } else {
-                        image = base64Encode(file.readAsBytesSync());
-                        String imageName = file.path.split("/").last;
+                        String imageName;
+                        if(file != null) {
+                          image = base64Encode(file.readAsBytesSync());
+                          imageName = file.path.split("/").last;
+                        }else {
+                          image = "";
+                          imageName = "";
+                        }
                         if (password.text != null &&
                             confirmPassword.text != null &&
                             password.text != "" &&
                             confirmPassword.text != "") {
                           if (password.text == confirmPassword.text) {
                             if (image != null &&
-                                image != "" &&
+                                // image != "" &&
                                 imageName != null &&
-                                imageName != "" &&
+                                // imageName != "" &&
                                 userName.text != null &&
                                 userName.text != "" &&
                                 userMail.text != null &&
@@ -488,6 +492,13 @@ class _BodyState extends State<Body> {
                                 Fluttertoast.showToast(
                                     msg: "$value",
                                     toastLength: Toast.LENGTH_SHORT);
+                                if(value == "Successful") {
+                                  sharedPrefs.setLoginStatus(true);
+                                  sharedPrefs.setUserMail(userMail.text);
+                                  sharedPrefs.setUserId(userName.text);
+                                  Navigator.pushReplacementNamed(
+                                      context, '/home');
+                                }
                               });
                             }
                           } else {
@@ -495,7 +506,7 @@ class _BodyState extends State<Body> {
                                 msg: "Password does not match",
                                 toastLength: Toast.LENGTH_SHORT);
                           }
-                        }
+                        }else Fluttertoast.showToast(msg: "Password field empty");
                       }
                     },
                     child: Container(
