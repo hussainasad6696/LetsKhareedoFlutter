@@ -31,9 +31,15 @@ const String ADVERTISEMENT_IMAGES_SETTER_ADDRESS = "/products/advertImages/?id="
 const String PRODUCT_HOT_OR_NOT = "/products/hotOrNot";
 const String LOGIN_USER_ACCOUNT = "/userLogin";
 const String ADD_NEW_USER = "/addCustomer";
+
+
+
+//sharedpreference
 const String SHAREDPREFERENCE_USERNAME_KEY = "device_userName";
 const String SHAREDPREFERENCE_MAIL_KEY = "device_mail";
 const String SHAREDPREFERENCE_LOGINSTATUS_KEY = "loginStatus";
+const String SHAREDPREFERENCE_PROFILEIMAGENAME_KEY = "profileImageName";
+const String SHAREDPREFERENCE_PROFILEIMAGE_KEY = "profileImage";
 const String LETSKHAREEDO = "LetsKhareedo";
 const String LETSKHAREEDO_MAIL = "letskareedo23@gmail.com";
 

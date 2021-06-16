@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'dart:ffi';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +32,18 @@ class HomePage extends StatefulWidget {
 class _HomeState extends State<HomePage> {
   HiveMethods hiveMethods = HiveMethods();
   SharedPrefs sharedPrefs = SharedPrefs();
+
   checkForUuid() async {
     bool check = await hiveMethods.userPreferenceUuidCheck();
     if (check) hiveMethods.userPreferencesUuid(Uuid().v4());
   }
+
   String userName;
   String userMail;
   bool loginStatus;
+  String image;
+  String imageName;
+
   @override
   void initState() {
     super.initState();
@@ -43,12 +51,6 @@ class _HomeState extends State<HomePage> {
     // webCheck = kIsWeb ? WEB : MOBILE;
     defaultSize = SizeConfig.defaultSize;
     checkForUuid();
-    userName = sharedPrefs.getUserId();
-    userMail = sharedPrefs.getUserMail();
-    sharedPrefs.getLoginStatus();
-    loginStatus = sharedPrefs.loginStatus();
-
-    print("$userName :::::::::::::::: $userMail :::::::::::::::: $loginStatus");
   }
 
   double defaultSize;
@@ -73,13 +75,31 @@ class _HomeState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    sharedPrefs.getUserId().then((value) {
+      userName = value;
+    });
+    sharedPrefs.getUserMail().then((value) {
+      userMail = value;
+    });
+    sharedPrefs.getLoginStatus().then((value) {
+      loginStatus = value;
+    });
+    sharedPrefs.getUserImageName().then((value) {
+      imageName = value;
+    });
+    sharedPrefs.getUserImage().then((value) {
+      image = value;
+    });
     TextStyle textStyleHeading = TextStyle(color: Colors.white);
-    TextStyle textStyleTiles = TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
-
-    print("::::::::::::::::::::::::$userName ::::::::::$userMail:::::::::::::$loginStatus");
+    TextStyle textStyleTiles = TextStyle(
+        color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
+    Uint8List uint8list;
+    if (image != null) uint8list = base64Decode(image);
+    print(
+        "::::::::::::::::::::::::$userName ::::::::::$userMail:::::::::::::$loginStatus");
     return Scaffold(
         drawer: Container(
-          width: 210,
+          width: 250,
           child: Drawer(
             child: Container(
               color: APPLICATION_DRAWER_COLOR,
@@ -92,20 +112,32 @@ class _HomeState extends State<HomePage> {
                         CircleAvatar(
                           radius: 40,
                           backgroundColor: Colors.white,
-                          child: Text(
-                            loginStatus == true && userName != "" ? userName[0].toUpperCase() : LETSKHAREEDO[0].toUpperCase(),
-                            style: TextStyle(fontSize: 40.0),
-                          ),
+                          child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                        image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: uint8list != null && uint8list != ""?
+                            MemoryImage(uint8list) : AssetImage('assets/letskhareedoLogo.jpeg')
+                        ),
+                      ),
+                    ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         Text(
-                          loginStatus == true && userName != "" ? userName : LETSKHAREEDO,
+                          loginStatus == true && userName != ""
+                              ? userName
+                              : LETSKHAREEDO,
                           style: textStyleHeading,
                         ),
                         Text(
-                          loginStatus == true && userMail != "" ? userMail : LETSKHAREEDO_MAIL,
+                          loginStatus == true && userMail != ""
+                              ? userMail
+                              : LETSKHAREEDO_MAIL,
                           style: textStyleHeading,
                         )
                       ],
@@ -119,15 +151,19 @@ class _HomeState extends State<HomePage> {
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.pushNamed(context, '/profile', arguments: {
-                            "loginStatus" : loginStatus,
-                            "userName" : userName,
-                            "userMail" : userMail
+                            "loginStatus": loginStatus,
+                            "userName": userName,
+                            "userMail": userMail,
+                            "image" : image,
+                            "imageName" : imageName
                           });
-                          print("=----------------------------------------------------------------profile");
+                          print(
+                              "=----------------------------------------------------------------profile");
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                        leading: Icon(Icons.shopping_bag_outlined,
+                            color: Colors.white),
                         title: Text("Orders", style: textStyleTiles),
                         onTap: () {
                           Navigator.pop(context);
@@ -160,6 +196,11 @@ class _HomeState extends State<HomePage> {
                         ),
                         title: Text("Logout", style: textStyleHeading),
                         onTap: () {
+                          sharedPrefs.setUserImageName(null);
+                          sharedPrefs.setUserImage(null);
+                          sharedPrefs.setUserId(null);
+                          sharedPrefs.setUserMail(null);
+                          sharedPrefs.setLoginStatus(false);
                           Navigator.pop(context);
                         },
                       ),

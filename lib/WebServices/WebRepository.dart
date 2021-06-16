@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:letskhareedo/ModelView/Model/ProductModel.dart';
@@ -10,15 +12,18 @@ import 'package:letskhareedo/constants/constant.dart';
 class WebRepo {
   WebService _webService = WebService();
 
-  Future<String> login(String number, String password) async {
-    Map data = {"phoneNumber": number, "password": password};
+  Future<UserProfileModel> login(String number, String password) async {
+    Map data = {"email": number, "password": password};
     Future<Response> response = _webService.postData(data, LOGIN_USER_ACCOUNT).then((value) {
       return value;
     });
     Response statusCode = await response.then((value) {
       return value;
     });
-    return statusCheck(statusCode);
+    statusCheck(statusCode);
+    final parsed = jsonDecode(statusCode.body);
+    final userData = UserProfileModel.fromJson(parsed);
+    return userData;
   }
 
   Future<String> addNewUser(UserProfileModel userProfileModel) async {
@@ -34,13 +39,28 @@ class WebRepo {
 
   String statusCheck(Response status){
     final code = status.statusCode;
-    if(code == 200) return "Successful";
-    else if(code == 400) return "Bad Request";
-    else if(code == 401 || code == 403) return "Unauthorized";
-    else if(code == 404) return "Not found";
-    else if(code == 413) return "Heavy payload";
-    else if(code == 500) return "User already exits";
-    else return "Server Communication failure";
+    if(code == 200) {
+      Fluttertoast.showToast(msg: "Successful");
+      return "Successful";
+    } else if(code == 400) {
+      Fluttertoast.showToast(msg: "Bad Request");
+      return "Bad Request";
+    } else if(code == 401 || code == 403) {
+      Fluttertoast.showToast(msg: "Unauthorized");
+      return "Unauthorized";
+    } else if(code == 404) {
+      Fluttertoast.showToast(msg: "Not found");
+      return "Not found";
+    } else if(code == 413) {
+      Fluttertoast.showToast(msg: "Heavy payload");
+      return "Heavy payload";
+    } else if(code == 500) {
+      Fluttertoast.showToast(msg: "User already exits");
+      return "User already exits";
+    } else {
+      Fluttertoast.showToast(msg: "Server Communication failure");
+      return "Server Communication failure";
+    }
   }
 
   Future<List<String>> fetchPresentationImageList(String value) async {

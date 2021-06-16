@@ -26,6 +26,7 @@ class _BodyState extends State<Body> {
   final picker = ImagePicker();
   String image;
 
+
   void _selectImage(bool check) async {
     try {
       if (check) {
@@ -64,17 +65,25 @@ class _BodyState extends State<Body> {
     String name;
     String email;
     bool loginStatus;
+    String image;
+    String imageName;
     if (intentData != null) {
       name = intentData['userName'];
       email = intentData['userMail'];
       loginStatus = intentData['loginStatus'];
+      image = intentData['image'];
+      imageName = intentData['imageName'];
     }
+    Fluttertoast.showToast(msg: "$loginStatus");
+
     return Container(
-      child: profileView(name, email, loginStatus),
+      child: profileView(name, email, loginStatus, image, imageName),
     );
   }
 
-  Widget profileView(String name, String email, bool loginStatus) {
+  Widget profileView(String name, String email, bool loginStatus, String imageFromIntent, String imageName) {
+    if(loginStatus == null)
+      loginStatus = false;
     SharedPrefs sharedPrefs = SharedPrefs();
     WebRepo webRepo = WebRepo();
     Uint8List toImage;
@@ -89,7 +98,9 @@ class _BodyState extends State<Body> {
     if (file != null) {
       if (file.readAsBytesSync() != null) {
         if (iHaveTheImage) {
-          toImage = base64Decode(image);
+          if(image != null && image != "")
+            toImage = base64Decode(image);
+          else toImage = base64Decode(imageFromIntent);
         }
       }
     }
@@ -204,7 +215,7 @@ class _BodyState extends State<Body> {
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: loginStatus != null && !loginStatus
+                        child: loginStatus != null && loginStatus
                             ? Text(
                                 'Email',
                                 style: TextStyle(color: Colors.white70),
@@ -259,7 +270,7 @@ class _BodyState extends State<Body> {
                 ),
               ),
               Visibility(
-                visible: !alreadyHaveAnAccount,
+                visible: !alreadyHaveAnAccount && !loginStatus,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
                   child: Container(
@@ -318,7 +329,7 @@ class _BodyState extends State<Body> {
                 ),
               ),
               Visibility(
-                visible: !alreadyHaveAnAccount,
+                visible: !alreadyHaveAnAccount && !loginStatus,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
                   child: Container(
@@ -356,9 +367,9 @@ class _BodyState extends State<Body> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
                           controller: loginMail,
-                          keyboardType: TextInputType.phone,
+                          keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                              hintText: "Phone Number",
+                              hintText: "Email",
                               border: InputBorder.none,
                               hintStyle: TextStyle(color: Colors.white)),
                           style: TextStyle(color: Colors.white),
@@ -445,7 +456,7 @@ class _BodyState extends State<Body> {
                               .login(loginMail.text, loginPassword.text)
                               .then((value) {
                             Fluttertoast.showToast(
-                                msg: "$value", toastLength: Toast.LENGTH_SHORT);
+                                msg: "${value.name}", toastLength: Toast.LENGTH_SHORT);
                           });
                         } else {
                           Fluttertoast.showToast(
@@ -493,9 +504,11 @@ class _BodyState extends State<Body> {
                                     msg: "$value",
                                     toastLength: Toast.LENGTH_SHORT);
                                 if(value == "Successful") {
-                                  sharedPrefs.setLoginStatus(true);
+                                   sharedPrefs.setLoginStatus(true);
                                   sharedPrefs.setUserMail(userMail.text);
                                   sharedPrefs.setUserId(userName.text);
+                                  sharedPrefs.setUserImage(image);
+                                  sharedPrefs.setUserImageName(imageName);
                                   Navigator.pushReplacementNamed(
                                       context, '/home');
                                 }

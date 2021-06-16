@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
+import 'package:letskhareedo/device_db/sharedpref.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/AddToCartOrderView.dart';
 import 'package:letskhareedo/pages/SalesPage.dart';
@@ -21,6 +22,7 @@ import 'ModelView/ProductListViewModel.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HiveMethods().init();
+  BaseSharedPreference.init();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: ProductListViewModel()),
