@@ -13,9 +13,7 @@ class WebService {
   Future<dynamic> getJson(String url) async {
     dynamic responseJson;
     try {
-      print("$BASE_URL_HTTP$url webService");
       final response = await get(Uri.http(BASE_URL_HTTP, url));
-      print("got json $response");
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException(" No Internet connection");
@@ -48,4 +46,23 @@ class WebService {
         headers: <String, String>{contentType: dataType},
         body: jsonEncode(data));
   }
+
+ static getAddressFromLatLng(context, double lat, double lng) async {
+   try {
+     String _host = 'https://maps.google.com/maps/api/geocode/json';
+     var mapApiKey = "AIzaSyDQVnUnkicHLoptzvwPc1L5h8NWgBtK60c";
+     final url = '$_host?key=$mapApiKey&language=en&latlng=$lat,$lng';
+     if (lat != null && lng != null) {
+       var response = await get(Uri.parse(url));
+       if (response.statusCode == 200) {
+         Map data = jsonDecode(response.body);
+         String _formattedAddress = data["results"][0]["formatted_address"];
+         print("response ==== $_formattedAddress");
+         return _formattedAddress;
+       } else return null;
+     } else return null;
+   } catch (e) {
+     print("$e ---------------------------------------");
+   }
+ }
 }

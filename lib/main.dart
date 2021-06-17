@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 import 'package:letskhareedo/device_db/sharedpref.dart';
+import 'package:letskhareedo/map/maps.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/AddToCartOrderView.dart';
 import 'package:letskhareedo/pages/SalesPage.dart';
@@ -48,7 +49,8 @@ Future<void> main() async {
         '/women': (context) => WomenPage(),
         '/salesPage': (context) => Sales(),
         '/AddToCartOrderView': (context) => OrderView(),
-        '/profile': (context) => Profile()
+        '/profile': (context) => Profile(),
+        '/map' : (context) => Maps()
       },
     ),
   ));

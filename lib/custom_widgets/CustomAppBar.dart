@@ -5,21 +5,17 @@ import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 import 'OptionMenuMobileAndWeb.dart';
 import 'package:letskhareedo/constants/constant.dart';
 
-class CustomAppBar extends StatefulWidget {
-  String s;
-  CustomAppBar({this.s});
+class CustomAppBar extends StatelessWidget {
+  final String s;
+  CustomAppBar({this.s,this.drawerButtonClicked});
 
-  @override
-  _CustomAppBarState createState() => _CustomAppBarState();
-}
-
-class _CustomAppBarState extends State<CustomAppBar> {
   int numberOfItems = 0;
 
+ final Function drawerButtonClicked;
   listOfCartItems() async {
     numberOfItems = await HiveMethods().numberOfProductsInCart();
   }
-
+  String HOME_PAGE = "homePage";
   @override
   Widget build(BuildContext context) {
     String webCheck = kIsWeb ? WEB : MOBILE;
@@ -27,23 +23,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
       bottomOpacity: webCheck == WEB ? 1.0 : 0.0,
       elevation: webCheck == WEB ? 1.0 : 0.0,
 
-      // centerTitle: true,
-      // backgroundColor: webCheck == WEB ? APP_BAR_BACKGROUND : APPLICATION_BACKGROUND_COLOR,
-
-      leading: Visibility(
-        visible: webCheck == MOBILE && widget.s == "Sales" || widget.s == "Cart" ? true : false,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            icon: SvgPicture.asset("assets/icons/back.svg"),
-            onPressed: () {
-              setState(() {
-                Navigator.pop(context);
-              });
-            },
-          ),
-        ),
-      ),
+      leading: IconButton(icon: s == HOME_PAGE ?
+       Icon(Icons.menu, color: Colors.black,) :
+          Icon(Icons.arrow_back, color: Colors.black,)
+        , onPressed: () => drawerButtonClicked(),),
       actions: <Widget>[
         Visibility(
           visible: webCheck == WEB,
@@ -54,7 +37,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         Flexible(
           flex: 1,
           child: Visibility(
-            visible: widget.s == "Sales" || widget.s == "homePage",
+            visible: s == "Sales" || s == HOME_PAGE,
             child: Padding(
               padding: EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
               child: Stack(
@@ -92,7 +75,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ),
         ),
         Visibility(
-            visible: widget.s == "Sales" || widget.s == "Cart" ? true : false,
+            visible: s == "Sales" || s == "Cart" ? true : false,
             child: SizedBox(width: 10.0,))
       ],
     );

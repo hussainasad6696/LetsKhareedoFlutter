@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/device_db/userAddresses/mapDetailModel.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../CartDB.dart';
@@ -12,8 +13,10 @@ class HiveMethods {
 
   init() async {
     Directory document = await getApplicationDocumentsDirectory();
-    Hive.init(document.path);
-    Hive.registerAdapter(CartDataBaseAdapter());
+    Hive
+        ..init(document.path)
+    ..registerAdapter(CartDataBaseAdapter())
+    ..registerAdapter(MapDetailAdapter());
     await Hive.openBox<CartDataBase>(DB_NAME);
     await Hive.openBox(USER_DB);
   }

@@ -40,9 +40,7 @@ class _HomeState extends State<HomePage> {
 
   String userName;
   String userMail;
-  bool loginStatus;
   String image;
-  String imageName;
 
   @override
   void initState() {
@@ -72,153 +70,174 @@ class _HomeState extends State<HomePage> {
 
   int selectedIndex = 0;
   String _pageName = 'Home';
+ Future<Uint8List> getMeAvatarImage() async {
+    return await sharedPrefs.getUserImage().then((value) {
+       return base64Decode(value);
+    });
+  }
+  Future<bool> getMeLoginStatus() async {
+   return await sharedPrefs.getLoginStatus().then((value) {
+     return value;
+   });
+  }
+  Future<String> getMeUserName() async {
+   return await sharedPrefs.getUserId().then((value) {
+     return value;
+   });
+  }
+  Future<String> getMeUserMail() async {
+    return await sharedPrefs.getUserMail().then((value) {
+      return value;
+    });
+  }
+  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    sharedPrefs.getUserId().then((value) {
-      userName = value;
-    });
-    sharedPrefs.getUserMail().then((value) {
-      userMail = value;
-    });
-    sharedPrefs.getLoginStatus().then((value) {
-      loginStatus = value;
-    });
-    sharedPrefs.getUserImageName().then((value) {
-      imageName = value;
-    });
-    sharedPrefs.getUserImage().then((value) {
-      image = value;
-    });
     TextStyle textStyleHeading = TextStyle(color: Colors.white);
     TextStyle textStyleTiles = TextStyle(
         color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
-    Uint8List uint8list;
-    if (image != null) uint8list = base64Decode(image);
-    print(
-        "::::::::::::::::::::::::$userName ::::::::::$userMail:::::::::::::$loginStatus");
     return Scaffold(
         drawer: Container(
           width: 250,
           child: Drawer(
-            child: Container(
-              color: APPLICATION_DRAWER_COLOR,
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                children: [
-                  DrawerHeader(
-                    child: Column(
+            child: FutureBuilder(
+                future: getMeLoginStatus(),
+                builder: (context, snapShotLoginStatus) {
+                  return Container(
+                    color: APPLICATION_DRAWER_COLOR,
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
                       children: [
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.white,
-                          child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(40)),
-                        image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: uint8list != null && uint8list != ""?
-                            MemoryImage(uint8list) : AssetImage('assets/letskhareedoLogo.jpeg')
+                        DrawerHeader(
+                          child: Column(
+                            children: [
+                              FutureBuilder(
+                                future: getMeAvatarImage(),
+                                builder: (context, snapShot) {
+                                  image = snapShot.data;
+                                  return CircleAvatar(
+                                    radius: 40,
+                                    backgroundColor: Colors.white,
+                                    child: Container(
+                                      width: 100,
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(40)),
+                                        image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: snapShot.data != null &&
+                                                snapShot.data != ""
+                                                ? MemoryImage(snapShot.data)
+                                                : AssetImage(
+                                                'assets/letskhareedoLogo.jpeg')),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              FutureBuilder(
+                                  future: getMeUserName(),
+                                  builder: (context, snapShot) {
+                                    userName = snapShot.data;
+                                    return Text(
+                                      snapShotLoginStatus.data == true &&
+                                          snapShot.data != ""
+                                          ? snapShot.data
+                                          : LETSKHAREEDO,
+                                      style: textStyleHeading,
+                                    );
+                                  }),
+                              FutureBuilder(
+                                  future: getMeUserMail(),
+                                  builder: (context, snapShot) {
+                                    userMail = snapShot.data;
+                                    return Text(
+                                      snapShotLoginStatus.data == true &&
+                                          snapShot.data != ""
+                                          ? snapShot.data
+                                          : LETSKHAREEDO_MAIL,
+                                      style: textStyleHeading,
+                                    );
+                                  })
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          loginStatus == true && userName != ""
-                              ? userName
-                              : LETSKHAREEDO,
-                          style: textStyleHeading,
-                        ),
-                        Text(
-                          loginStatus == true && userMail != ""
-                              ? userMail
-                              : LETSKHAREEDO_MAIL,
-                          style: textStyleHeading,
+                        Column(
+                          children: [
+                            ListTile(
+                              leading: Icon(Icons.person, color: Colors.white),
+                              title: Text("Profile", style: textStyleTiles),
+                              onTap: () => navigateToProfileScreen(
+                                  snapShotLoginStatus.data,
+                                  userName,
+                                  userMail,
+                                  image),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.shopping_bag_outlined,
+                                  color: Colors.white),
+                              title: Text("Orders", style: textStyleTiles),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ListTile(
+                              leading: Icon(
+                                Icons.favorite_border,
+                                color: Colors.white,
+                              ),
+                              title: Text("Fav", style: textStyleTiles),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ListTile(
+                              leading: Icon(
+                                Icons.map,
+                                color: Colors.white,
+                              ),
+                              title: Text("Address", style: textStyleTiles),
+                              onTap: () => navigateToMaps(),
+                            ),
+                            ListTile(
+                              leading: Icon(
+                                Icons.logout,
+                                color: Colors.red,
+                              ),
+                              title: Text("Logout", style: textStyleHeading),
+                              onTap: () {
+                                sharedPrefs.setUserImageName(null);
+                                sharedPrefs.setUserImage(null);
+                                sharedPrefs.setUserId(null);
+                                sharedPrefs.setUserMail(null);
+                                sharedPrefs.setLoginStatus(false);
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
                         )
                       ],
                     ),
-                  ),
-                  Column(
-                    children: [
-                      ListTile(
-                        leading: Icon(Icons.person, color: Colors.white),
-                        title: Text("Profile", style: textStyleTiles),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          Navigator.pushNamed(context, '/profile', arguments: {
-                            "loginStatus": loginStatus,
-                            "userName": userName,
-                            "userMail": userMail,
-                            "image" : image,
-                            "imageName" : imageName
-                          });
-                          print(
-                              "=----------------------------------------------------------------profile");
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.shopping_bag_outlined,
-                            color: Colors.white),
-                        title: Text("Orders", style: textStyleTiles),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.favorite_border,
-                          color: Colors.white,
-                        ),
-                        title: Text("Fav", style: textStyleTiles),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.map,
-                          color: Colors.white,
-                        ),
-                        title: Text("Address", style: textStyleTiles),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.logout,
-                          color: Colors.red,
-                        ),
-                        title: Text("Logout", style: textStyleHeading),
-                        onTap: () {
-                          sharedPrefs.setUserImageName(null);
-                          sharedPrefs.setUserImage(null);
-                          sharedPrefs.setUserId(null);
-                          sharedPrefs.setUserMail(null);
-                          sharedPrefs.setLoginStatus(false);
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
+                  );
+                }),
           ),
         ),
         backgroundColor: APPLICATION_BACKGROUND_COLOR,
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(PREFERRED_SIZE),
-            child: CustomAppBar(s: "homePage")),
+            child: CustomAppBar(s: "homePage"
+            )),
         body: webOrMobile()
-        // ),
-        );
+      // ),
+    );
   }
+
+
 
   List<Widget> uiColumn() {
     return [
@@ -271,7 +290,7 @@ class _HomeState extends State<HomePage> {
   }
 
   _onPageViewChange(int index) {
-    print('$index');
+    print('$index -==-=-=----------------------');
     setState(() {
       selectedIndex = index;
       _pageName = categories[index];
@@ -424,5 +443,22 @@ class _HomeState extends State<HomePage> {
                 ],
               )));
     }
+  }
+
+  void navigateToProfileScreen(bool data, String userName, String userMail, String image) async {
+    String imageName = await sharedPrefs.getUserImageName();
+    Navigator.of(context).pop();
+    Navigator.pushNamed(context, '/profile', arguments: {
+      "loginStatus": data,
+      "userName": userName,
+      "userMail": userMail,
+      "image" : image,
+      "imageName" : imageName
+    });
+  }
+
+  void navigateToMaps() async {
+    Navigator.of(context).pop();
+    Navigator.pushNamed(context, '/map');
   }
 }

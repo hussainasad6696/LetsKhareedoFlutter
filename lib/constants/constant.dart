@@ -32,7 +32,7 @@ const String PRODUCT_HOT_OR_NOT = "/products/hotOrNot";
 const String LOGIN_USER_ACCOUNT = "/userLogin";
 const String ADD_NEW_USER = "/addCustomer";
 
-
+/*AIzaSyDQVnUnkicHLoptzvwPc1L5h8NWgBtK60c*/
 
 //sharedpreference
 const String SHAREDPREFERENCE_USERNAME_KEY = "device_userName";

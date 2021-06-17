@@ -31,7 +31,6 @@ class AppProductGrid extends StatelessWidget {
 
   Widget getProductWidget(BuildContext context, ApiResponse apiResponse) {
     List<Products> productList = apiResponse.data as List<Products>;
-    print("$productList==========productlist");
     switch (apiResponse.status) {
       // case Status.LOADED:
       case Status.COMPLETED:

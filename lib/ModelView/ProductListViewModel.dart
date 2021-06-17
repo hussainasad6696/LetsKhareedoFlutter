@@ -22,7 +22,6 @@ class ProductListViewModel with ChangeNotifier {
     _apiResponse = ApiResponse.loading('Fetching product data');
     try {
       List<Products> products = await _webRepo.fetchProductList(val);
-      print("${products.length} =============viewModel");
       _apiResponse = ApiResponse.completed(products);
     } catch (e) {
       _apiResponse = ApiResponse.error(e.toString());
@@ -36,7 +35,6 @@ class ProductListViewModel with ChangeNotifier {
     try{
       List<String> images = await _webRepo.fetchPresentationImageList(url);
       _apiResponse = ApiResponse.completed(images);
-      print("$images fetchSliderImages are here++++++++++===========");
     }catch (e){
       _apiResponse = ApiResponse.error(e.toString());
     }

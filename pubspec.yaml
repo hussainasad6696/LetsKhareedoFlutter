@@ -30,7 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^1.1.7+1
   carousel_slider: ^3.0.0
-  badges: ^1.2.0
+  badges: ^2.0.1
   flutter_svg: ^0.22.0
   google_fonts: ^2.0.0
   http: ^0.13.1
@@ -46,7 +46,10 @@ dependencies:
   fluttertoast: ^8.0.7
   shared_preferences: ^2.0.6
   image_picker: ^0.8.0+3
-
+  latlng: ^0.1.0
+  permission_handler: ^8.1.1
+  location: ^4.3.0
+  google_maps_flutter: ^2.0.6
 
 
 dev_dependencies:

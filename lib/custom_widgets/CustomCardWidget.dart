@@ -67,7 +67,6 @@ class CardWidget extends StatelessWidget {
   }
 
   Widget cardViewWidget(String image, int index) {
-    print("$image ------------------------------customCardWidget----");
     return GestureDetector(
       onTap: () {
         print('$image');

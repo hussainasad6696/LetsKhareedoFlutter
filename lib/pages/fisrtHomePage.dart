@@ -73,7 +73,6 @@ class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Products> getMeAllTheHotProducts = apiResponse.data as List<Products>;
-    print("$getMeAllTheHotProducts hot product list and all the images ...................");
     return OrientationBuilder(
       builder: (context , orientation){
         return GridView.builder(

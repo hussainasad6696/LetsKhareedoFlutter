@@ -13,10 +13,8 @@ class AllProductsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("$BASE_URL_HTTP_WITH_ADDRESS_IMAGE$PRODUCT_IMAGE_ADDRESS${products.imagePath}");
     return GestureDetector(
       onTap: (){
-        print("product selected $products");
         Navigator.pushNamed(context, '/salesPage', arguments: /*products*/ {
           "price" : products.price,
           "description" : products.description,

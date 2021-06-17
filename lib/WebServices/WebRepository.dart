@@ -33,7 +33,6 @@ class WebRepo {
     Response statusCode = await response.then((value) {
       return value;
     });
-    print("Status check +++++++++++++++++++++++++++${statusCode.statusCode}");
     return statusCheck(statusCode);
   }
 
@@ -84,7 +83,6 @@ class WebRepo {
   Future<List<Products>> fetchProductList(String value) async{
     internetConnectionCheck();
     dynamic response = await _webService.getJson(value);
-    print("response: $response");
     final jsonData = response as List;
     List<Products> productsList = jsonData.map((tagJson) => Products.fromJson(tagJson)).toList();
     return productsList;

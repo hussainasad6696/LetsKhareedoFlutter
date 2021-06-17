@@ -16,6 +16,10 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSLocationUsageDescription</key>
+    <string></string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string></string>
 	<key>CFBundleName</key>
 	<string>letskhareedo</string>
 	<key>CFBundlePackageType</key>

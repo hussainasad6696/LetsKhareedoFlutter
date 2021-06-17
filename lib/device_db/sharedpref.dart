@@ -8,7 +8,6 @@ class SharedPrefs extends BaseSharedPreference {
 
   Future<String> getUserId() async {
    final userName = await BaseSharedPreference._getString(SHAREDPREFERENCE_USERNAME_KEY);
-    print("::::::::::-------------::::the id is::::::::::: $userName");
     return userName;
   }
 
@@ -18,7 +17,6 @@ class SharedPrefs extends BaseSharedPreference {
 
   Future<String> getUserImage() async {
     String userImage = await BaseSharedPreference._getString(SHAREDPREFERENCE_PROFILEIMAGE_KEY);
-    print("::::::::::-------------::::the id is::::::::::: $userImage");
     return userImage;
   }
 
@@ -28,7 +26,6 @@ class SharedPrefs extends BaseSharedPreference {
 
   Future<String> getUserImageName() async {
     String userImageName = await BaseSharedPreference._getString(SHAREDPREFERENCE_PROFILEIMAGENAME_KEY);
-    print("::::::::::-------------::::the id is::::::::::: $userImageName");
     return userImageName;
   }
   void setUserMail(String value) {
@@ -37,7 +34,6 @@ class SharedPrefs extends BaseSharedPreference {
 
   Future<String> getUserMail() async {
    String userMail = await BaseSharedPreference._getString(SHAREDPREFERENCE_MAIL_KEY);
-    print("::::::::::-------------::::the id is::::::::::: $userMail");
     return userMail;
   }
 
@@ -49,7 +45,6 @@ class SharedPrefs extends BaseSharedPreference {
    bool  id = await BaseSharedPreference._getBoolean(SHAREDPREFERENCE_LOGINSTATUS_KEY).then((value) {
       return value;
     });
-    print("::::::::::-------------::::the id is::::::::::: $id");
     return id;
   }
 }

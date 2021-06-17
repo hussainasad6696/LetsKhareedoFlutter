@@ -19,7 +19,9 @@ class _OrderViewState extends State<OrderView> {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(PREFERRED_SIZE),
-          child: CustomAppBar(s: "Cart")),
+          child: CustomAppBar(s: "Cart", drawerButtonClicked: (){
+            Navigator.pop(context);
+          },)),
       body: Center(
         child: Column(
 
