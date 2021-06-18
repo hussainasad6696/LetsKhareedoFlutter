@@ -61,6 +61,7 @@ class AppProductGrid extends StatelessWidget {
         );
         break;
       case Status.INITIAL:
+      default:
         return Center(child: Text("Loading..."));
         break;
     }

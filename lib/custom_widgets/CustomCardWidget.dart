@@ -11,7 +11,7 @@ import 'CarouselSliderForWeb.dart';
 class CardWidget extends StatelessWidget {
   final VoidCallback onCardClicked;
   final Function(int) onCountChanged;
-  double d;
+  final double d;
 
   CardWidget(this.d, {this.onCardClicked, @required this.onCountChanged});
 

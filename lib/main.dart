@@ -1,10 +1,10 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 import 'package:letskhareedo/device_db/sharedpref.dart';
-import 'package:letskhareedo/map/maps.dart';
 import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/AddToCartOrderView.dart';
 import 'package:letskhareedo/pages/SalesPage.dart';
@@ -12,6 +12,8 @@ import 'package:letskhareedo/pages/Store.dart';
 import 'package:letskhareedo/pages/fisrtHomePage.dart';
 import 'package:letskhareedo/pages/homePage.dart';
 import 'package:letskhareedo/pages/kids.dart';
+import 'package:letskhareedo/pages/map/mapAddressHolderList.dart';
+import 'package:letskhareedo/pages/map/maps.dart';
 import 'package:letskhareedo/pages/men.dart';
 import 'package:letskhareedo/pages/profile/Profile.dart';
 import 'package:letskhareedo/pages/splashScreen.dart';
@@ -50,6 +52,7 @@ Future<void> main() async {
         '/salesPage': (context) => Sales(),
         '/AddToCartOrderView': (context) => OrderView(),
         '/profile': (context) => Profile(),
+        '/mapsList': (context) => SavedMapList(),
         '/map' : (context) => Maps()
       },
     ),

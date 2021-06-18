@@ -459,6 +459,6 @@ class _HomeState extends State<HomePage> {
 
   void navigateToMaps() async {
     Navigator.of(context).pop();
-    Navigator.pushNamed(context, '/map');
+    Navigator.pushNamed(context, '/mapsList');
   }
 }

@@ -11,22 +11,23 @@ class CustomAppBar extends StatelessWidget {
 
   int numberOfItems = 0;
 
- final Function drawerButtonClicked;
+ final Function(bool) drawerButtonClicked;
   listOfCartItems() async {
-    numberOfItems = await HiveMethods().numberOfProductsInCart();
+    numberOfItems = await HiveMethods().getMeTheListNumberOfItemsInDb();
   }
   String HOME_PAGE = "homePage";
   @override
   Widget build(BuildContext context) {
+    bool check = s == HOME_PAGE ? true : false;
     String webCheck = kIsWeb ? WEB : MOBILE;
     return AppBar(
       bottomOpacity: webCheck == WEB ? 1.0 : 0.0,
       elevation: webCheck == WEB ? 1.0 : 0.0,
-
+      title: Text(s, style: TextStyle(color: Colors.black),),
       leading: IconButton(icon: s == HOME_PAGE ?
        Icon(Icons.menu, color: Colors.black,) :
           Icon(Icons.arrow_back, color: Colors.black,)
-        , onPressed: () => drawerButtonClicked(),),
+        , onPressed: () => drawerButtonClicked(check),),
       actions: <Widget>[
         Visibility(
           visible: webCheck == WEB,

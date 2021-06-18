@@ -13,27 +13,31 @@ int _numberOfItems = 1;
 
 class _OrderViewState extends State<OrderView> {
   HiveMethods hiveMethods = HiveMethods();
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(PREFERRED_SIZE),
-          child: CustomAppBar(s: "Cart", drawerButtonClicked: (){
+          child: CustomAppBar(s: "Cart", drawerButtonClicked: (check){
+            if(!check)
             Navigator.pop(context);
           },)),
       body: Center(
         child: Column(
-
           children: [
             Text(
               "Your Cart",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
-            Text(
-              "4 items",
-              style:
-                  TextStyle(fontSize: 12, color: kTextColor.withOpacity(0.6)),
+            FutureBuilder(
+              future: hiveMethods.getMeTheListNumberOfItemsInDb(),
+              builder: (context,snapShot){
+                return Text(
+                "${snapShot.data} items",
+                style:
+                    TextStyle(fontSize: 12, color: kTextColor.withOpacity(0.6)),
+              );
+              }
             ),
             SizedBox(
               height: 30.0,
@@ -79,7 +83,6 @@ class _OrderViewState extends State<OrderView> {
   }
 
   Widget listOfProducts() {
-      // Future<List<CartDataBase>> list = HiveMethods().getMeAllTheData();
       return FutureBuilder(
         future: hiveMethods.getMeAllTheData(),
         builder: (context, snapShot){
@@ -89,7 +92,7 @@ class _OrderViewState extends State<OrderView> {
               scrollDirection: Axis.vertical,
               itemCount: snapShot.data.length,
               itemBuilder: (context, index) {
-                return productSalesCard(snapShot.data[index], index);
+                return productSalesCard(snapShot.data[index], index, snapShot.data.length);
               },
             );
           }else {
@@ -100,7 +103,7 @@ class _OrderViewState extends State<OrderView> {
   }
 
 
-  Widget productSalesCard(CartDataBase cartDataBase, int index) {
+  Widget productSalesCard(CartDataBase cartDataBase, int index, length) {
     _numberOfItems = cartDataBase.numberOfItems;
     return Visibility(
       visible: _numberOfItems != 0,

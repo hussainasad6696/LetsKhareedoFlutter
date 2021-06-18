@@ -1,6 +1,7 @@
 
 import 'package:circulardropdownmenu/circulardropdownmenu.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:letskhareedo/ModelView/Model/ProductModel.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
@@ -33,6 +34,10 @@ class _SalesState extends State<Sales> {
           preferredSize: const Size.fromHeight(PREFERRED_SIZE),
           child: CustomAppBar(
             s: "Sales",
+            drawerButtonClicked: (check){
+              if(!check)
+                Navigator.pop(context);
+            },
           )),
       body: SingleChildScrollView(
         child: saleProductDetail(lightTextStyle, products),
@@ -170,13 +175,17 @@ class _SalesState extends State<Sales> {
                             width: double.infinity,
                             child: TextButton(
                               onPressed: () async {
-                                 HiveMethods().addData(products.imagePath,
+                                if(_numberOfItems > 0) {
+                                HiveMethods().addData(
+                                    products.imagePath,
                                     products.name,
                                     products.description,
-                                products.price, _numberOfItems);
-                                Navigator.pushNamed(context, '/AddToCartOrderView'
-                                );
-                              },
+                                    products.price,
+                                    _numberOfItems);
+                                Navigator.pushNamed(
+                                    context, '/AddToCartOrderView');
+                              }else Fluttertoast.showToast(msg: "Select quantity");
+                            },
                               child: Text(
                                 "Add to Cart",
                                 style: TextStyle(

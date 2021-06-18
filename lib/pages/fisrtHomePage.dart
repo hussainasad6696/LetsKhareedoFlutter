@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class FirstHome extends StatefulWidget {
 
-  PageController pageController;
+  final PageController pageController;
   FirstHome({this.pageController});
 
   @override
@@ -75,15 +75,17 @@ class Categories extends StatelessWidget {
     List<Products> getMeAllTheHotProducts = apiResponse.data as List<Products>;
     return OrientationBuilder(
       builder: (context , orientation){
-        return GridView.builder(
-            itemCount: getMeAllTheHotProducts.length,
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
-            ),
-            itemBuilder: (context, index) {
-              return ProductCard(getMeAllTheHotProducts[index]);
-            });
+        if(apiResponse.data != null) {
+          return GridView.builder(
+              itemCount: getMeAllTheHotProducts.length,
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
+              ),
+              itemBuilder: (context, index) {
+                return ProductCard(getMeAllTheHotProducts[index]);
+              });
+        }else return Center(child: CircularProgressIndicator(),);
       },
     );
       // ProductCard(); //TODO

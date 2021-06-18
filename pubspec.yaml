@@ -50,6 +50,7 @@ dependencies:
   permission_handler: ^8.1.1
   location: ^4.3.0
   google_maps_flutter: ^2.0.6
+  expandable_bottom_bar: ^2.0.2
 
 
 dev_dependencies:
