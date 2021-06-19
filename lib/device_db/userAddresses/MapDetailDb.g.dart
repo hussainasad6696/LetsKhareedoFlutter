@@ -18,12 +18,12 @@ class MapDetailAdapter extends TypeAdapter<MapDetail> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MapDetail(
-      houseNumber: fields[0] as String,
-      sector: fields[1] as String,
-      street: fields[2] as String,
-      city: fields[3] as String,
-      floorNumber: fields[4] as String,
-      label: fields[5] as String,
+      addressLine: fields[0] as String,
+      city: fields[1] as String,
+      floorNumber: fields[2] as String,
+      label: fields[3] as String,
+      latitude: fields[4] as double,
+      longitude: fields[5] as double
     );
   }
 
@@ -32,17 +32,17 @@ class MapDetailAdapter extends TypeAdapter<MapDetail> {
     writer
       ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.houseNumber)
+      ..write(obj.addressLine)
       ..writeByte(1)
-      ..write(obj.sector)
-      ..writeByte(2)
-      ..write(obj.street)
-      ..writeByte(3)
       ..write(obj.city)
-      ..writeByte(4)
+      ..writeByte(2)
       ..write(obj.floorNumber)
+      ..writeByte(3)
+      ..write(obj.label)
+      ..writeByte(4)
+      ..write(obj.latitude)
       ..writeByte(5)
-      ..write(obj.label);
+      ..write(obj.longitude);
   }
 
   @override

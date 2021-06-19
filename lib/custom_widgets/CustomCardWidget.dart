@@ -116,7 +116,6 @@ class CardWidget extends StatelessWidget {
             ),
             Positioned(
               child: Card(
-                elevation: 25.0,
                 color: Colors.amber,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50.0)),

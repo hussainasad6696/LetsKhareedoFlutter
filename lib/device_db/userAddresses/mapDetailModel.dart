@@ -5,19 +5,25 @@ part 'MapDetailDb.g.dart';
 @HiveType(typeId: 1)
 class MapDetail {
   @HiveField(0)
-  final String houseNumber;
-  @HiveField(1)
-  final String sector;
-  @HiveField(2)
-  final String street;
+  final String addressLine;
   @HiveField(3)
   final String city;
   @HiveField(4)
   final String floorNumber;
   @HiveField(5)
   final String label;
+  @HiveField(6)
+  final double latitude;
+  @HiveField(7)
+  final double longitude;
 
-  MapDetail({this.city,this.floorNumber,this.houseNumber,this.label,this.sector,this.street});
+  MapDetail(
+      {this.city,
+      this.floorNumber,
+      this.addressLine,
+      this.label,
+      this.longitude,
+      this.latitude});
 
   Object get typeId => 1;
 }

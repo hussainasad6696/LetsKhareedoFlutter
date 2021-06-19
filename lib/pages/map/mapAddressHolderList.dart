@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/constants/size_config.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 import 'package:letskhareedo/device_db/userAddresses/mapDetailModel.dart';
@@ -19,18 +20,16 @@ class _SavedMapListState extends State<SavedMapList> {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(PREFERRED_SIZE),
-          child: CustomAppBar(
-            s: "MapsList",drawerButtonClicked: (check) {
-              if(!check) Navigator.pop(context);
-          },
-          )),
+          child: CustomAppBar(s: "MapList", drawerButtonClicked: (check){
+            if(!check)
+              Navigator.pop(context);
+          },)),
       body: Center(
         child: Column(
           children: [
             Flexible(
                 flex: 7,
-                child: dbFutureHandler()
-            ),
+                child: dbFutureHandler()),
             Expanded(
               child: Align(
                   alignment: Alignment.bottomCenter,
@@ -40,7 +39,9 @@ class _SavedMapListState extends State<SavedMapList> {
                       width: double.infinity,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/map');
+                          setState(() {
+                            Navigator.pushNamed(context, '/map');
+                          });
                         },
                         child: Text(
                           "Add New Address",
@@ -59,7 +60,7 @@ class _SavedMapListState extends State<SavedMapList> {
                       ),
                     ),
                   )),
-            ),
+            )
           ],
         ),
       ),
@@ -72,6 +73,7 @@ class _SavedMapListState extends State<SavedMapList> {
       builder: (context,snapShot){
         if(snapShot.hasData) {
           return ListView.builder(
+            shrinkWrap: true,
               itemCount: snapShot.data.length,
               itemBuilder: (context, index) {
                 return addressCard(snapShot.data[index]);
@@ -82,23 +84,16 @@ class _SavedMapListState extends State<SavedMapList> {
   }
 
   Widget addressCard(MapDetail data) {
-    return Row(
-      children: [
-        IconButton(onPressed: (){}, icon: Icon(Icons.location_on_outlined, color: kPrimaryColor,)),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              ListTile(title: Text("${data.houseNumber} ${data.street} ${data.sector}"),),
-              Text("Floor number: ${data.floorNumber}"),
-              Text("${data.city}"),
-              Text("${data.label}")
-            ],
-          ),
+    return  Card(
+      child: ListTile(
+        leading: FlutterLogo(size: 72.0),
+        title: Text('${data.addressLine}'),
+        subtitle: Text(
+            'A sufficiently long subtitle warrants three lines.'
         ),
-        IconButton(onPressed: (){}, icon: Icon(Icons.edit_location_outlined, color: kPrimaryColor,)),
-        IconButton(onPressed: (){}, icon: Icon(Icons.delete_outline, color: kPrimaryColor,))
-      ],
+        trailing: Icon(Icons.more_vert),
+        isThreeLine: true,
+      ),
     );
   }
 

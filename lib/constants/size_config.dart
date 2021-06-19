@@ -7,6 +7,18 @@ class SizeConfig {
   static double defaultSize;
   static Orientation orientation;
 
+ static double getMeScreenHeightSize(BuildContext context) {
+    return MediaQuery.of(context).size.height;
+  }
+
+ static double getMeScreenWidthSize(BuildContext context) {
+    return MediaQuery.of(context).size.width *
+        MediaQuery.of(context).devicePixelRatio;
+  }
+
+  static double getMeScreenWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width;
+  }
   void init(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;
