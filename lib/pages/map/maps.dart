@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import "package:flutter/material.dart";
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoder/geocoder.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -42,20 +43,31 @@ class _MapsState extends State<Maps>
   );
 
   Set<Marker> _marker = {};
-
-  // double getMeScreenHeightSize() {
-  //   return MediaQuery.of(context).size.height;
-  // }
-  //
-  // double getMeScreenWidthSize() {
-  //   return MediaQuery.of(context).size.width *
-  //       MediaQuery.of(context).devicePixelRatio;
-  // }
-
+  Map intentData = {};
+  bool _intentCheck = false;
+  int _index;
   @override
   Widget build(BuildContext context) {
     BottomBarController _bbc = BottomBarController(vsync: this);
     PermissionsControl.requestLocationPermission();
+    intentData = intentData != null && intentData.isNotEmpty ? intentData : ModalRoute.of(context).settings.arguments;
+    if(intentData != null && intentData["latitude"] != "" && intentData["longitude"] != ""
+        && intentData["latitude"] != null && intentData["longitude"] != null
+    && intentData["floorNumber"] != "" && intentData["floorNumber"] != null
+        && intentData["label"] != "" && intentData["label"] != null
+        && intentData["addressLine"] != "" && intentData["addressLine"] != null
+        && intentData["city"] != "" && intentData["city"] != null){
+      _lat = intentData["latitude"];
+      _lng = intentData["longitude"];
+      _localityDisplay = intentData["city"];
+      _floorNumberDisplay = intentData["floorNumber"];
+      _addressLineDisplay = intentData["addressLine"];
+      _index = intentData["index"];
+      setState(() {
+        _intentCheck = true;
+      });
+      print("$_lng $_lat ===============------------------============");
+    }
     return new Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: PreferredSize(
@@ -75,8 +87,13 @@ class _MapsState extends State<Maps>
           markers: _marker,
           onMapCreated: (GoogleMapController controller) {
             setState(() {
+              print("$_lng $_lat ===============------------------============");
               _marker.add(Marker(
                   markerId: MarkerId(_markerId), position: LatLng(_lat, _lng)));
+              controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+                  target: LatLng(_lat, _lng),
+                  zoom: 15.151926040649414,
+                  bearing: 192.8334901395799)));
             });
             _controller.complete(controller);
           },
@@ -140,7 +157,7 @@ class _MapsState extends State<Maps>
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Icon(
-                                    Icons.edit,
+                                    Icons.edit_location_outlined,
                                     color: kPrimaryColor,
                                   ),
                                 ),
@@ -182,59 +199,12 @@ class _MapsState extends State<Maps>
                       SizedBox(
                         height: 10,
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 15.0),
-                      //   child: Text(
-                      //     "Street address",
-                      //     style: TextStyle(
-                      //         fontWeight: FontWeight.bold, fontSize: 16),
-                      //   ),
-                      // ),
-                      // Padding(
-                      //   padding: EdgeInsets.only(
-                      //       top: 8.0, bottom: 8.0, left: 15, right: 15),
-                      //   child: Container(
-                      //     height: 45,
-                      //     child: TextField(
-                      //       decoration: new InputDecoration(
-                      //         contentPadding: EdgeInsets.all(5),
-                      //         hintText: "Street",
-                      //         hintTextDirection: TextDirection.ltr,
-                      //         enabledBorder: const OutlineInputBorder(
-                      //           borderSide: const BorderSide(
-                      //               color: Colors.grey, width: 0.0),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+
                     ],
                   ),
                 ),
               ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.only(bottom: 8.0, left: 10.0, right: 10.0),
-              //   child: Container(
-              //     height: 60,
-              //     child: Card(
-              //       child: Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: TextField(
-              //           decoration: new InputDecoration(
-              //             contentPadding: EdgeInsets.all(5),
-              //             hintText: "Floor",
-              //             hintTextDirection: TextDirection.ltr,
-              //             enabledBorder: const OutlineInputBorder(
-              //               borderSide: const BorderSide(
-              //                   color: Colors.grey, width: 0.0),
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+
               ListTile(
                 title: Text(
                   "Address label",
@@ -372,15 +342,27 @@ class _MapsState extends State<Maps>
                       borderRadius: BorderRadius.circular(RADIUS))),
                   backgroundColor: MaterialStateProperty.all(kPrimaryColor)),
               onPressed: () {
-                HiveMethods().addDataMap(MapDetail(
-                  longitude: _lng,
-                  latitude: _lat,
-                  addressLine: _addressLineDisplay,
-                  floorNumber: _floorNumberDisplay,
-                  label: _labelSelected,
-                  city: _localityDisplay
-                ));
-                Navigator.pop(context);
+                if(_lat != null && _lat != "" &&
+                    _lng != null && _lng != "" &&
+                    _addressLineDisplay != null && _addressLineDisplay != "" &&
+                    _floorNumberDisplay != null && _floorNumberDisplay != "" &&
+                    _labelSelected != null && _labelSelected != "" &&
+                    _localityDisplay != null && _localityDisplay != "") {
+                  var mapData = MapDetail(
+                      longitude: _lng,
+                      latitude: _lat,
+                      addressLine: _addressLineDisplay,
+                      floorNumber: _floorNumberDisplay,
+                      label: _labelSelected,
+                      city: _localityDisplay
+                  );
+                  if(!_intentCheck)
+                  HiveMethods().addDataMap(mapData);
+                  else HiveMethods().updateMapData(_index, mapData);
+                  Navigator.pop(context);
+                }else {
+                  Fluttertoast.showToast(msg: "Field empty");
+                }
               },
               child: Text(
                 "Save Current Location",
@@ -400,36 +382,38 @@ class _MapsState extends State<Maps>
       bbc.close(velocity: 10.0);
       _openCloseCheck = false;
     } else  {
-      bbc.open(velocity: 10.0);
-      _openCloseCheck = true;
-      var location = Location();
-      LocationData currentLocation = await location.getLocation();
-      final GoogleMapController controller = await _controller.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(currentLocation.latitude, currentLocation.longitude),
-          zoom: 15.151926040649414,
-          bearing: 192.8334901395799)));
-        final coordinates = new Coordinates(currentLocation.latitude, currentLocation.longitude);
-        var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      if(!_intentCheck){
+        Fluttertoast.showToast(msg: "$_intentCheck");
+        bbc.open(velocity: 10.0);
+        _openCloseCheck = true;
+        var location = Location();
+        LocationData currentLocation = await location.getLocation();
+        final GoogleMapController controller = await _controller.future;
+        controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+            target: LatLng(currentLocation.latitude, currentLocation.longitude),
+            zoom: 15.151926040649414,
+            bearing: 192.8334901395799)));
+        final coordinates = new Coordinates(
+            currentLocation.latitude, currentLocation.longitude);
+        var addresses =
+            await Geocoder.local.findAddressesFromCoordinates(coordinates);
         var first = addresses.first;
-        // print("featureName ${first.featureName} : adminArea ${first.adminArea} : countryName ${first.countryName} "
-        //     ": featureName ${first.featureName}"
-        //     ": locality ${first.locality} : postalCode ${first.postalCode} : "
-        //     " subAdminArea ${first.subAdminArea} : subLocality ${first.subLocality} "
-        //     " : subThoroughfare ${first.subThoroughfare} : : thoroughfare ${first.thoroughfare} "
-        //     " : addressLine ${first.addressLine}   : countryCode ${first.countryCode} "
-        //     " 0000000000000000000000000000000");
-      setState(() {
-        _lat = currentLocation.latitude;
-        _lng = currentLocation.longitude;
-        _addressLineDisplay = first.addressLine;
-        _localityDisplay = first.locality;
-        var pinPosition =
-            LatLng(currentLocation.latitude, currentLocation.longitude);
-        // _marker.removeWhere((element) => element.markerId.value == markerId);
-        _marker.clear();
-        addMarker(_marker, pinPosition);
-      });
+        setState(() {
+          _lat = currentLocation.latitude;
+          _lng = currentLocation.longitude;
+          _addressLineDisplay = first.addressLine;
+          _localityDisplay = first.locality;
+          var pinPosition =
+              LatLng(currentLocation.latitude, currentLocation.longitude);
+          _marker.removeWhere((element) => element.markerId.value == _markerId);
+          // _marker.clear();
+          addMarker(_marker, pinPosition);
+        });
+      }else {
+        Fluttertoast.showToast(msg: "$_intentCheck");
+        bbc.open(velocity: 10.0);
+         _intentCheck = false;
+      }
     }
   }
 

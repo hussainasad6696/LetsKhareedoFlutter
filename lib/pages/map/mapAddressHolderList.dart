@@ -4,6 +4,9 @@ import 'package:letskhareedo/constants/size_config.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 import 'package:letskhareedo/device_db/userAddresses/mapDetailModel.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
 
 class SavedMapList extends StatefulWidget {
@@ -38,11 +41,9 @@ class _SavedMapListState extends State<SavedMapList> {
                     child: SizedBox(
                       width: double.infinity,
                       child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            Navigator.pushNamed(context, '/map');
-                          });
-                        },
+                        onPressed: () =>
+                          navigateToMapPage()
+                        ,
                         child: Text(
                           "Add New Address",
                           style: TextStyle(
@@ -76,25 +77,98 @@ class _SavedMapListState extends State<SavedMapList> {
             shrinkWrap: true,
               itemCount: snapShot.data.length,
               itemBuilder: (context, index) {
-                return addressCard(snapShot.data[index]);
+                return addressCard(snapShot.data[index], index);
               });
         }else return Center(child: CircularProgressIndicator());
       },
     );
   }
 
-  Widget addressCard(MapDetail data) {
+  Widget addressCard(MapDetail data, int index) {
+    IconData _icons;
+    if(data.label == "Home") {
+      _icons = Icons.home_outlined;
+    }else if(data.label == "Work") _icons = Icons.work_outline_outlined;
+    else if(data.label == "Partner") _icons = Icons.favorite_border;
+    else if(data.label == "Other") _icons = Icons.location_on_outlined;
     return  Card(
       child: ListTile(
-        leading: FlutterLogo(size: 72.0),
-        title: Text('${data.addressLine}'),
-        subtitle: Text(
-            'A sufficiently long subtitle warrants three lines.'
+        leading: Column(
+          children: [
+            Icon(Icons.location_on_outlined, color: kPrimaryColor,),
+            SizedBox(height: 6,),
+            Icon(_icons, color: kPrimaryColor,),
+          ],
         ),
-        trailing: Icon(Icons.more_vert),
+        title: Text('${data.addressLine}', style: TextStyle(fontWeight: FontWeight.bold),),
+        subtitle: Text(
+            'Floor: ${data.floorNumber}'
+        ),
+        trailing: Column(
+          children: [
+            GestureDetector(
+                onTap: (){
+                  Dialogs.materialDialog(
+                      msg: 'Are you sure ? you can\'t undo this',
+                      title: "Delete",
+                      color: Colors.white,
+                      context: context,
+                      actions: [
+                        IconsOutlineButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          text: 'Cancel',
+                          iconData: Icons.cancel_outlined,
+                          textStyle: TextStyle(color: Colors.grey),
+                          iconColor: Colors.grey,
+                        ),
+                        IconsButton(
+                          onPressed: () {
+                             HiveMethods().deleteMapDataFromList(index);
+                             Navigator.pop(context);
+                             setState(() {
+
+                             });
+                          },
+                          text: 'Delete',
+                          iconData: Icons.delete,
+                          color: Colors.red,
+                          textStyle: TextStyle(color: Colors.white),
+                          iconColor: Colors.white,
+                        ),
+                      ]);
+                },
+                child: Icon(Icons.delete_outline, color: kPrimaryColor,)),
+            SizedBox(
+              height: 6,
+            ),
+            // GestureDetector(
+            //     onTap: (){
+            //       Navigator.pushNamed(context, '/map',
+            //       arguments: {
+            //         "floorNumber" : data.floorNumber,
+            //         "label" : data.label,
+            //         "addressLine" : data.addressLine,
+            //         "longitude" : data.longitude,
+            //         "latitude" : data.latitude,
+            //         "city" : data.city,
+            //         "index" : index
+            //       });
+            //     },
+            //     child: Icon(Icons.edit_location_outlined, color: kPrimaryColor,))
+          ],
+        ),
         isThreeLine: true,
       ),
     );
+  }
+
+  navigateToMapPage() async {
+    var back = await Navigator.pushNamed(context, '/map');
+    setState(() {
+      print("$back");
+    });
   }
 
 }

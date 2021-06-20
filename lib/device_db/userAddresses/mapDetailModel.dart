@@ -6,15 +6,15 @@ part 'MapDetailDb.g.dart';
 class MapDetail {
   @HiveField(0)
   final String addressLine;
-  @HiveField(3)
+  @HiveField(1)
   final String city;
-  @HiveField(4)
+  @HiveField(2)
   final String floorNumber;
-  @HiveField(5)
+  @HiveField(3)
   final String label;
-  @HiveField(6)
+  @HiveField(4)
   final double latitude;
-  @HiveField(7)
+  @HiveField(5)
   final double longitude;
 
   MapDetail(
