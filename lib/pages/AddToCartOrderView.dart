@@ -59,7 +59,7 @@ class _OrderViewState extends State<OrderView> {
                           });
                         },
                         child: Text(
-                          "Book Order",
+                          "Checkout",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

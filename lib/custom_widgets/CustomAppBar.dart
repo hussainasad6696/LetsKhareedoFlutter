@@ -18,6 +18,7 @@ class CustomAppBar extends StatelessWidget {
   String HOME_PAGE = "homePage";
   @override
   Widget build(BuildContext context) {
+    listOfCartItems();
     bool check = s == HOME_PAGE ? true : false;
     String webCheck = kIsWeb ? WEB : MOBILE;
     return AppBar(
@@ -50,26 +51,26 @@ class CustomAppBar extends StatelessWidget {
                     },
                     color: Colors.grey[800],
                   ),
-                  Positioned(
-                      right: 10,
-                      top: 25,
-                      child: Container(
-                        padding: EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(6)
-                        ),
-                        constraints: BoxConstraints(
-                          minHeight: 12,
-                          minWidth: 12
-                        ),
-                        child: Text(
-                          "$numberOfItems",
-                          style: TextStyle(
-                            fontSize: 12
-                          ),
-                        ),
-                  ))
+                  // Positioned(
+                  //     right: 10,
+                  //     top: 25,
+                  //     child: Container(
+                  //       padding: EdgeInsets.all(2),
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.red,
+                  //         borderRadius: BorderRadius.circular(6)
+                  //       ),
+                  //       constraints: BoxConstraints(
+                  //         minHeight: 12,
+                  //         minWidth: 12
+                  //       ),
+                  //       child: Text(
+                  //         "$numberOfItems",
+                  //         style: TextStyle(
+                  //           fontSize: 12
+                  //         ),
+                  //       ),
+                  // ))
                 ],
               ),
             ),

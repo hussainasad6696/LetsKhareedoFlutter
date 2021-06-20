@@ -53,6 +53,7 @@ class _SalesState extends State<Sales> {
   }
 
   OrientationBuilder saleProductDetail(TextStyle lightTextStyle, Products products) {
+    List<String> sizes = products.size.split(",");
     return OrientationBuilder(builder: (context, orientation) {
         return SizedBox(
           width: double.infinity,
@@ -103,7 +104,7 @@ class _SalesState extends State<Sales> {
                       SizedBox(
                         height: 20,
                       ),
-                      Text(
+                     /* Text(
                         "Available Selection",
                         style: lightTextStyle,
                       ),
@@ -130,7 +131,7 @@ class _SalesState extends State<Sales> {
                           });
                         },
                         hintText: _dropDownMenuData,
-                      ),
+                      ),*/
 
                     ],
                   ),
@@ -166,6 +167,47 @@ class _SalesState extends State<Sales> {
                           style: TextStyle(
                               color: kTextColor.withOpacity(0.7), height: 1.5),
                         ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Size",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                                Text(
+                                  "Chest",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                                Text(
+                                  "Shoulder",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10,),
+                            for(var i in sizes) SizedBox(
+                                height: 40,
+                                child: Text(i.toString())),
+                          ],
+                        ),
+
+
+
                         SizedBox(
                           height: 5,
                         ),
@@ -262,4 +304,5 @@ class _SalesState extends State<Sales> {
         );
       });
   }
+
 }

@@ -55,6 +55,10 @@ class AllProductsCard extends StatelessWidget {
               height: 5,
             ),
             Text(products.price),
+            SizedBox(
+              height: 5,
+            ),
+            Text("Quantity: ${products.quantity}"),
           ],
         ),
       ),
