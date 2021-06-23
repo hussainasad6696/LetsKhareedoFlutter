@@ -31,6 +31,7 @@ const String ADVERTISEMENT_IMAGES_SETTER_ADDRESS = "/products/advertImages/?id="
 const String PRODUCT_HOT_OR_NOT = "/products/hotOrNot";
 const String LOGIN_USER_ACCOUNT = "/userLogin";
 const String ADD_NEW_USER = "/addCustomer";
+const String SEND_NEW_ORDER = "/newOrder";
 
 /*AIzaSyDQVnUnkicHLoptzvwPc1L5h8NWgBtK60c*/
 

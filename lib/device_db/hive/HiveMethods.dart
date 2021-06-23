@@ -22,15 +22,26 @@ class HiveMethods {
     await Hive.openBox(USER_DB);
   }
 
-  addData(String imageUrl, String name, String description, String price,
-      int numberOfItems) async {
+  addData(
+      String imageUrl,
+      String name,
+      String description,
+      String price,
+      int numberOfItems,
+      String selectedShoulders,
+      String selectedChest,
+      String selectedTypes, String selectedWaist) async {
     _dataBox = await Hive.openBox(DB_NAME);
     CartDataBase cartDataBase = CartDataBase(
         imageUrl: imageUrl,
         name: name,
         description: description,
         price: price,
-        numberOfItems: numberOfItems);
+        numberOfItems: numberOfItems,
+        shoulder: selectedShoulders,
+        chest: selectedChest,
+        type: selectedTypes,
+    waist: selectedWaist);
     await _dataBox.add(cartDataBase);
     _dataBox.close();
   }
@@ -59,7 +70,7 @@ class HiveMethods {
   Future<List<MapDetail>> getMeAllMapDetailData() async {
     _mapBox = await Hive.openBox(MAP_DB_NAME);
     List<MapDetail> mapDetail = [];
-    for(int i = 0; i < _mapBox.length; i++){
+    for (int i = 0; i < _mapBox.length; i++) {
       var mapDetailMap = _mapBox.getAt(i);
       mapDetail.add(mapDetailMap);
     }
@@ -84,7 +95,7 @@ class HiveMethods {
     _dataBox.close();
   }
 
-  Future deleteMapDataFromList(int index) async{
+  Future deleteMapDataFromList(int index) async {
     _mapBox = await Hive.openBox(MAP_DB_NAME);
     _mapBox.deleteAt(index);
     _mapBox.close();
@@ -104,13 +115,11 @@ class HiveMethods {
     _mapBox.close();
   }
 
-  //
-  // Future<int> numberOfProductsInCart() async {
-  //   _dataBox = await Hive.openBox(DB_NAME);
-  //   int numberOfItems = _dataBox.values.toList().length;
-  //   _dataBox.close();
-  //   return numberOfItems;
-  // }
+  Future<String> getUserPreferenceUuid() async {
+    userBox = await Hive.openBox(USER_DB);
+    String uuid = userBox.get(USER_PREFERENCE_UUID_KEY);
+    return uuid;
+  }
 
   Future<void> userPreferencesUuid(String uuid) async {
     userBox = await Hive.openBox(USER_DB);

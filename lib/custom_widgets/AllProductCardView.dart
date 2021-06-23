@@ -15,7 +15,7 @@ class AllProductsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Navigator.pushNamed(context, '/salesPage', arguments: /*products*/ {
+        Navigator.pushNamed(context, '/salesPage', arguments: {
           "price" : products.price,
           "description" : products.description,
           "imagePath" : products.imagePath,
@@ -28,7 +28,10 @@ class AllProductsCard extends StatelessWidget {
           "gender" : products.gender,
           "ageGroup" : products.kids,
           "hotOrNot" : products.hotOrNot,
-          "name" : products.name
+          "name" : products.name,
+          "chest" : products.chest,
+          "shoulder" : products.shoulder,
+          "waist" : products.waist
         });
       },
       child: Container(

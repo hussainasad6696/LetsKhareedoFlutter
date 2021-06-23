@@ -15,13 +15,38 @@ class CartDataBase {
   final String price;
   @HiveField(4)
    int numberOfItems;
+  @HiveField(5)
+  final String type;
+  @HiveField(6)
+  final String chest;
+  @HiveField(7)
+  final String shoulder;
+  @HiveField(8)
+  final String waist;
 
   CartDataBase(
       {this.imageUrl,
       this.name,
       this.description,
       this.price,
-      this.numberOfItems});
+      this.numberOfItems,
+      this.type,
+      this.chest,
+      this.shoulder,
+      this.waist});
 
+  Map<String, dynamic> toJson() {
+    return {
+      'imageUrl': imageUrl,
+      'name': name,
+      'description': description,
+      'price': price,
+      'numberOfItems': numberOfItems,
+      'type' : type,
+      'chest': chest,
+      'shoulder': shoulder,
+      'waist': waist
+    };
+  }
 
 }

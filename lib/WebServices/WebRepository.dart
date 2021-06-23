@@ -8,6 +8,8 @@ import 'package:letskhareedo/ModelView/Model/userprofile/userprofileModel.dart';
 import 'package:letskhareedo/WebServices/WebServiceHttp.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/device_db/CartDB.dart';
+import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 
 class WebRepo {
   WebService _webService = WebService();
@@ -30,6 +32,19 @@ class WebRepo {
     Future<Response> response = _webService.postData(userProfileModel.toJson(),ADD_NEW_USER).then((value) {
       return value;
     });
+    Response statusCode = await response.then((value) {
+      return value;
+    });
+    return statusCheck(statusCode);
+  }
+
+  Future<String> sendNewOrder(String cartData) async {
+    String uuid = await HiveMethods().getUserPreferenceUuid();
+    Map data = {
+      "orderData" : cartData,
+      "deviceId" : uuid
+    };
+    Future<Response> response = _webService.postData(data, SEND_NEW_ORDER);
     Response statusCode = await response.then((value) {
       return value;
     });

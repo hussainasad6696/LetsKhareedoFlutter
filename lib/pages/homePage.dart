@@ -91,7 +91,6 @@ class _HomeState extends State<HomePage> {
     });
   }
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     TextStyle textStyleHeading = TextStyle(color: Colors.white);
@@ -420,7 +419,7 @@ class _HomeState extends State<HomePage> {
             });
           },
           child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

@@ -12,6 +12,9 @@ class Products {
   final String kids;
   final bool hotOrNot;
   final String name;
+  final String chest;
+  final String shoulder;
+  final String waist;
 
   Products(
       {this.type,
@@ -26,7 +29,10 @@ class Products {
       this.gender,
       this.kids,
       this.hotOrNot,
-      this.name});
+      this.name,
+      this.chest,
+      this.shoulder,
+      this.waist});
 
   factory Products.fromJson(Map<String, dynamic> json) {
     return Products(
@@ -37,12 +43,15 @@ class Products {
         material: json["material"],
         quantity: json["quantity"],
         type: json["type"],
+        chest: json["chest"],
+        shoulder: json["shoulder"],
         uuid: json["_id"],
         size: json["size"],
         gender: json["gender"],
         kids: json["kids"],
         hotOrNot: json["hotOrNot"],
-        name: json["name"]);
+        name: json["name"],
+        waist: json["waist"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -59,7 +68,10 @@ class Products {
       "gender": gender,
       "ageGroup": kids,
       "hotOrNot": hotOrNot,
-      "name": name
+      "name": name,
+      "chest": chest,
+      "shoulder": shoulder,
+      "waist": waist
     };
   }
 }

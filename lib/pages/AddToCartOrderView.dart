@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:letskhareedo/WebServices/WebRepository.dart';
+import 'package:letskhareedo/WebServices/WebServiceHttp.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'package:letskhareedo/device_db/CartDB.dart';
@@ -47,19 +51,22 @@ class _OrderViewState extends State<OrderView> {
                 child: listOfProducts()),
             Expanded(
               child: Align(
-                  alignment: Alignment.bottomCenter,
+                  alignment: Alignment.bottomRight,
                   child: Padding(
                     padding: const EdgeInsets.all(15),
                     child: SizedBox(
-                      width: double.infinity,
+                      height: 50,
                       child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            hiveMethods.deleteAll(DB_NAME);
+                        onPressed: () async {
+                          List<CartDataBase> dataFromDataBase = await hiveMethods.getMeAllTheData();
+                          var json = jsonEncode(dataFromDataBase.map((cartDatabase) => cartDatabase.toJson()).toList());
+                          setState(()  {
+                            // hiveMethods.deleteAll(DB_NAME);
+                            WebRepo().sendNewOrder(json);
                           });
                         },
                         child: Text(
-                          "Checkout",
+                          "Checkout >",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -110,69 +117,81 @@ class _OrderViewState extends State<OrderView> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
-              width: 80,
-              child: AspectRatio(
-                aspectRatio: 0.88,
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: kSecondaryColor,
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Image.network(
-                    BASE_URL_HTTP_WITH_ADDRESS+PRODUCT_IMAGE_ADDRESS+cartDataBase.imageUrl,
-                    fit: BoxFit.cover,
+            Flexible(
+              child: SizedBox(
+                width: 90,
+                child: AspectRatio(
+                  aspectRatio: 0.88,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: EdgeInsets.only(right: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: kSecondaryColor,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Image.network(
+                        BASE_URL_HTTP_WITH_ADDRESS+PRODUCT_IMAGE_ADDRESS+cartDataBase.imageUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 5.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    cartDataBase.name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  cartDataBase.name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
-                  Text(
-                    "${cartDataBase.numberOfItems}",
-                    style: TextStyle(color: kTextColor.withOpacity(0.8)),
+                ),
+                Text(
+                  "${cartDataBase.numberOfItems}",
+                  style: TextStyle(color: kTextColor.withOpacity(0.8)),
+                ),
+                Text(
+                  cartDataBase.description,
+                  style: TextStyle(color: kTextColor.withOpacity(0.8)),
+                ),
+                Text(
+                  "Rs ${cartDataBase.price}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
                   ),
-                  Text(
-                    cartDataBase.description,
-                    style: TextStyle(color: kTextColor.withOpacity(0.8)),
-                  ),
-                  Text(
-                    "Rs ${cartDataBase.price}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  )
-                ],
-              ),
+                ),
+                Visibility(
+                    visible: cartDataBase.waist != null,
+                    child: Text("Waist: ${cartDataBase.waist}")),
+                Visibility(
+                    visible: cartDataBase.type != "",
+                    child: Text("Type: ${cartDataBase.type}  Chest: ${cartDataBase.chest}  Shoulder: ${cartDataBase.shoulder}"))
+              ],
             ),
-            Container(
-              margin: EdgeInsets.only(left: 20.0),
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(kPrimaryColor),
-                    shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(RADIUS))),
-                   ),
-                  onPressed: (){
-                    setState(() {
-                      hiveMethods.deleteFromList(index);
-                    });
-                  }, child: Icon(
-                Icons.delete
-              )
+            Flexible(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(kPrimaryColor),
+                      shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(RADIUS))),
+                     ),
+                    onPressed: (){
+                      setState(() {
+                        hiveMethods.deleteFromList(index);
+                      });
+                    }, child: Icon(
+                  Icons.delete
+                )
+                ),
               ),
             ),
           ],
