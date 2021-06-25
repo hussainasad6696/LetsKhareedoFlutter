@@ -54,11 +54,18 @@ class _SalesState extends State<Sales> {
     super.initState();
   }
 
+  List<String> _sizes;
+  List<String> _chest;
+  List<String> _shoulders;
+  List<String> _waist;
+
   Widget saleProductDetail(TextStyle lightTextStyle, Products products) {
-    List<String> _sizes = products.size.split(",");
-    List<String> _chest = products.chest.split(",");
-    List<String> _shoulders = products.shoulder.split(",");
-    List<String> _waist = products.waist.split(",");
+    if(products.type == "shirt" || products.type == "Shirt") {
+      _sizes = products.size.split(",");
+      _chest = products.chest.split(",");
+      _shoulders = products.shoulder.split(",");
+    }else
+    _waist = products.waist.split(",");
     return SingleChildScrollView(
       child: OrientationBuilder(builder: (context, orientation) {
         return SizedBox(
@@ -172,7 +179,7 @@ class _SalesState extends State<Sales> {
                               _selectedShoulders,
                               _selectedChest,
                               _selectedTypes,
-                          _selectedWaist);
+                              _selectedWaist);
                           Navigator.pushNamed(context, '/AddToCartOrderView');
                         } else {
                           setState(() {
@@ -293,16 +300,18 @@ class _SalesState extends State<Sales> {
             ],
           ),
         ),
+        if(_waist != null)
         Visibility(
-            visible: products.type != "shirt" || products.type != "Shirt",
-            child: Text(
-              "Waist",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ), ),
+          visible: products.type != "shirt" || products.type != "Shirt",
+          child: Text(
+            "Waist",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
         SizedBox(
           height: 10,
         ),
-
+        if(_waist != null)
         for (var i = 0; i < _waist.length; i++)
           Visibility(
             visible: products.type != "shirt" || products.type != "Shirt",
@@ -316,7 +325,7 @@ class _SalesState extends State<Sales> {
               },
             ),
           ),
-
+        if(_sizes != null)
         for (var i = 0; i < _sizes.length; i++)
           Visibility(
             visible: products.type == "shirt" || products.type == "Shirt",

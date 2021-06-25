@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:hive/hive.dart';
@@ -55,6 +56,21 @@ class HiveMethods {
   Future<int> getMeTheListNumberOfItemsInDb() async {
     _dataBox = await Hive.openBox(DB_NAME);
     return _dataBox.length;
+  }
+
+  Future<double> getMeTheTotalCostOfSelectedProducts() async {
+    _dataBox = await Hive.openBox(DB_NAME);
+    double totalPrice = 0.0;
+    for (int i = 0; i < _dataBox.length; i++) {
+      try{
+        var cartMap = _dataBox.getAt(i).price;
+        double price = double.parse(cartMap);
+        totalPrice = totalPrice + price;
+      }catch(e){
+        print("$e ===================error==");
+      }
+    }
+    return totalPrice;
   }
 
   Future<List<CartDataBase>> getMeAllTheData() async {

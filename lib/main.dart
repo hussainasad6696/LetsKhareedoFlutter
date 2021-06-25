@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +10,7 @@ import 'package:letskhareedo/pages/AccessoriesPage.dart';
 import 'package:letskhareedo/pages/AddToCartOrderView.dart';
 import 'package:letskhareedo/pages/SalesPage.dart';
 import 'package:letskhareedo/pages/Store.dart';
+import 'package:letskhareedo/pages/checkoutPages/checkOut.dart';
 import 'package:letskhareedo/pages/fisrtHomePage.dart';
 import 'package:letskhareedo/pages/homePage.dart';
 import 'package:letskhareedo/pages/kids.dart';
@@ -53,7 +55,8 @@ Future<void> main() async {
         '/AddToCartOrderView': (context) => OrderView(),
         '/profile': (context) => Profile(),
         '/mapsList': (context) => SavedMapList(),
-        '/map' : (context) => Maps()
+        '/map' : (context) => Maps(),
+        '/checkOut' : (context) => CheckOutPage()
       },
     ),
   ));

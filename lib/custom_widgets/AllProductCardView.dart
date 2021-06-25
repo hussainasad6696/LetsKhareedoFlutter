@@ -6,13 +6,18 @@ class AllProductsCard extends StatelessWidget {
 
   final String activity;
   final Products products;
+  final Function onFavPressed;
+  final int index;
   const AllProductsCard({
     Key key,
-    this.activity, this.products
+    this.activity, this.products, this.onFavPressed, this.index
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool favSelectedOrNot = false;
+    IconData _iconFavUnselected = Icons.favorite_border;
+    IconData _iconFavSelected = Icons.favorite;
     return GestureDetector(
       onTap: (){
         Navigator.pushNamed(context, '/salesPage', arguments: {
@@ -42,12 +47,35 @@ class AllProductsCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            AspectRatio(
-              aspectRatio: 1,
-              child: FadeInImage.assetNetwork(placeholder: "assets/icons/spinner.gif",
-                image: BASE_URL_HTTP_WITH_ADDRESS+PRODUCT_IMAGE_ADDRESS + products.imagePath,
-                fit: BoxFit.cover,),
+            Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      onFavPressed();
+                      if(favSelectedOrNot) favSelectedOrNot = false;
+                      else favSelectedOrNot = true;
+                    },
+                    icon: Icon(favSelectedOrNot ? _iconFavSelected : _iconFavUnselected, color: Colors.red,),
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    width: 140,
+                    height: 150,
+                    margin: EdgeInsets.only(top: 15),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: FadeInImage.assetNetwork(placeholder: "assets/icons/spinner.gif",
+                        image: BASE_URL_HTTP_WITH_ADDRESS+PRODUCT_IMAGE_ADDRESS + products.imagePath,
+                        fit: BoxFit.cover,),
+                    ),
+                  ),
+                ),
+              ],
             ),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(products.name, style: TextStyle(
