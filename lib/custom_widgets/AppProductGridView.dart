@@ -9,9 +9,8 @@ import 'AllProductCardView.dart';
 class AppProductGrid extends StatelessWidget {
   final String url;
   final String activity;
-  final Function favClicked;
 
-  const AppProductGrid({Key key, this.url, this.activity, this.favClicked}) : super(key: key);
+  const AppProductGrid({Key key, this.url, this.activity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +49,6 @@ class AppProductGrid extends StatelessWidget {
                       activity: activity,
                       products: productList[index],
                       index: index,
-                      onFavPressed: () => favClicked,
                     ));
           },
         );

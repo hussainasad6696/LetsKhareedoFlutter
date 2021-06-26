@@ -47,6 +47,7 @@ const String LETSKHAREEDO_MAIL = "letskareedo23@gmail.com";
 
 const String DB_NAME = "CartDB";
 const String DB_ORDER_HISTORY_NAME = "OrderHistoryDB";
+const String DB_FAV_NAME = "FavCartDB";
 const String MAP_DB_NAME = "MapDetailDb";
 const String USER_DB = "UserDb";
 const String USER_PREFERENCE_UUID_KEY = "user_uuid";

@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/device_db/userAddresses/mapDetailModel.dart';
@@ -17,23 +18,16 @@ class HiveMethods {
     Directory document = await getApplicationDocumentsDirectory();
     Hive
       ..init(document.path)
-      ..registerAdapter(CartDataBaseAdapter())
-      ..registerAdapter(MapDetailAdapter());
+      ..registerAdapter(CartDataBaseAdapter())..registerAdapter(
+        MapDetailAdapter());
     await Hive.openBox<CartDataBase>(DB_NAME);
+    await Hive.openBox<CartDataBase>(DB_FAV_NAME);
     await Hive.openBox(USER_DB);
   }
 
-  addData(
-      String imageUrl,
-      String name,
-      String description,
-      String price,
-      int numberOfItems,
-      String selectedShoulders,
-      String selectedChest,
-      String selectedTypes, String selectedWaist) async {
+  addData(CartDataBase cartDataBase) async {
     _dataBox = await Hive.openBox(DB_NAME);
-    CartDataBase cartDataBase = CartDataBase(
+    /*CartDataBase cartDataBase = CartDataBase(
         imageUrl: imageUrl,
         name: name,
         description: description,
@@ -42,10 +36,67 @@ class HiveMethods {
         shoulder: selectedShoulders,
         chest: selectedChest,
         type: selectedTypes,
-    waist: selectedWaist);
+        waist: selectedWaist,
+        uuid: uuid);*/
     await _dataBox.add(cartDataBase);
     _dataBox.close();
   }
+
+  addDataToFav(CartDataBase cartDataBase) async {
+    _dataBox = await Hive.openBox(DB_FAV_NAME);
+    // CartDataBase cartDataBase = CartDataBase(
+    //     imageUrl: imageUrl,
+    //     name: name,
+    //     description: description,
+    //     price: price,
+    //     numberOfItems: numberOfItems,
+    //     shoulder: selectedShoulders,
+    //     chest: selectedChest,
+    //     type: selectedTypes,
+    //     waist: selectedWaist,
+    //     uuid: uuid);
+    // print("added $uuid   $name");
+    await _dataBox.add(cartDataBase).then((value) {
+      print("Data added $value----------${cartDataBase.uuid}");
+    });
+    _dataBox.close();
+  }
+
+  Future<bool> checkForExistance(String uuid) async {
+    _dataBox = await Hive.openBox(DB_FAV_NAME);
+    bool check = false;
+    for(int i = 0; i < _dataBox.length; i++){
+      if(uuid == _dataBox.getAt(i).uuid){
+        check = true;
+        break;
+      }
+    }
+    return check;
+  }
+
+  deleteFromFav(String uuid) async {
+   _dataBox = await Hive.openBox(DB_FAV_NAME);
+   for(int i = 0; i < _dataBox.length; i++){
+     if(uuid == _dataBox.getAt(i).uuid){
+       print("$uuid");
+       _dataBox.deleteAt(i).then((value) {
+         print("Deleted $uuid --------$uuid");
+       });
+       break;
+     }
+   }
+  }
+
+  Future<List<CartDataBase>> getAllTheFavData() async {
+    _dataBox = await Hive.openBox(DB_FAV_NAME);
+    List<CartDataBase> favData = [];
+    for(int i = 0; i < _dataBox.length; i++){
+      var favDataObj = _dataBox.getAt(i);
+      favData.add(favDataObj);
+    }
+    return favData;
+  }
+
 
   addDataMap(MapDetail mapDetailData) async {
     _mapBox = await Hive.openBox(MAP_DB_NAME);
@@ -62,11 +113,13 @@ class HiveMethods {
     _dataBox = await Hive.openBox(DB_NAME);
     double totalPrice = 0.0;
     for (int i = 0; i < _dataBox.length; i++) {
-      try{
-        var cartMap = _dataBox.getAt(i).price;
+      try {
+        var cartMap = _dataBox
+            .getAt(i)
+            .price;
         double price = double.parse(cartMap);
         totalPrice = totalPrice + price;
-      }catch(e){
+      } catch (e) {
         print("$e ===================error==");
       }
     }

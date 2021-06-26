@@ -1,6 +1,7 @@
 import 'package:circulardropdownmenu/circulardropdownmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive/hive.dart';
 import 'package:letskhareedo/ModelView/Model/ProductModel.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
@@ -32,6 +33,10 @@ class _SalesState extends State<Sales> {
         ? selectedProductToBuy
         : ModalRoute.of(context).settings.arguments;
     Products products = Products.fromJson(selectedProductToBuy);
+    String productUUid = selectedProductToBuy["uuid"];
+    favSelectedOrNot = selectedProductToBuy["favCheck"];
+    HiveMethods hiveMethods = HiveMethods();
+
     TextStyle lightTextStyle = TextStyle(color: kTextColor.withOpacity(0.6));
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
@@ -43,7 +48,7 @@ class _SalesState extends State<Sales> {
               if (!check) Navigator.pop(context);
             },
           )),
-      body: saleProductDetail(lightTextStyle, products),
+      body: saleProductDetail(lightTextStyle, products, productUUid, hiveMethods),
     );
   }
 
@@ -58,14 +63,17 @@ class _SalesState extends State<Sales> {
   List<String> _chest;
   List<String> _shoulders;
   List<String> _waist;
+  bool favSelectedOrNot = false;
 
-  Widget saleProductDetail(TextStyle lightTextStyle, Products products) {
-    if(products.type == "shirt" || products.type == "Shirt") {
+  Widget saleProductDetail(TextStyle lightTextStyle, Products products, String productUUid, HiveMethods hiveMethods) {
+
+    if (products.type == "shirt" || products.type == "Shirt") {
       _sizes = products.size.split(",");
       _chest = products.chest.split(",");
       _shoulders = products.shoulder.split(",");
-    }else
-    _waist = products.waist.split(",");
+    } else
+      _waist = products.waist.split(",");
+
     return SingleChildScrollView(
       child: OrientationBuilder(builder: (context, orientation) {
         return SizedBox(
@@ -170,16 +178,31 @@ class _SalesState extends State<Sales> {
                     child: TextButton(
                       onPressed: () async {
                         if (_numberOfItems > 0) {
+                          var price =
+                              double.parse(products.price) * _numberOfItems;
                           HiveMethods().addData(
-                              products.imagePath,
+                            CartDataBase(
+                              imageUrl: products.imagePath,
+                              name: products.name,
+                              description: products.description,
+                              price: price.toString(),
+                              numberOfItems: _numberOfItems,
+                              shoulder: _selectedShoulders,
+                              chest: _selectedChest,
+                              type: _selectedTypes,
+                              waist: _selectedWaist,
+                              uuid: productUUid,
+                            )
+                              /*products.imagePath,
                               products.name,
                               products.description,
-                              products.price,
+                              price.toString(),
                               _numberOfItems,
                               _selectedShoulders,
                               _selectedChest,
                               _selectedTypes,
-                              _selectedWaist);
+                              _selectedWaist,
+                              productUUid*/);
                           Navigator.pushNamed(context, '/AddToCartOrderView');
                         } else {
                           setState(() {
@@ -206,6 +229,47 @@ class _SalesState extends State<Sales> {
                   ),
                 ),
               ),
+              Positioned(
+                top: 345,
+                left: 20,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (favSelectedOrNot) {
+                        favSelectedOrNot = false;
+                        hiveMethods.deleteFromFav(productUUid);
+                      } else {
+                        favSelectedOrNot = true;
+                        hiveMethods.addDataToFav(CartDataBase(
+                          imageUrl: products.imagePath,
+                          name: products.name,
+                          description: products.description,
+                          price: products.uuid,
+                          numberOfItems: _numberOfItems,
+                          shoulder: _selectedShoulders,
+                          chest: _selectedChest,
+                          type: _selectedTypes,
+                          waist: _selectedWaist,
+                          uuid: productUUid,
+                        ));
+                      }
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundColor: APPLICATION_BACKGROUND_COLOR,
+                      child: Icon(
+                              favSelectedOrNot
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: Colors.red,
+                            )
+                      )
+                    ),
+                  ),
+                ),
               Positioned(
                 top: 55,
                 right: 80,
@@ -300,58 +364,60 @@ class _SalesState extends State<Sales> {
             ],
           ),
         ),
-        if(_waist != null)
-        Visibility(
-          visible: products.type != "shirt" || products.type != "Shirt",
-          child: Text(
-            "Waist",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        if (_waist != null)
+          Visibility(
+            visible: products.type != "shirt" || products.type != "Shirt",
+            child: Text(
+              "Waist",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
         SizedBox(
           height: 10,
         ),
-        if(_waist != null)
-        for (var i = 0; i < _waist.length; i++)
-          Visibility(
-            visible: products.type != "shirt" || products.type != "Shirt",
-            child: GestureDetector(
-              child: SizedBox(height: 40, child: Text(_waist[i].toString())),
-              onTap: () {
-                setState(() {
-                  _waistVisibilityCheck = true;
-                  _selectedWaist = "${_waist[i].toString()}";
-                });
-              },
-            ),
-          ),
-        if(_sizes != null)
-        for (var i = 0; i < _sizes.length; i++)
-          Visibility(
-            visible: products.type == "shirt" || products.type == "Shirt",
-            child: GestureDetector(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(height: 40, child: Text(_sizes[i].toString())),
-                  SizedBox(
-                      height: 40, width: 70, child: Text(_chest[i].toString())),
-                  SizedBox(
-                      height: 40,
-                      width: 50,
-                      child: Text(_shoulders[i].toString())),
-                ],
+        if (_waist != null)
+          for (var i = 0; i < _waist.length; i++)
+            Visibility(
+              visible: products.type != "shirt" || products.type != "Shirt",
+              child: GestureDetector(
+                child: SizedBox(height: 40, child: Text(_waist[i].toString())),
+                onTap: () {
+                  setState(() {
+                    _waistVisibilityCheck = true;
+                    _selectedWaist = "${_waist[i].toString()}";
+                  });
+                },
               ),
-              onTap: () {
-                setState(() {
-                  _sizeVisibilityCheck = true;
-                  _selectedTypes = "${_sizes[i].toString()}";
-                  _selectedChest = "${_chest[i].toString()}";
-                  _selectedShoulders = "${_shoulders[i].toString()}";
-                });
-              },
             ),
-          ),
+        if (_sizes != null)
+          for (var i = 0; i < _sizes.length; i++)
+            Visibility(
+              visible: products.type == "shirt" || products.type == "Shirt",
+              child: GestureDetector(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(height: 40, child: Text(_sizes[i].toString())),
+                    SizedBox(
+                        height: 40,
+                        width: 70,
+                        child: Text(_chest[i].toString())),
+                    SizedBox(
+                        height: 40,
+                        width: 50,
+                        child: Text(_shoulders[i].toString())),
+                  ],
+                ),
+                onTap: () {
+                  setState(() {
+                    _sizeVisibilityCheck = true;
+                    _selectedTypes = "${_sizes[i].toString()}";
+                    _selectedChest = "${_chest[i].toString()}";
+                    _selectedShoulders = "${_shoulders[i].toString()}";
+                  });
+                },
+              ),
+            ),
         SizedBox(
           height: 10,
         ),
@@ -360,9 +426,14 @@ class _SalesState extends State<Sales> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Size: $_selectedTypes"),
-              Text("Chest: $_selectedChest"),
-              Text("Shoulder: $_selectedShoulders"),
+              Text(
+                "Size: $_selectedTypes",
+                style: TextStyle(color: kPrimaryColor),
+              ),
+              Text("Chest: $_selectedChest",
+                  style: TextStyle(color: kPrimaryColor)),
+              Text("Shoulder: $_selectedShoulders",
+                  style: TextStyle(color: kPrimaryColor)),
             ],
           ),
         ),

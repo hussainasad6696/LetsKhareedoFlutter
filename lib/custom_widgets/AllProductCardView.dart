@@ -1,66 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:letskhareedo/ModelView/Model/ProductModel.dart';
 import 'package:letskhareedo/constants/constant.dart';
+import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
 
 class AllProductsCard extends StatelessWidget {
 
   final String activity;
   final Products products;
-  final Function onFavPressed;
   final int index;
   const AllProductsCard({
     Key key,
-    this.activity, this.products, this.onFavPressed, this.index
+    this.activity, this.products, this.index
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool favSelectedOrNot = false;
-    IconData _iconFavUnselected = Icons.favorite_border;
-    IconData _iconFavSelected = Icons.favorite;
-    return GestureDetector(
-      onTap: (){
-        Navigator.pushNamed(context, '/salesPage', arguments: {
-          "price" : products.price,
-          "description" : products.description,
-          "imagePath" : products.imagePath,
-          "brand" : products.brand,
-          "material" : products.material,
-          "quantity" : products.quantity,
-          "type" : products.type,
-          "uuid" : products.uuid,
-          "size" : products.size,
-          "gender" : products.gender,
-          "ageGroup" : products.kids,
-          "hotOrNot" : products.hotOrNot,
-          "name" : products.name,
-          "chest" : products.chest,
-          "shoulder" : products.shoulder,
-          "waist" : products.waist
-        });
-      },
-      child: Container(
-        width: 145,
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      onFavPressed();
-                      if(favSelectedOrNot) favSelectedOrNot = false;
-                      else favSelectedOrNot = true;
-                    },
-                    icon: Icon(favSelectedOrNot ? _iconFavSelected : _iconFavUnselected, color: Colors.red,),
-                  ),
-                ),
-                Center(
+    return Container(
+      width: 145,
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Column(
+        children: [
+          Stack(
+            children: [
+
+              GestureDetector(
+                onTap: (){
+                  onItemSelected(context);
+                },
+                child: Center(
                   child: Container(
                     width: 140,
                     height: 150,
@@ -73,26 +43,65 @@ class AllProductsCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
 
-            Padding(
+            ],
+          ),
+
+          GestureDetector(
+            onTap: (){
+              onItemSelected(context);
+            },
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(products.name, style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),),
             ),
-            SizedBox(
-              height: 5,
-            ),
-            Text(products.price),
-            SizedBox(
-              height: 5,
-            ),
-            Text("Quantity: ${products.quantity}"),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          GestureDetector(
+              onTap: (){
+                onItemSelected(context);
+              },
+              child: Text(products.price)),
+          SizedBox(
+            height: 5,
+          ),
+          GestureDetector(
+              onTap: (){
+                onItemSelected(context);
+              },
+              child: Text("Quantity: ${products.quantity}")),
+        ],
       ),
     );
+  }
+
+  onItemSelected(BuildContext context) async {
+    bool favCheck = await HiveMethods().checkForExistance(products.uuid).then((value) {
+    return value;
+    });
+    Navigator.pushNamed(context, '/salesPage', arguments: {
+      "price" : products.price,
+      "description" : products.description,
+      "imagePath" : products.imagePath,
+      "brand" : products.brand,
+      "material" : products.material,
+      "quantity" : products.quantity,
+      "type" : products.type,
+      "uuid" : products.uuid,
+      "size" : products.size,
+      "gender" : products.gender,
+      "ageGroup" : products.kids,
+      "hotOrNot" : products.hotOrNot,
+      "name" : products.name,
+      "chest" : products.chest,
+      "shoulder" : products.shoulder,
+      "waist" : products.waist,
+      "favCheck" : favCheck
+    });
   }
 }

@@ -17,22 +17,22 @@ class CartDataBaseAdapter extends TypeAdapter<CartDataBase> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CartDataBase(
-      imageUrl: fields[0] as String,
-      name: fields[1] as String,
-      description: fields[2] as String,
-      price: fields[3] as String,
-      numberOfItems: fields[4] as int,
-      type: fields[5] as String,
-      chest: fields[6] as String,
-      shoulder: fields[7] as String,
-        waist: fields[8] as String
-    );
+        imageUrl: fields[0] as String,
+        name: fields[1] as String,
+        description: fields[2] as String,
+        price: fields[3] as String,
+        numberOfItems: fields[4] as int,
+        type: fields[5] as String,
+        chest: fields[6] as String,
+        shoulder: fields[7] as String,
+        waist: fields[8] as String,
+        uuid: fields[9] as String);
   }
 
   @override
   void write(BinaryWriter writer, CartDataBase obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.imageUrl)
       ..writeByte(1)
@@ -50,7 +50,9 @@ class CartDataBaseAdapter extends TypeAdapter<CartDataBase> {
       ..writeByte(7)
       ..write(obj.shoulder)
       ..writeByte(8)
-      ..write(obj.waist);
+      ..write(obj.waist)
+      ..writeByte(9)
+      ..write(obj.uuid);
   }
 
   @override

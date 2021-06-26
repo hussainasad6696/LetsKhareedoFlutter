@@ -87,16 +87,16 @@ class WebRepo {
     return imageName;
   }
 
-  void internetConnectionCheck() async {
-    var connectionResult = await (Connectivity().checkConnectivity());
-    if(connectionResult == ConnectivityResult.mobile){
-      print("Connected to mobile network");
-    }else if(connectionResult == ConnectivityResult.wifi) print("Connected to wifi network");
-    else Fluttertoast.showToast(msg: "No internet", toastLength: Toast.LENGTH_SHORT);
-  }
+  // void internetConnectionCheck() async {
+  //   var connectionResult = await (Connectivity().checkConnectivity());
+  //   if(connectionResult == ConnectivityResult.mobile){
+  //     print("Connected to mobile network");
+  //   }else if(connectionResult == ConnectivityResult.wifi) print("Connected to wifi network");
+  //   else Fluttertoast.showToast(msg: "No internet", toastLength: Toast.LENGTH_SHORT);
+  // }
 
   Future<List<Products>> fetchProductList(String value) async{
-    internetConnectionCheck();
+    // internetConnectionCheck();
     dynamic response = await _webService.getJson(value);
     final jsonData = response as List;
     List<Products> productsList = jsonData.map((tagJson) => Products.fromJson(tagJson)).toList();

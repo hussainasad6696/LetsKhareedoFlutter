@@ -54,7 +54,7 @@ class ProductSalesCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Rs ${ cartDataBase.price}",
+                  "Rs ${cartDataBase.price}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 12,

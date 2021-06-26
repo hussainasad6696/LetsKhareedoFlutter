@@ -13,11 +13,7 @@ class _MenPageState extends State<MenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: APPLICATION_BACKGROUND_COLOR,
-      body: AppProductGrid(url: PRODUCTS_ADDRESS_MALE, activity: "MenPage",favClicked: (){
-        setState(() {
-          print("standing here ----------------------");
-        });
-      },),
+      body: AppProductGrid(url: PRODUCTS_ADDRESS_MALE, activity: "MenPage",),
     );
   }
 }
