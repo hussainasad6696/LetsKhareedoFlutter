@@ -1,5 +1,7 @@
 
 
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,12 +13,14 @@ import 'package:letskhareedo/pages/AddToCartOrderView.dart';
 import 'package:letskhareedo/pages/SalesPage.dart';
 import 'package:letskhareedo/pages/Store.dart';
 import 'package:letskhareedo/pages/checkoutPages/checkOut.dart';
+import 'package:letskhareedo/pages/favPage/favouriteItems.dart';
 import 'package:letskhareedo/pages/fisrtHomePage.dart';
 import 'package:letskhareedo/pages/homePage.dart';
 import 'package:letskhareedo/pages/kids.dart';
 import 'package:letskhareedo/pages/map/mapAddressHolderList.dart';
 import 'package:letskhareedo/pages/map/maps.dart';
 import 'package:letskhareedo/pages/men.dart';
+import 'package:letskhareedo/pages/orderHistory/orderHistory.dart';
 import 'package:letskhareedo/pages/profile/Profile.dart';
 import 'package:letskhareedo/pages/splashScreen.dart';
 import 'package:letskhareedo/pages/women.dart';
@@ -56,7 +60,9 @@ Future<void> main() async {
         '/profile': (context) => Profile(),
         '/mapsList': (context) => SavedMapList(),
         '/map' : (context) => Maps(),
-        '/checkOut' : (context) => CheckOutPage()
+        '/checkOut' : (context) => CheckOutPage(),
+        '/favList' : (context) => FavouriteItems(),
+        '/orderDetail' : (context) => OrderHistory()
       },
     ),
   ));

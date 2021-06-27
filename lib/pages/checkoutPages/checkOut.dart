@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:letskhareedo/WebServices/WebRepository.dart';
 import 'package:letskhareedo/constants/constant.dart';
 import 'package:letskhareedo/custom_widgets/CustomAppBar.dart';
 import 'package:letskhareedo/custom_widgets/SelectedProductCard.dart';
 import 'package:letskhareedo/device_db/CartDB.dart';
 import 'package:letskhareedo/device_db/hive/HiveMethods.dart';
+import 'package:letskhareedo/device_db/orderHistoryModel/imageDetailClass.dart';
+import 'package:letskhareedo/device_db/orderHistoryModel/orderHistoryClass.dart';
 
 
 class CheckOutPage extends StatefulWidget {
@@ -20,6 +23,7 @@ class CheckOutPage extends StatefulWidget {
 class _CheckOutPageState extends State<CheckOutPage> {
   @override
   Widget build(BuildContext context) {
+    double totalCost = 0.0;
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(PREFERRED_SIZE),
@@ -81,7 +85,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 FutureBuilder(
                   future: HiveMethods().getMeTheTotalCostOfSelectedProducts(),
                   builder: (context,snapShot) {
-                    print("${snapShot.data} =========================");
+                    totalCost = snapShot.data;
                   return Text("Rs: ${snapShot.data}",style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -102,8 +106,23 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     child: TextButton(
                       onPressed: () async {
                         List<CartDataBase> dataFromDataBase = await HiveMethods().getMeAllTheData();
+                        var imageDetail = [];
+                        DateTime now = new DateTime.now();
+                        DateTime date = new DateTime(now.year,now.month,now.day);
+                        await dataFromDataBase.forEach((element) {
+                         imageDetail.add(ImageDetailClass(
+                           imageName: element.name,
+                           imagePath: element.imageUrl
+                         ));
+                        });
+                        OrderHistoryDetailClass orderData = OrderHistoryDetailClass(
+                          imageDetail: imageDetail,
+                          date: date,
+                          price: totalCost
+                        );
                         var json = jsonEncode(dataFromDataBase.map((cartDatabase) => cartDatabase.toJson()).toList());
                         setState(()  {
+                          HiveMethods().addDataToOrder(orderData);
                           WebRepo().sendNewOrder(json);
                         });
                       },
@@ -142,9 +161,11 @@ class _CheckOutPageState extends State<CheckOutPage> {
             itemCount: snapShot.data.length,
             itemBuilder: (context, index) {
               return ProductSalesCard(
-                  snapShot.data[index], index, snapShot.data.length, hiveMethods, deleteItem: (index){
+                  snapShot.data[index], index, snapShot.data.length,
+                false,
+                hiveMethods, deleteItem: (index){
                     setState(() {
-                      hiveMethods.deleteFromList(index);
+                      hiveMethods.deleteFromList(index,DB_NAME);
                     });
               },);
             },

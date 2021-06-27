@@ -16,7 +16,7 @@ class CartDataBase {
   @HiveField(4)
    int numberOfItems;
   @HiveField(5)
-  final String type;
+  final String sizeType;
   @HiveField(6)
   final String chest;
   @HiveField(7)
@@ -25,6 +25,10 @@ class CartDataBase {
   final String waist;
   @HiveField(9)
   final String uuid;
+  @HiveField(10)
+  final String type;
+  @HiveField(11)
+  final String size;
 
   CartDataBase(
       {this.imageUrl,
@@ -32,11 +36,13 @@ class CartDataBase {
       this.description,
       this.price,
       this.numberOfItems,
-      this.type,
+      this.sizeType,
       this.chest,
       this.shoulder,
       this.waist,
-      this.uuid});
+      this.uuid,
+      this.type,
+      this.size});
 
   Map<String, dynamic> toJson() {
     return {
@@ -45,11 +51,13 @@ class CartDataBase {
       'description': description,
       'price': price,
       'numberOfItems': numberOfItems,
-      'type' : type,
+      'sizeType' : sizeType,
       'chest': chest,
       'shoulder': shoulder,
       'waist': waist,
-      'uuid' : uuid
+      'uuid' : uuid,
+      'type' : type,
+      'size' : size
     };
   }
 

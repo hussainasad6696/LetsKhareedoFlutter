@@ -181,9 +181,9 @@ class _HomeState extends State<HomePage> {
                               leading: Icon(Icons.shopping_bag_outlined,
                                   color: Colors.white),
                               title: Text("Orders", style: textStyleTiles),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
+                              onTap: () =>
+                                navigateToOrderList(),
+
                             ),
                             ListTile(
                               leading: Icon(
@@ -191,10 +191,7 @@ class _HomeState extends State<HomePage> {
                                 color: Colors.white,
                               ),
                               title: Text("Fav", style: textStyleTiles),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
+                              onTap: () => navigateToFav(),                             ),
                             ListTile(
                               leading: Icon(
                                 Icons.map,
@@ -289,7 +286,6 @@ class _HomeState extends State<HomePage> {
   }
 
   _onPageViewChange(int index) {
-    print('$index -==-=-=----------------------');
     setState(() {
       selectedIndex = index;
       _pageName = categories[index];
@@ -459,5 +455,15 @@ class _HomeState extends State<HomePage> {
   void navigateToMaps() async {
     Navigator.of(context).pop();
     Navigator.pushNamed(context, '/mapsList');
+  }
+
+  navigateToFav() async {
+    Navigator.of(context).pop();
+    Navigator.pushNamed(context, '/favList');
+  }
+
+  navigateToOrderList() async {
+    Navigator.of(context).pop();
+    Navigator.pushNamed(context, '/orderDetail');
   }
 }

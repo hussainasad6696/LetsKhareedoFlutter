@@ -101,10 +101,12 @@ class _OrderViewState extends State<OrderView> {
               scrollDirection: Axis.vertical,
               itemCount: snapShot.data.length,
               itemBuilder: (context, index) {
-                return ProductSalesCard(snapShot.data[index], index, snapShot.data.length, hiveMethods,
+                return ProductSalesCard(snapShot.data[index], index, snapShot.data.length,
+                  false,
+                  hiveMethods,
                 deleteItem: (index){
                   setState(() {
-                    hiveMethods.deleteFromList(index);
+                    hiveMethods.deleteFromList(index, DB_NAME);
                   });
                 },);
               },

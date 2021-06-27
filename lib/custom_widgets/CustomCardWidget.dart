@@ -17,9 +17,6 @@ class CardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ApiResponse _apiResponse = Provider.of<ProductListViewModel>(context).response;
-    // Provider.of<ProductListViewModel>(context, listen: false).fetchSliderImage(ADVERTISEMENT_IMAGES_ADDRESS);
-
     return Padding(
         padding: EdgeInsets.only(left: ADD_CARD_PADDING, right: ADD_CARD_PADDING),
         child: Column(

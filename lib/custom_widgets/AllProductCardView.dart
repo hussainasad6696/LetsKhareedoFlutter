@@ -15,69 +15,76 @@ class AllProductsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 145,
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Column(
-        children: [
-          Stack(
-            children: [
+    if(products.imagePath != null)
+    return Visibility(
+      visible: products.imagePath != null,
+      child: Container(
+        width: 145,
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Column(
+          children: [
+            Stack(
+              children: [
 
-              GestureDetector(
-                onTap: (){
-                  onItemSelected(context);
-                },
-                child: Center(
-                  child: Container(
-                    width: 140,
-                    height: 150,
-                    margin: EdgeInsets.only(top: 15),
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: FadeInImage.assetNetwork(placeholder: "assets/icons/spinner.gif",
-                        image: BASE_URL_HTTP_WITH_ADDRESS+PRODUCT_IMAGE_ADDRESS + products.imagePath,
-                        fit: BoxFit.cover,),
+                GestureDetector(
+                  onTap: (){
+                    onItemSelected(context);
+                  },
+                  child: Center(
+                    child: Container(
+                      width: 140,
+                      height: 150,
+                      margin: EdgeInsets.only(top: 15),
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: FadeInImage.assetNetwork(placeholder: "assets/icons/spinner.gif",
+                          image: BASE_URL_HTTP_WITH_ADDRESS+PRODUCT_IMAGE_ADDRESS + products.imagePath,
+                          fit: BoxFit.cover,),
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-            ],
-          ),
-
-          GestureDetector(
-            onTap: (){
-              onItemSelected(context);
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(products.name, style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),),
+              ],
             ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          GestureDetector(
+
+            GestureDetector(
               onTap: (){
                 onItemSelected(context);
               },
-              child: Text(products.price)),
-          SizedBox(
-            height: 5,
-          ),
-          GestureDetector(
-              onTap: (){
-                onItemSelected(context);
-              },
-              child: Text("Quantity: ${products.quantity}")),
-        ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(products.name, style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),),
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            GestureDetector(
+                onTap: (){
+                  onItemSelected(context);
+                },
+                child: Text(products.price)),
+            SizedBox(
+              height: 5,
+            ),
+            GestureDetector(
+                onTap: (){
+                  onItemSelected(context);
+                },
+                child: Text("Quantity: ${products.quantity}")),
+          ],
+        ),
       ),
     );
+    else return Visibility(
+        visible: false,
+        child: Text(""));
   }
 
   onItemSelected(BuildContext context) async {

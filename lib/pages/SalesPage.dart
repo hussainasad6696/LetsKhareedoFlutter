@@ -26,6 +26,7 @@ class _SalesState extends State<Sales> {
   bool _sizeVisibilityCheck = false;
   bool _waistVisibilityCheck = false;
   bool _guideArrowCheck = false;
+  bool _checkOnce = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,10 @@ class _SalesState extends State<Sales> {
         : ModalRoute.of(context).settings.arguments;
     Products products = Products.fromJson(selectedProductToBuy);
     String productUUid = selectedProductToBuy["uuid"];
-    favSelectedOrNot = selectedProductToBuy["favCheck"];
+    if(!_checkOnce) {
+      favSelectedOrNot = selectedProductToBuy["favCheck"];
+      _checkOnce = true;
+    }
     HiveMethods hiveMethods = HiveMethods();
 
     TextStyle lightTextStyle = TextStyle(color: kTextColor.withOpacity(0.6));
@@ -189,20 +193,11 @@ class _SalesState extends State<Sales> {
                               numberOfItems: _numberOfItems,
                               shoulder: _selectedShoulders,
                               chest: _selectedChest,
-                              type: _selectedTypes,
+                              sizeType: _selectedTypes,
                               waist: _selectedWaist,
                               uuid: productUUid,
-                            )
-                              /*products.imagePath,
-                              products.name,
-                              products.description,
-                              price.toString(),
-                              _numberOfItems,
-                              _selectedShoulders,
-                              _selectedChest,
-                              _selectedTypes,
-                              _selectedWaist,
-                              productUUid*/);
+                              type: products.type
+                            ));
                           Navigator.pushNamed(context, '/AddToCartOrderView');
                         } else {
                           setState(() {
@@ -244,13 +239,14 @@ class _SalesState extends State<Sales> {
                           imageUrl: products.imagePath,
                           name: products.name,
                           description: products.description,
-                          price: products.uuid,
+                          price: products.price,
                           numberOfItems: _numberOfItems,
-                          shoulder: _selectedShoulders,
-                          chest: _selectedChest,
-                          type: _selectedTypes,
-                          waist: _selectedWaist,
+                          shoulder: products.shoulder,
+                          chest: products.chest,
+                          waist: products.waist,
                           uuid: productUUid,
+                          type: products.type,
+                          size: products.size
                         ));
                       }
                     });
